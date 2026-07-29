@@ -266,8 +266,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="flex-1 overflow-y-auto content-area"
         style={{
           background: [
-            'radial-gradient(ellipse 90% 55% at 60% -8%, rgba(61,107,255,0.11) 0%, transparent 60%)',
-            'radial-gradient(ellipse 50% 40% at 95% 85%, rgba(99,60,220,0.07) 0%, transparent 60%)',
+            'radial-gradient(ellipse 100% 50% at 55% -10%, rgba(61,107,255,0.32) 0%, rgba(61,107,255,0.08) 40%, transparent 65%)',
+            'radial-gradient(ellipse 55% 45% at 98% 90%, rgba(99,60,220,0.20) 0%, transparent 55%)',
+            'radial-gradient(ellipse 40% 35% at 5% 60%, rgba(30,67,214,0.10) 0%, transparent 55%)',
             '#070b14',
           ].join(', '),
         }}
