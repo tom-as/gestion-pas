@@ -77,17 +77,17 @@ function DocumentoForm({ onClose, defaultEntidad, defaultEntidadId }: {
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalMd)}>
+      <div className={cn(cls.modal, cls.modalMd, '!rounded-md')}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <span className="text-base font-semibold text-slate-200">Agregar documento</span>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <span className="text-base font-semibold txt-primary">Agregar documento</span>
+          <button onClick={onClose} className="txt-faint hover:txt-primary transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
                 <label className={cls.label}>Tipo de documento *</label>
-                <select className={cls.select} {...register('tipo')}>
+                <select className={cn(cls.select, '!rounded-sm')} {...register('tipo')}>
                   {Object.entries(TIPO_LABEL).map(([v, l]) => (
                     <option key={v} value={v}>{l}</option>
                   ))}
@@ -95,7 +95,7 @@ function DocumentoForm({ onClose, defaultEntidad, defaultEntidadId }: {
               </div>
               <div className="flex flex-col gap-1">
                 <label className={cls.label}>Entidad vinculada *</label>
-                <select className={cls.select} {...register('entidadVinculada')}>
+                <select className={cn(cls.select, '!rounded-sm')} {...register('entidadVinculada')}>
                   {Object.entries(ENTIDAD_LABEL).map(([v, l]) => (
                     <option key={v} value={v}>{l}</option>
                   ))}
@@ -103,26 +103,26 @@ function DocumentoForm({ onClose, defaultEntidad, defaultEntidadId }: {
               </div>
               <div className="flex flex-col gap-1 col-span-2">
                 <label className={cls.label}>ID de la entidad (UUID) *</label>
-                <input className={cn(cls.input, errors.entidadId ? cls.inputError : '')}
+                <input className={cn(cls.input, '!rounded-sm', errors.entidadId ? cls.inputError : '')}
                   placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                   {...register('entidadId')} />
                 {errors.entidadId && <span className="text-xs text-red-500 mt-0.5">{errors.entidadId.message}</span>}
               </div>
               <div className="flex flex-col gap-1 col-span-2">
                 <label className={cls.label}>URL del archivo *</label>
-                <input className={cn(cls.input, errors.archivoUrl ? cls.inputError : '')}
+                <input className={cn(cls.input, '!rounded-sm', errors.archivoUrl ? cls.inputError : '')}
                   placeholder="https://storage.example.com/docs/archivo.pdf"
                   {...register('archivoUrl')} />
                 {errors.archivoUrl && <span className="text-xs text-red-500 mt-0.5">{errors.archivoUrl.message}</span>}
               </div>
               <div className="flex flex-col gap-1 col-span-2">
                 <label className={cls.label}>Contexto del tramite</label>
-                <input className={cls.input}
+                <input className={cn(cls.input, '!rounded-sm')}
                   placeholder="Ej: Poliza emitida en renovacion 2024"
                   {...register('tramiteContexto')} />
               </div>
             </div>
-            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded px-3 py-2">{serverError}</p>}
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
@@ -168,12 +168,12 @@ export default function DocumentosPage() {
       </div>
 
       {/* Filtro por entidad */}
-      <div className={cn(cls.cardPad, 'mb-5')}>
+      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Buscar documentos por entidad</h2>
         <div className="flex flex-wrap gap-3 items-end">
           <div className="flex flex-col gap-1" style={{ minWidth: 160 }}>
             <label className={cls.label}>Tipo de entidad</label>
-            <select className={cls.select}
+            <select className={cn(cls.select, '!rounded-sm')}
               value={filtroEntidad}
               onChange={(e) => { setFiltroEntidad(e.target.value as EntidadDocumento); setBuscando(false); }}>
               {Object.entries(ENTIDAD_LABEL).map(([v, l]) => (
@@ -183,7 +183,7 @@ export default function DocumentosPage() {
           </div>
           <div className="flex flex-col gap-1" style={{ minWidth: 280 }}>
             <label className={cls.label}>UUID de la entidad</label>
-            <input className={cls.input}
+            <input className={cn(cls.input, '!rounded-sm')}
               placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
               value={filtroId}
               onChange={(e) => { setFiltroId(e.target.value); setBuscando(false); }} />
@@ -195,7 +195,7 @@ export default function DocumentosPage() {
       </div>
 
       {/* Resultados */}
-      <div className={cn(cls.card, 'overflow-hidden')}>
+      <div className={cn('card-base rounded-none overflow-hidden border-x-0')}>
         <table className={cls.table}>
           <thead>
             <tr>
@@ -208,13 +208,13 @@ export default function DocumentosPage() {
           </thead>
           <tbody>
             {!buscando && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-400 text-sm">
+              <tr><td colSpan={5} className="px-4 py-8 text-center txt-tertiary text-sm">
                 Selecciona una entidad e ingresa su UUID para ver documentos.
               </td></tr>
             )}
-            {buscando && isLoading && <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400 text-sm">Cargando...</td></tr>}
+            {buscando && isLoading && <tr><td colSpan={5} className="px-4 py-6 text-center txt-tertiary text-sm">Cargando...</td></tr>}
             {buscando && !isLoading && documentos.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-400 text-sm">Sin documentos para esta entidad.</td></tr>
+              <tr><td colSpan={5} className="px-4 py-8 text-center txt-tertiary text-sm">Sin documentos para esta entidad.</td></tr>
             )}
             {documentos.map((d) => (
               <tr key={d.id} className={cls.trHover}>
@@ -224,7 +224,7 @@ export default function DocumentosPage() {
                 <td className={cls.td}>{formatDate(d.fechaIncorporacion)}</td>
                 <td className={cls.td}>
                   <a href={d.archivoUrl} target="_blank" rel="noreferrer"
-                    className={cn(cls.btn, cls.btnSm, cls.btnSecond, 'no-underline')}>
+                    className={cn(cls.btn, cls.btnSm, cls.btnSecond, '!rounded-sm', 'no-underline')}>
                     Abrir
                   </a>
                 </td>

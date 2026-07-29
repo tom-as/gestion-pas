@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: docker.io/postgres:16-alpine
+    container_name: gestion_pas_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gestion_pas
+      POSTGRES_PASSWORD: gestion_pas_dev
+      POSTGRES_DB: gestion_pas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gestion_pas -d gestion_pas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:
+    driver: local

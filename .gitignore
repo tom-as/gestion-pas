@@ -10,3 +10,7 @@ coverage/
 .DS_Store
 *.log
 .vite/
+
+.bob/
+.npmrc-tmp
+archivos/

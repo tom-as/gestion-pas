@@ -63,7 +63,7 @@ async function seed() {
   console.log('✓ Organizador creado');
 
   // ── Productores (4) ───────────────────────────────────────────────
-  const [prod1, prod2, prod3, prod4] = await prodRepo.save([
+  const [prod1, prod2, prod3, _prod4] = await prodRepo.save([
     prodRepo.create({
       nombre: 'Leandro García',
       dniCuil: '20345678901',
@@ -228,9 +228,9 @@ async function seed() {
   // ── Bienes asegurados (12) ────────────────────────────────────────
   // Variedad: autos completos, autos con datos incompletos, hogar, vida, otro
   const [
-    bienAuto1, bienAuto2, bienAuto3, bienAuto4,
-    bienAutoInc1, bienAutoInc2, bienAutoInc3,
-    bienHogar1, bienHogar2, bienHogarInc,
+    bienAuto1, _bienAuto2, bienAuto3, bienAuto4,
+    bienAutoInc1, bienAutoInc2, _bienAutoInc3,
+    bienHogar1, bienHogar2, _bienHogarInc,
     bienVida1, bienOtro1,
   ] = await bienRepo.save([
     // Autos completos
@@ -356,7 +356,7 @@ async function seed() {
 
   const [
     pol1, pol2, pol3, pol4, pol5,
-    pol6, pol7, pol8, pol9, pol10,
+    _pol6, pol7, pol8, pol9, pol10,
   ] = await polizaRepo.save([
     // pol1 — activa vigente (2025–2026)
     polizaRepo.create({

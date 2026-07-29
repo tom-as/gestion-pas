@@ -101,34 +101,34 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalLg)}>
+      <div className={cn(cls.modal, cls.modalLg, '!rounded-md')}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <span className="text-base font-semibold text-slate-200">Nueva poliza</span>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <span className="text-base font-semibold txt-primary">Nueva poliza</span>
+          <button onClick={onClose} className="txt-faint hover:txt-primary hover:bg-black/5 dark:hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
             <div className="grid grid-cols-2 gap-4">
               <Field label="Numero de poliza *" error={errors.numeroPoliza?.message} full>
-                <input className={cn(cls.input, errors.numeroPoliza ? cls.inputError : '')} {...register('numeroPoliza')} />
+                <input className={cn(cls.input, '!rounded-sm', errors.numeroPoliza ? cls.inputError : '')} {...register('numeroPoliza')} />
               </Field>
 
               <Field label="Vigencia inicio *">
-                <input type="date" className={cls.input} {...register('vigenciaInicio')} />
+                <input type="date" className={cn(cls.input, '!rounded-sm')} {...register('vigenciaInicio')} />
               </Field>
               <Field label="Vigencia fin *">
-                <input type="date" className={cls.input} {...register('vigenciaFin')} />
+                <input type="date" className={cn(cls.input, '!rounded-sm')} {...register('vigenciaFin')} />
               </Field>
 
               <Field label="Importe cuota *" error={errors.importeCuotaVigente?.message}>
-                <input type="number" className={cn(cls.input, errors.importeCuotaVigente ? cls.inputError : '')} {...register('importeCuotaVigente')} />
+                <input type="number" className={cn(cls.input, '!rounded-sm', errors.importeCuotaVigente ? cls.inputError : '')} {...register('importeCuotaVigente')} />
               </Field>
               <Field label="Modalidad de pago">
-                <input className={cls.input} placeholder="debito automatico, efectivo..." {...register('modalidadPago')} />
+                <input className={cn(cls.input, '!rounded-sm')} placeholder="debito automatico, efectivo..." {...register('modalidadPago')} />
               </Field>
 
               <Field label="Periodicidad refacturacion">
-                <select className={cls.select} {...register('periodicidadRefacturacion')}>
+                <select className={cn(cls.select, '!rounded-sm')} {...register('periodicidadRefacturacion')}>
                   <option value="">Sin periodicidad</option>
                   <option value="mensual">Mensual</option>
                   <option value="trimestral">Trimestral</option>
@@ -139,14 +139,14 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
               <div />
 
               <Field label="Asegurado *" error={errors.aseguradoId?.message} full>
-                <select className={cn(cls.select, errors.aseguradoId ? cls.inputError : '')} {...register('aseguradoId')}>
+                <select className={cn(cls.select, '!rounded-sm', errors.aseguradoId ? cls.inputError : '')} {...register('aseguradoId')}>
                   <option value="">Seleccionar…</option>
                   {asegurados.map((a) => <option key={a.id} value={a.id}>{a.nombre}</option>)}
                 </select>
               </Field>
 
               <Field label="Bien asegurado *" error={errors.bienId?.message}>
-                <select className={cn(cls.select, errors.bienId ? cls.inputError : '')} {...register('bienId')}>
+                <select className={cn(cls.select, '!rounded-sm', errors.bienId ? cls.inputError : '')} {...register('bienId')}>
                   <option value="">Seleccionar…</option>
                   {bienes.map((b) => (
                     <option key={b.id} value={b.id}>
@@ -157,21 +157,21 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
               </Field>
 
               <Field label="Productor *" error={errors.productorId?.message}>
-                <select className={cn(cls.select, errors.productorId ? cls.inputError : '')} {...register('productorId')}>
+                <select className={cn(cls.select, '!rounded-sm', errors.productorId ? cls.inputError : '')} {...register('productorId')}>
                   <option value="">Seleccionar…</option>
                   {productores.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
                 </select>
               </Field>
 
               <Field label="Compania aseguradora *" error={errors.companiaId?.message} full>
-                <select className={cn(cls.select, errors.companiaId ? cls.inputError : '')} {...register('companiaId')}>
+                <select className={cn(cls.select, '!rounded-sm', errors.companiaId ? cls.inputError : '')} {...register('companiaId')}>
                   <option value="">Seleccionar…</option>
                   {companias.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
                 </select>
               </Field>
             </div>
 
-            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded px-3 py-2">{serverError}</p>}
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
@@ -204,31 +204,31 @@ function EndosoForm({ polizaId, onClose }: { polizaId: string; onClose: () => vo
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalMd)}>
+      <div className={cn(cls.modal, cls.modalMd, '!rounded-md')}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <span className="text-base font-semibold text-slate-200">Registrar endoso</span>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <span className="text-base font-semibold txt-primary">Registrar endoso</span>
+          <button onClick={onClose} className="txt-faint hover:txt-primary hover:bg-black/5 dark:hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
             <div className="grid grid-cols-2 gap-4">
               <Field label="Numero de endoso *" error={errors.numeroEndoso?.message}>
-                <input className={cn(cls.input, errors.numeroEndoso ? cls.inputError : '')} {...register('numeroEndoso')} />
+                <input className={cn(cls.input, '!rounded-sm', errors.numeroEndoso ? cls.inputError : '')} {...register('numeroEndoso')} />
               </Field>
               <Field label="Fecha de emision *">
-                <input type="date" className={cls.input} {...register('fechaEmision')} />
+                <input type="date" className={cn(cls.input, '!rounded-sm')} {...register('fechaEmision')} />
               </Field>
               <Field label="Tipo de modificacion *" error={errors.tipoModificacion?.message} full>
-                <input className={cn(cls.input, errors.tipoModificacion ? cls.inputError : '')} {...register('tipoModificacion')} />
+                <input className={cn(cls.input, '!rounded-sm', errors.tipoModificacion ? cls.inputError : '')} {...register('tipoModificacion')} />
               </Field>
               <Field label="Nuevo importe de cuota">
-                <input type="number" className={cls.input} {...register('importeActualizado')} />
+                <input type="number" className={cn(cls.input, '!rounded-sm')} {...register('importeActualizado')} />
               </Field>
               <Field label="Nueva suma asegurada">
-                <input type="number" className={cls.input} {...register('sumaAseguradaActualizada')} />
+                <input type="number" className={cn(cls.input, '!rounded-sm')} {...register('sumaAseguradaActualizada')} />
               </Field>
             </div>
-            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded px-3 py-2">{serverError}</p>}
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
@@ -261,25 +261,25 @@ function CuotaForm({ polizaId, onClose }: { polizaId: string; onClose: () => voi
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalSm)}>
+      <div className={cn(cls.modal, cls.modalSm, '!rounded-md')}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <span className="text-base font-semibold text-slate-200">Nueva cuota</span>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <span className="text-base font-semibold txt-primary">Nueva cuota</span>
+          <button onClick={onClose} className="txt-faint hover:txt-primary hover:bg-black/5 dark:hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
             <div className="flex flex-col gap-4">
               <Field label="Numero de cuota *" error={errors.numeroCuota?.message}>
-                <input type="number" className={cn(cls.input, errors.numeroCuota ? cls.inputError : '')} {...register('numeroCuota')} />
+                <input type="number" className={cn(cls.input, '!rounded-sm', errors.numeroCuota ? cls.inputError : '')} {...register('numeroCuota')} />
               </Field>
               <Field label="Importe *" error={errors.importe?.message}>
-                <input type="number" className={cn(cls.input, errors.importe ? cls.inputError : '')} {...register('importe')} />
+                <input type="number" className={cn(cls.input, '!rounded-sm', errors.importe ? cls.inputError : '')} {...register('importe')} />
               </Field>
               <Field label="Fecha de vencimiento *">
-                <input type="date" className={cls.input} {...register('fechaVencimiento')} />
+                <input type="date" className={cn(cls.input, '!rounded-sm')} {...register('fechaVencimiento')} />
               </Field>
             </div>
-            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded px-3 py-2">{serverError}</p>}
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
@@ -297,8 +297,8 @@ function CuotaForm({ polizaId, onClose }: { polizaId: string; onClose: () => voi
 function DR({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex justify-between py-2.5 border-b border-white/5 last:border-0">
-      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
-      <span className="text-sm text-slate-300 text-right">{value}</span>
+      <span className="text-xs font-semibold txt-faint uppercase tracking-wide">{label}</span>
+      <span className="text-sm txt-secondary text-right">{value}</span>
     </div>
   );
 }
@@ -335,8 +335,8 @@ function PolizaDetalle({ id }: { id: string }) {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['cuotas', id] }),
   });
 
-  if (isLoading) return <p className="py-10 text-center text-slate-400 text-sm">Cargando...</p>;
-  if (!poliza) return <p className="py-10 text-center text-slate-400 text-sm">Poliza no encontrada.</p>;
+  if (isLoading) return <p className="py-10 text-center txt-tertiary text-sm">Cargando...</p>;
+  if (!poliza) return <p className="py-10 text-center txt-tertiary text-sm">Poliza no encontrada.</p>;
 
   return (
     <div>
@@ -367,7 +367,7 @@ function PolizaDetalle({ id }: { id: string }) {
       </div>
 
       {/* Datos principales */}
-      <div className={cn(cls.cardPad, 'mb-5')}>
+      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos de la poliza</h2>
         <div>
           <DR label="Asegurado" value={poliza.asegurado.nombre} />
@@ -388,7 +388,7 @@ function PolizaDetalle({ id }: { id: string }) {
       </div>
 
       {/* Endosos */}
-      <div className={cn(cls.cardPad, 'mb-5')}>
+      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
         <div className="flex items-center justify-between mb-4">
           <h2 className={cls.sectionTitle}>Endosos ({endosos.length})</h2>
           <button className={cn(cls.btn, cls.btnSm, cls.btnSecond)} onClick={() => setShowEndoso(true)}>
@@ -396,7 +396,7 @@ function PolizaDetalle({ id }: { id: string }) {
           </button>
         </div>
         {endosos.length === 0
-          ? <p className="text-sm text-slate-400">Sin endosos registrados.</p>
+          ? <p className="text-sm txt-tertiary">Sin endosos registrados.</p>
           : (
             <table className={cls.table}>
               <thead>
@@ -423,7 +423,7 @@ function PolizaDetalle({ id }: { id: string }) {
       </div>
 
       {/* Cuotas */}
-      <div className={cls.cardPad}>
+      <div className={cn('card-base rounded-sm p-6')}>
         <div className="flex items-center justify-between mb-4">
           <h2 className={cls.sectionTitle}>Cuotas ({cuotas.length})</h2>
           <button className={cn(cls.btn, cls.btnSm, cls.btnSecond)} onClick={() => setShowCuota(true)}>
@@ -431,7 +431,7 @@ function PolizaDetalle({ id }: { id: string }) {
           </button>
         </div>
         {cuotas.length === 0
-          ? <p className="text-sm text-slate-400">Sin cuotas registradas.</p>
+          ? <p className="text-sm txt-tertiary">Sin cuotas registradas.</p>
           : (
             <table className={cls.table}>
               <thead>
@@ -500,7 +500,7 @@ function PolizasListado() {
       </div>
 
       <motion.div
-        className={cn(cls.card, 'overflow-hidden')}
+        className={cn('card-base rounded-none overflow-hidden border-x-0')}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
@@ -518,10 +518,10 @@ function PolizasListado() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400 text-sm">Cargando...</td></tr>
+              <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">Cargando...</td></tr>
             )}
             {!isLoading && polizas.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400 text-sm">Sin polizas registradas.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">Sin polizas registradas.</td></tr>
             )}
             {polizas.map((p) => (
               <tr key={p.id} className={cls.trHover} onClick={() => navigate(`/polizas/${p.id}`)}>

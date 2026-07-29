@@ -71,11 +71,11 @@ function BienForm({
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalMd)}>
+      <div className={cn(cls.modal, cls.modalMd, '!rounded-md')}>
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <span className="text-base font-semibold text-slate-200">Nuevo bien asegurado</span>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <span className="text-base font-semibold txt-primary">Nuevo bien asegurado</span>
+          <button onClick={onClose} className="txt-faint hover:txt-primary transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         {/* Body */}
         <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
@@ -84,7 +84,7 @@ function BienForm({
               {/* Tipo */}
               <div className="flex flex-col gap-1">
                 <label className={cls.label}>Tipo de bien *</label>
-                <select className={cls.select} {...register('tipo')}>
+                <select className={cn(cls.select, '!rounded-sm')} {...register('tipo')}>
                   <option value={TipoBien.AUTOMOTOR}>Automotor</option>
                   <option value={TipoBien.HOGAR}>Hogar</option>
                   <option value={TipoBien.VIDA}>Vida</option>
@@ -95,13 +95,13 @@ function BienForm({
               {/* Suma asegurada */}
               <div className="flex flex-col gap-1">
                 <label className={cls.label}>Suma asegurada</label>
-                <input type="number" className={cls.input} {...register('sumaAsegurada')} />
+                <input type="number" className={cn(cls.input, '!rounded-sm')} {...register('sumaAsegurada')} />
               </div>
 
               {/* Asegurado titular */}
               <div className="flex flex-col gap-1 col-span-2">
                 <label className={cls.label}>Asegurado titular *</label>
-                <select className={cn(cls.select, errors.aseguradoId ? cls.inputError : '')}
+                <select className={cn(cls.select, '!rounded-sm', errors.aseguradoId ? cls.inputError : '')}
                   {...register('aseguradoId')}>
                   <option value="">Seleccionar…</option>
                   {asegurados.map((a) => (
@@ -116,36 +116,36 @@ function BienForm({
                 <>
                   <div className="flex flex-col gap-1">
                     <label className={cls.label}>Patente *</label>
-                    <input className={cn(cls.input, errors.patente ? cls.inputError : '')}
+                    <input className={cn(cls.input, '!rounded-sm', errors.patente ? cls.inputError : '')}
                       placeholder="AB123CD" {...register('patente')} />
                     {errors.patente && <span className="text-xs text-red-500 mt-0.5">{errors.patente.message}</span>}
                   </div>
 
                   <div className="flex flex-col gap-1">
                     <label className={cls.label}>Año de fabricacion</label>
-                    <input type="number" className={cls.input}
+                    <input type="number" className={cn(cls.input, '!rounded-sm')}
                       placeholder="2021" {...register('anioFabricacion')} />
                   </div>
 
                   <div className="flex flex-col gap-1">
                     <label className={cls.label}>Marca</label>
-                    <input className={cls.input} placeholder="Peugeot" {...register('marca')} />
+                    <input className={cn(cls.input, '!rounded-sm')} placeholder="Peugeot" {...register('marca')} />
                   </div>
 
                   <div className="flex flex-col gap-1">
                     <label className={cls.label}>Modelo</label>
-                    <input className={cls.input} placeholder="208" {...register('modelo')} />
+                    <input className={cn(cls.input, '!rounded-sm')} placeholder="208" {...register('modelo')} />
                   </div>
 
                   <div className="flex flex-col gap-1 col-span-2">
                     <label className={cls.label}>Version</label>
-                    <input className={cls.input} placeholder="Active 1.2 PureTech"
+                    <input className={cn(cls.input, '!rounded-sm')} placeholder="Active 1.2 PureTech"
                       {...register('version')} />
                   </div>
 
                   <div className="flex flex-col gap-1">
                     <label className={cls.label}>Uso</label>
-                    <select className={cls.select} {...register('uso')}>
+                    <select className={cn(cls.select, '!rounded-sm')} {...register('uso')}>
                       <option value="">Seleccionar…</option>
                       <option value="particular">Particular</option>
                       <option value="comercial">Comercial</option>
@@ -153,7 +153,7 @@ function BienForm({
                   </div>
 
                   <div className="flex items-end pb-2">
-                    <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+                    <label className="flex items-center gap-2 text-sm txt-secondary cursor-pointer">
                       <input type="checkbox" className="w-4 h-4 rounded accent-brand-600" {...register('tieneGnc')} />
                       Tiene GNC
                     </label>
@@ -162,7 +162,7 @@ function BienForm({
               )}
             </div>
 
-            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded px-3 py-2">{serverError}</p>}
 
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>
@@ -218,7 +218,7 @@ export default function BienesPage() {
       </div>
 
       {/* Table */}
-      <div className={cn(cls.card, 'overflow-hidden')}>
+      <div className={cn('card-base rounded-none overflow-hidden border-x-0')}>
         <table className={cls.table}>
           <thead>
             <tr>
@@ -230,10 +230,10 @@ export default function BienesPage() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={4} className="px-4 py-8 text-center text-slate-400 text-sm">Cargando...</td></tr>
+              <tr><td colSpan={4} className="px-4 py-8 text-center txt-tertiary text-sm">Cargando...</td></tr>
             )}
             {!isLoading && bienes.length === 0 && (
-              <tr><td colSpan={4} className="px-4 py-8 text-center text-slate-400 text-sm">Sin bienes registrados.</td></tr>
+              <tr><td colSpan={4} className="px-4 py-8 text-center txt-tertiary text-sm">Sin bienes registrados.</td></tr>
             )}
             {bienes.map((b) => (
               <tr key={b.id} className={cls.trHover}>

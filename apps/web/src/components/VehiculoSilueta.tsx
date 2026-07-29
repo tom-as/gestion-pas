@@ -1,5 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from 'react';
-import { cn } from '@/lib/cn';
 
 /* ── Zonas de daño definidas sobre el SVG (viewBox 0 0 500 220) ──── */
 export interface ZonaDano {
@@ -159,7 +159,7 @@ export default function VehiculoSilueta({ zonasSeleccionadas, onChange, readOnly
 
       {/* Tooltip del hover */}
       {hovered && !readOnly && (
-        <p className="text-xs text-slate-400 min-h-[1.2em]">
+        <p className="text-xs txt-tertiary min-h-[1.2em]">
           {ZONAS.find((z) => z.id === hovered)?.label}
           {zonasSeleccionadas.includes(hovered) ? ' — click para desmarcar' : ' — click para marcar dano'}
         </p>
@@ -168,7 +168,7 @@ export default function VehiculoSilueta({ zonasSeleccionadas, onChange, readOnly
       {/* Leyenda de zonas seleccionadas */}
       {zonasSeleccionadas.length > 0 && (
         <div className="flex flex-col gap-1.5">
-          <span className="text-xs font-medium text-slate-400 uppercase tracking-wide">Zonas marcadas:</span>
+          <span className="text-xs font-medium txt-tertiary uppercase tracking-wide">Zonas marcadas:</span>
           <div className="flex flex-wrap gap-1.5">
             {zonasSeleccionadas.map((id) => (
               <span key={id} className="inline-flex items-center gap-1 bg-red-50 text-red-800 border border-red-200 rounded px-2 py-0.5 text-xs font-medium">

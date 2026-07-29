@@ -10,13 +10,12 @@ import { ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ExecutionContext } from '@nestjs/common';
 import { RolesGuard } from './roles.guard';
-import { ROLES_KEY } from '../decorators/roles.decorator';
 import { UserRole, UserStatus } from '@gestion-pas/types';
 import { Usuario } from '../../database/entities/usuario.entity';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function makeContext(perfil: UserRole, requiredRoles: UserRole[] | undefined): ExecutionContext {
+function makeContext(perfil: UserRole, _requiredRoles: UserRole[] | undefined): ExecutionContext {
   const user = Object.assign(new Usuario(), {
     id: 'usr-001',
     perfil,

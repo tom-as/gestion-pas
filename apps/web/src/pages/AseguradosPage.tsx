@@ -45,11 +45,11 @@ function AseguradoForm({ onClose, productores }: { onClose: () => void; producto
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalMd)}>
+      <div className={cn(cls.modal, cls.modalMd, '!rounded-md')}>
         {/* Header */}
         <div className={cn('flex items-center justify-between px-6 py-4', cls.modalDivider)}>
-          <h2 className="text-base font-semibold text-slate-200">Nuevo asegurado</h2>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <h2 className="text-base font-semibold txt-primary">Nuevo asegurado</h2>
+          <button onClick={onClose} className="p-1 rounded txt-faint hover:txt-primary hover:bg-black/5 dark:hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
 
         <div className="p-6">
@@ -57,38 +57,38 @@ function AseguradoForm({ onClose, productores }: { onClose: () => void; producto
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 space-y-1">
                 <label className={cls.label}>Nombre completo *</label>
-                <input className={cn(cls.input, errors.nombre && cls.inputError)} {...register('nombre')} />
+                <input className={cn(cls.input, '!rounded-sm', errors.nombre && cls.inputError)} {...register('nombre')} />
                 {errors.nombre && <p className="text-xs text-red-500">{errors.nombre.message}</p>}
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>DNI / CUIL *</label>
-                <input className={cn(cls.input, errors.dniCuil && cls.inputError)} {...register('dniCuil')} />
+                <input className={cn(cls.input, '!rounded-sm', errors.dniCuil && cls.inputError)} {...register('dniCuil')} />
                 {errors.dniCuil && <p className="text-xs text-red-500">{errors.dniCuil.message}</p>}
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Fecha de nacimiento</label>
-                <input type="date" className={cls.input} {...register('fechaNacimiento')} />
+                <input type="date" className={cn(cls.input, '!rounded-sm')} {...register('fechaNacimiento')} />
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Teléfono</label>
-                <input className={cls.input} {...register('telefono')} />
+                <input className={cn(cls.input, '!rounded-sm')} {...register('telefono')} />
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Email</label>
-                <input type="email" className={cn(cls.input, errors.email && cls.inputError)} {...register('email')} />
+                <input type="email" className={cn(cls.input, '!rounded-sm', errors.email && cls.inputError)} {...register('email')} />
                 {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
               </div>
               <div className="col-span-2 space-y-1">
                 <label className={cls.label}>Dirección</label>
-                <input className={cls.input} {...register('direccion')} />
+                <input className={cn(cls.input, '!rounded-sm')} {...register('direccion')} />
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Código postal</label>
-                <input className={cls.input} {...register('codigoPostal')} />
+                <input className={cn(cls.input, '!rounded-sm')} {...register('codigoPostal')} />
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Productor *</label>
-                <select className={cn(cls.select, errors.productorId && cls.inputError)} {...register('productorId')}>
+                <select className={cn(cls.select, '!rounded-sm', errors.productorId && cls.inputError)} {...register('productorId')}>
                   <option value="">Seleccionar…</option>
                   {productores.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
                 </select>
@@ -104,8 +104,8 @@ function AseguradoForm({ onClose, productores }: { onClose: () => void; producto
             )}
 
             <div className="flex justify-end gap-2 pt-2">
-              <button type="button" onClick={onClose} className={cn(cls.btn, cls.btnMd, cls.btnSecond)}>Cancelar</button>
-              <button type="submit" disabled={isSubmitting} className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}>
+              <button type="button" onClick={onClose} className={cn(cls.btn, cls.btnMd, cls.btnSecond, '!rounded-sm')}>Cancelar</button>
+              <button type="submit" disabled={isSubmitting} className={cn(cls.btn, cls.btnMd, cls.btnPrimary, '!rounded-sm')}>
                 {isSubmitting ? 'Guardando…' : 'Guardar'}
               </button>
             </div>
@@ -136,15 +136,15 @@ export default function AseguradosPage() {
         <h1 className={cls.pageTitle}>Asegurados</h1>
         <div className="flex items-center gap-3">
           <div className="relative">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 txt-faint pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input
-              className="pl-9 pr-4 py-2.5 text-sm bg-navy-700 border border-white/10 rounded-xl outline-none transition-all duration-200 text-slate-100 placeholder:text-slate-600 hover:border-white/20 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 w-64"
+              className="pl-9 pr-4 py-2.5 text-sm input-base border rounded-sm outline-none transition-all duration-200 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 w-64"
               placeholder="Buscar por nombre o DNI..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button onClick={() => setShowForm(true)} className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}>
+          <button onClick={() => setShowForm(true)} className={cn(cls.btn, cls.btnMd, cls.btnPrimary, '!rounded-sm')}>
             + Nuevo asegurado
           </button>
         </div>
@@ -152,7 +152,7 @@ export default function AseguradosPage() {
 
       {/* Table */}
       <motion.div
-        className={cls.surface}
+        className="surface rounded-none overflow-hidden border-x-0"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -170,7 +170,7 @@ export default function AseguradosPage() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-500 text-sm">
+              <tr><td colSpan={6} className="px-4 py-12 text-center txt-faint text-sm">
                 <div className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-4 w-4 text-accent-400" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
@@ -181,7 +181,7 @@ export default function AseguradosPage() {
               </td></tr>
             )}
             {!isLoading && asegurados.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-500 text-sm">
+              <tr><td colSpan={6} className="px-4 py-12 text-center txt-faint text-sm">
                 {search ? `Sin resultados para "${search}"` : 'No hay asegurados registrados'}
               </td></tr>
             )}
@@ -197,23 +197,23 @@ export default function AseguradosPage() {
                   <div className="flex items-center gap-3">
                     {/* Avatar inicial */}
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold flex-shrink-0"
-                      style={{ background: 'rgba(61,107,255,0.12)', color: '#6690ff' }}
+                      className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold flex-shrink-0"
+                      style={{ background: 'rgba(61,107,255,0.10)', color: '#6690ff' }}
                     >
                       {a.nombre.charAt(0).toUpperCase()}
                     </div>
-                    <Link to={`/asegurados/${a.id}`} className="font-semibold text-accent-400 hover:text-accent-300 transition-colors">
+                    <Link to={`/asegurados/${a.id}`} className="font-medium txt-primary hover:text-accent-400 transition-colors">
                       {a.nombre}
                     </Link>
                   </div>
                 </td>
-                <td className={cn(cls.td, 'font-mono text-xs text-slate-500')}>{a.dniCuil}</td>
-                <td className={cn(cls.td, 'text-slate-500')}>{a.telefono ?? '—'}</td>
-                <td className={cn(cls.td, 'text-slate-500')}>{a.email ?? '—'}</td>
+                <td className={cn(cls.td, 'font-mono text-xs txt-tertiary')}>{a.dniCuil}</td>
+                <td className={cn(cls.td, 'txt-faint')}>{a.telefono ?? '—'}</td>
+                <td className={cn(cls.td, 'txt-faint')}>{a.email ?? '—'}</td>
                 <td className={cls.td}>
-                  <span className={cn(cls.badge, cls.badgeGray)}>{a.productor?.nombre ?? '—'}</span>
+                  <span className={cn(cls.badge, cls.badgeGray, '!rounded-sm')}>{a.productor?.nombre ?? '—'}</span>
                 </td>
-                <td className={cn(cls.td, 'text-slate-500')}>{formatDate(a.fechaNacimiento)}</td>
+                <td className={cn(cls.td, 'txt-faint')}>{formatDate(a.fechaNacimiento)}</td>
               </motion.tr>
             ))}
           </tbody>

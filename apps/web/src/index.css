@@ -39,6 +39,189 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
+/* ══════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES — tema por modo
+   Todas las clases de diseño leen de estas variables.
+   html.dark = modo oscuro  |  :root sin .dark = modo claro
+══════════════════════════════════════════════════════════ */
+:root {
+  /* Fondo general del área de contenido */
+  --bg-main:              #eef1f8;
+  --bg-main-gradient:
+    radial-gradient(ellipse 100% 50% at 55% -10%, rgba(61,107,255,0.18) 0%, rgba(61,107,255,0.04) 40%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 98% 90%,  rgba(99,60,220,0.10)   0%, transparent 55%),
+    radial-gradient(ellipse 40% 35% at  5% 60%,  rgba(30,67,214,0.06)   0%, transparent 55%),
+    #eef1f8;
+
+  /* Page canvas (placa flotante) */
+  --canvas-bg:            rgba(255, 255, 255, 0.72);
+  --canvas-border:        rgba(0,0,0,0.07);
+  --canvas-shadow:
+    0 0 0 1px rgba(255,255,255,0.8) inset,
+    0 1px 0  rgba(255,255,255,0.9) inset,
+    0 32px 64px rgba(0,0,0,0.10),
+    0  8px 24px rgba(0,0,0,0.06),
+    0  0   0  1px rgba(0,0,0,0.06);
+  --canvas-highlight:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,255,255,0.9) 30%,
+      rgba(255,255,255,1.0) 50%,
+      rgba(255,255,255,0.9) 70%,
+      transparent 100%);
+
+  /* Surface (tablas, paneles interiores) */
+  --surface-bg:
+    linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+  --surface-border:       rgba(0,0,0,0.07);
+  --surface-shadow:       0 2px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+
+  /* Stat card */
+  --stat-card-bg:
+    linear-gradient(135deg, #ffffff 0%, #f4f7ff 100%);
+  --stat-card-border:     rgba(0,0,0,0.07);
+  --stat-card-shadow:     0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
+
+  /* Top bar */
+  --topbar-bg:            rgba(238,241,248,0.88);
+  --topbar-border:        rgba(0,0,0,0.07);
+
+  /* Texto base */
+  --text-base:            #1e293b;
+  --text-muted:           #64748b;
+
+  /* Texto jerárquico */
+  --text-primary:         #0f172a;
+  --text-secondary:       #334155;
+  --text-tertiary:        #475569;
+  --text-faint:           #94a3b8;
+
+  /* Table */
+  --th-bg:                #f1f4f9;
+  --th-text:              #475569;
+  --th-border:            rgba(0,0,0,0.07);
+  --td-text:              #334155;
+  --td-border:            rgba(0,0,0,0.05);
+
+  /* Input / select / textarea */
+  --input-bg:             #ffffff;
+  --input-border:         rgba(0,0,0,0.14);
+  --input-text:           #1e293b;
+  --input-placeholder:    #94a3b8;
+  --input-hover-border:   rgba(0,0,0,0.25);
+
+  /* Card (paneles interiores pequeños) */
+  --card-bg:              rgba(255,255,255,0.6);
+  --card-border:          rgba(0,0,0,0.08);
+
+  /* Modal */
+  --modal-bg:             #ffffff;
+  --modal-border:         rgba(0,0,0,0.10);
+  --modal-divider:        rgba(0,0,0,0.07);
+  --modal-overlay:        rgba(15,23,42,0.55);
+
+  /* Btn secondary / ghost */
+  --btn-second-bg:        rgba(0,0,0,0.04);
+  --btn-second-border:    rgba(0,0,0,0.10);
+  --btn-second-text:      #334155;
+  --btn-ghost-text:       #475569;
+
+  /* Badge gray */
+  --badge-gray-bg:        rgba(0,0,0,0.05);
+  --badge-gray-text:      #475569;
+  --badge-gray-ring:      rgba(0,0,0,0.10);
+
+  /* Skeleton */
+  --skeleton-from:        rgba(0,0,0,0.04);
+  --skeleton-mid:         rgba(0,0,0,0.08);
+
+  /* Table row hover */
+  --tr-hover-bg:          rgba(61,107,255,0.05);
+
+  /* Panel header separator */
+  --panel-sep:            rgba(0,0,0,0.07);
+}
+
+html.dark {
+  --bg-main:              #070b14;
+  --bg-main-gradient:
+    radial-gradient(ellipse 100% 50% at 55% -10%, rgba(61,107,255,0.32) 0%, rgba(61,107,255,0.08) 40%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 98% 90%,  rgba(99,60,220,0.20)   0%, transparent 55%),
+    radial-gradient(ellipse 40% 35% at  5% 60%,  rgba(30,67,214,0.10)   0%, transparent 55%),
+    #070b14;
+
+  --canvas-bg:            rgba(10, 13, 22, 0.52);
+  --canvas-border:        rgba(255,255,255,0.07);
+  --canvas-shadow:
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 1px 0  rgba(255,255,255,0.08) inset,
+    0 32px 64px rgba(0,0,0,0.45),
+    0  8px 24px rgba(0,0,0,0.30),
+    0  0   0  1px rgba(0,0,0,0.25);
+  --canvas-highlight:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,255,255,0.12) 30%,
+      rgba(255,255,255,0.18) 50%,
+      rgba(255,255,255,0.12) 70%,
+      transparent 100%);
+
+  --surface-bg:           linear-gradient(180deg, #161d2f 0%, #131929 100%);
+  --surface-border:       rgba(255,255,255,0.06);
+  --surface-shadow:       0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+
+  --stat-card-bg:         linear-gradient(135deg, #1a2235 0%, #131929 100%);
+  --stat-card-border:     rgba(255,255,255,0.06);
+  --stat-card-shadow:     0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
+
+  --topbar-bg:            rgba(8,12,20,0.82);
+  --topbar-border:        rgba(255,255,255,0.04);
+
+  --text-base:            #e2e8f0;
+  --text-muted:           #64748b;
+
+  --text-primary:         #e2e8f0;
+  --text-secondary:       #cbd5e1;
+  --text-tertiary:        #94a3b8;
+  --text-faint:           #475569;
+
+  --th-bg:                rgba(19,25,41,0.7);
+  --th-text:              #64748b;
+  --th-border:            rgba(255,255,255,0.05);
+  --td-text:              #94a3b8;
+  --td-border:            rgba(255,255,255,0.04);
+
+  --input-bg:             #1a2235;
+  --input-border:         rgba(255,255,255,0.10);
+  --input-text:           #e2e8f0;
+  --input-placeholder:    #475569;
+  --input-hover-border:   rgba(255,255,255,0.20);
+
+  --card-bg:              rgba(26,34,53,0.5);
+  --card-border:          rgba(255,255,255,0.06);
+
+  --modal-bg:             #131929;
+  --modal-border:         rgba(255,255,255,0.08);
+  --modal-divider:        rgba(255,255,255,0.06);
+  --modal-overlay:        rgba(7,11,20,0.85);
+
+  --btn-second-bg:        rgba(255,255,255,0.05);
+  --btn-second-border:    rgba(255,255,255,0.10);
+  --btn-second-text:      #cbd5e1;
+  --btn-ghost-text:       #94a3b8;
+
+  --badge-gray-bg:        rgba(255,255,255,0.06);
+  --badge-gray-text:      #94a3b8;
+  --badge-gray-ring:      rgba(255,255,255,0.08);
+
+  --skeleton-from:        rgba(255,255,255,0.04);
+  --skeleton-mid:         rgba(255,255,255,0.09);
+
+  --tr-hover-bg:          rgba(61,107,255,0.04);
+
+  --panel-sep:            rgba(255,255,255,0.05);
+}
+
 /* ── Base ──────────────────────────────────────────────── */
 html {
   font-size: 16px;
@@ -50,15 +233,17 @@ body {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #e2e8f0;
-  background-color: #0d1117;
+  color: var(--text-base);
+  background-color: var(--bg-main);
 }
 
 /* ── Scrollbar sutil ────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+html.dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
+html.dark ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
 
 /* ── Focus ring ─────────────────────────────────────────── */
 :focus-visible {
@@ -125,20 +310,19 @@ body {
   background-clip: text;
 }
 
-/* ── Surface — panel principal dark-navy ─────────────────── */
-/* Reemplaza bg-white dark:bg-slate-900 en TODAS las páginas */
+/* ── Surface — panel principal (tablas, paneles) ─────────── */
 .surface {
-  background: linear-gradient(180deg, #161d2f 0%, #131929 100%);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
+  background: var(--surface-bg);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--surface-shadow);
 }
 
 /* ── Stat card base ──────────────────────────────────────── */
 .stat-card {
-  background: linear-gradient(135deg, #1a2235 0%, #131929 100%);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.05);
-  border-radius: 0.75rem;
+  background: var(--stat-card-bg);
+  border: 1px solid var(--stat-card-border);
+  box-shadow: var(--stat-card-shadow);
+  border-radius: 0.25rem;
   position: relative;
   overflow: hidden;
 }
@@ -154,23 +338,23 @@ body {
 
 /* ── Glass surfaces ─────────────────────────────────────── */
 .glass {
-  background: rgba(22, 29, 47, 0.7);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid var(--card-border);
 }
 .glass-heavy {
-  background: rgba(19, 25, 41, 0.85);
+  background: var(--modal-bg);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.09);
+  border: 1px solid var(--modal-border);
 }
 
 /* ── Skeleton loading ────────────────────────────────────── */
 .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(255,255,255,0.04) 25%,
-    rgba(255,255,255,0.09) 50%,
-    rgba(255,255,255,0.04) 75%
+    var(--skeleton-from) 25%,
+    var(--skeleton-mid)  50%,
+    var(--skeleton-from) 75%
   );
   background-size: 200% auto;
   animation: shimmer 1.6s linear infinite;
@@ -182,7 +366,7 @@ body {
   transition: background 0.12s ease;
 }
 .tr-hover:hover {
-  background: rgba(61,107,255,0.04);
+  background: var(--tr-hover-bg);
 }
 
 /* ── Accent border top — colores por tipo ──────────────────── */
@@ -198,23 +382,15 @@ body {
 ───────────────────────────────────────────────────────────── */
 .page-canvas {
   position: relative;
-  /* Vidrio translúcido — deja pasar el gradiente del fondo */
-  background: rgba(10, 13, 22, 0.52);
+  background: var(--canvas-bg);
   backdrop-filter: blur(18px) saturate(1.6);
   -webkit-backdrop-filter: blur(18px) saturate(1.6);
-  /* Borde translúcido con highlight superior */
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 1.25rem; /* 20px — más cuadrado que una card genérica */
-  /* Sombra profunda multicapa — crea la ilusión de elevación */
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,0.04) inset,   /* highlight interior */
-    0 1px 0  rgba(255,255,255,0.08) inset,    /* línea superior brillante */
-    0 32px 64px rgba(0,0,0,0.45),             /* sombra grande de profundidad */
-    0  8px 24px rgba(0,0,0,0.30),             /* sombra media */
-    0  0   0  1px rgba(0,0,0,0.25);           /* borde exterior oscuro */
+  border: 1px solid var(--canvas-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--canvas-shadow);
 }
 
-/* Línea superior brillante — simula el reflejo de luz */
+/* Línea superior de reflejo */
 .page-canvas::before {
   content: '';
   position: absolute;
@@ -222,14 +398,7 @@ body {
   left: 10%;
   right: 10%;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,255,255,0.12) 30%,
-    rgba(255,255,255,0.18) 50%,
-    rgba(255,255,255,0.12) 70%,
-    transparent 100%
-  );
+  background: var(--canvas-highlight);
   pointer-events: none;
   border-radius: 9999px;
 }
@@ -248,3 +417,52 @@ body {
 .content-area {
   position: relative;
 }
+
+/* ══════════════════════════════════════════════════════════
+   CSS CLASSES — usan las variables del tema (light / dark)
+   Úsalas en lugar de clases Tailwind hardcodeadas como
+   text-slate-100, bg-navy-700, etc. cuando el componente
+   deba funcionar en ambos modos.
+══════════════════════════════════════════════════════════ */
+
+/* Texto jerárquico */
+.txt-primary   { color: var(--text-primary); }
+.txt-secondary { color: var(--text-secondary); }
+.txt-tertiary  { color: var(--text-tertiary); }
+.txt-faint     { color: var(--text-faint); }
+
+/* Table — sobreescribe los colores hardcodeados de cls.th / cls.td */
+.th-cell {
+  background: var(--th-bg);
+  color: var(--th-text);
+  border-bottom: 1px solid var(--th-border);
+}
+.td-cell {
+  color: var(--td-text);
+  border-bottom: 1px solid var(--td-border);
+}
+
+/* Input / select / textarea */
+.input-base {
+  background: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--input-text);
+}
+.input-base::placeholder { color: var(--input-placeholder); }
+.input-base:hover { border-color: var(--input-hover-border); }
+
+/* Card interior */
+.card-base {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+}
+
+/* Modal */
+.modal-base {
+  background: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+}
+.modal-divider-base { border-color: var(--modal-divider); }
+
+/* Panel separator (header bar dentro de surface) */
+.panel-sep { border-bottom: 1px solid var(--panel-sep); }

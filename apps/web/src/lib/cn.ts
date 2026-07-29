@@ -1,8 +1,7 @@
 /**
- * cn.ts — Design system dark-navy para Gestión PAS
- *
- * Regla fundamental: NINGUNA clase usa colores "light" (`bg-white`, `bg-slate-50`,
- * `text-slate-900`, `dark:` prefijos). Toda la app es dark-navy permanente.
+ * cn.ts — Design system para Gestión PAS
+ * Soporta modo claro y oscuro via CSS custom properties (var(--...))
+ * definidas en index.css. No usar text-slate-* hardcodeados directamente.
  */
 export function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -20,62 +19,62 @@ export const cls = {
   /* Primary — accent blue con glow */
   btnPrimary: 'bg-accent-500 hover:bg-accent-400 text-white shadow-[0_0_0_1px_rgba(61,107,255,0.5),0_4px_16px_rgba(61,107,255,0.3)] hover:shadow-[0_0_0_1px_rgba(61,107,255,0.65),0_6px_24px_rgba(61,107,255,0.42)]',
 
-  /* Secondary — glass surface */
-  btnSecond:  'bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 hover:border-white/20',
+  /* Secondary — light: borde gris suave / dark: glass */
+  btnSecond:  'bg-[var(--btn-second-bg)] hover:opacity-80 text-[var(--btn-second-text)] border border-[var(--btn-second-border)]',
 
   /* Danger */
-  btnDanger:  'bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 hover:border-red-500/40',
+  btnDanger:  'bg-red-500/10 hover:bg-red-500/20 text-red-500 dark:text-red-400 border border-red-500/20 hover:border-red-500/40',
 
   /* Ghost */
-  btnGhost:   'text-slate-400 hover:text-slate-200 hover:bg-white/5',
+  btnGhost:   'text-[var(--btn-ghost-text)] hover:text-[var(--text-secondary)] hover:bg-black/5 dark:hover:bg-white/5',
 
   /* ── Inputs ──────────────────────────────────────────── */
-  input:      'w-full px-4 py-2.5 text-sm bg-navy-700 border border-white/10 rounded-xl outline-none transition-all duration-200 text-slate-100 placeholder:text-slate-600 hover:border-white/20 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20',
+  input:      'input-base w-full px-4 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 border focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20',
   inputError: 'border-red-500/50 bg-red-500/5 focus:border-red-500 focus:ring-red-500/20',
-  select:     'w-full px-4 py-2.5 text-sm bg-navy-700 border border-white/10 rounded-xl outline-none transition-all duration-200 text-slate-100 hover:border-white/20 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 cursor-pointer',
-  textarea:   'w-full px-4 py-2.5 text-sm bg-navy-700 border border-white/10 rounded-xl outline-none transition-all duration-200 text-slate-100 placeholder:text-slate-600 hover:border-white/20 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 resize-none',
-  label:      'block text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-1.5',
+  select:     'input-base w-full px-4 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 border focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 cursor-pointer',
+  textarea:   'input-base w-full px-4 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 border focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20 resize-none',
+  label:      'block text-[11px] font-semibold txt-tertiary uppercase tracking-widest mb-1.5',
 
   /* ── Cards / surfaces ────────────────────────────────── */
   /* card: para paneles pequeños embebidos */
-  card:       'rounded-xl border border-white/6 bg-navy-700/50',
-  cardPad:    'rounded-xl border border-white/6 bg-navy-700/50 p-6',
+  card:       'card-base rounded-xl',
+  cardPad:    'card-base rounded-xl p-6',
 
   /* surface: reemplaza bg-white dark:bg-slate-900 — panel principal */
   surface:    'surface rounded-xl overflow-hidden',
 
   /* ── Tables ──────────────────────────────────────────── */
   table:      'w-full text-sm',
-  th:         'px-5 py-3.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-widest bg-navy-800/70 border-b border-white/5 whitespace-nowrap',
-  td:         'px-5 py-4 text-slate-300 border-b border-white/[0.04]',
+  th:         'th-cell px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-widest whitespace-nowrap',
+  td:         'td-cell px-5 py-4',
   trHover:    'tr-hover cursor-pointer',
 
   /* ── Badges ──────────────────────────────────────────── */
   badge:      'inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold tracking-wide',
-  badgeGreen: 'bg-emerald-500/12 text-emerald-400 ring-1 ring-emerald-500/20',
-  badgeAmber: 'bg-amber-500/12 text-amber-400 ring-1 ring-amber-500/20',
-  badgeRed:   'bg-red-500/12 text-red-400 ring-1 ring-red-500/20',
-  badgeBlue:  'bg-accent-500/12 text-accent-400 ring-1 ring-accent-500/20',
-  badgeGray:  'bg-white/6 text-slate-400 ring-1 ring-white/8',
-  badgeViolet:'bg-violet-500/12 text-violet-400 ring-1 ring-violet-500/20',
+  badgeGreen: 'bg-emerald-500/12 text-emerald-600 dark:text-emerald-400 ring-1 ring-emerald-500/20',
+  badgeAmber: 'bg-amber-500/12 text-amber-600 dark:text-amber-400 ring-1 ring-amber-500/20',
+  badgeRed:   'bg-red-500/12 text-red-600 dark:text-red-400 ring-1 ring-red-500/20',
+  badgeBlue:  'bg-accent-500/12 text-accent-600 dark:text-accent-400 ring-1 ring-accent-500/20',
+  badgeGray:  'bg-[var(--badge-gray-bg)] text-[var(--badge-gray-text)] ring-1 ring-[var(--badge-gray-ring)]',
+  badgeViolet:'bg-violet-500/12 text-violet-600 dark:text-violet-400 ring-1 ring-violet-500/20',
 
   /* ── Page typography ─────────────────────────────────── */
-  pageTitle:    'text-2xl font-bold text-slate-100 tracking-tight',
-  sectionTitle: 'text-sm font-semibold text-slate-300 tracking-tight',
+  pageTitle:    'text-2xl font-bold txt-primary tracking-tight',
+  sectionTitle: 'text-sm font-semibold txt-secondary tracking-tight',
 
   /* ── Modal ───────────────────────────────────────────── */
-  overlay:  'fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/85 backdrop-blur-md',
-  modal:    'bg-navy-800 rounded-xl border border-white/8 w-full overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.55)]',
+  overlay:  'fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--modal-overlay)] backdrop-blur-md',
+  modal:    'modal-base rounded-xl w-full overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.45)]',
   modalSm:  'max-w-md',
   modalMd:  'max-w-lg',
   modalLg:  'max-w-2xl',
 
-  /* Modal divider (reemplaza border-slate-100 dark:border-slate-800) */
-  modalDivider: 'border-b border-white/6',
+  /* Modal divider */
+  modalDivider: 'modal-divider-base border-b',
 };
 
 /* ── Helpers de badge por enum ──────────────────────────── */
-import { EstadoPoliza, EstadoSiniestro, EstadoReclamo, EstadoCuota, TipoBien } from '@gestion-pas/types';
+import { EstadoPoliza, EstadoSiniestro, EstadoReclamo, TipoBien } from '@gestion-pas/types';
 
 export const estadoPolicaBadge: Record<EstadoPoliza, string> = {
   [EstadoPoliza.ACTIVA]:     cls.badgeGreen,

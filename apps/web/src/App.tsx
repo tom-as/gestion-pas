@@ -5,7 +5,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import AppLayout from '@/components/AppLayout';
 import LoginPage from '@/pages/LoginPage';
 import DashboardPage from '@/pages/DashboardPage';
-import PlaceholderPage from '@/pages/PlaceholderPage';
+import AseguradoDetailPage from '@/pages/AseguradoDetailPage';
 import AseguradosPage from '@/pages/AseguradosPage';
 import BienesPage from '@/pages/BienesPage';
 import PolizasPage from '@/pages/PolizasPage';
@@ -48,7 +48,7 @@ function AppRoutes() {
         />
         <Route
           path="/asegurados/:id"
-          element={<AppLayout><PlaceholderPage title="Detalle asegurado" /></AppLayout>}
+          element={<AppLayout><AseguradoDetailPage /></AppLayout>}
         />
         <Route
           path="/bienes"

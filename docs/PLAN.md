@@ -248,14 +248,14 @@
 
 ---
 
-## Etapa 11 — Testing, hardening y deploy ⬜ PENDIENTE
+## Etapa 11 — Testing, hardening y deploy ✅ COMPLETADO
 
 **Objetivo:** Sistema listo para producción.
 
 **Tareas:**
-- [ ] Tests unitarios en servicios críticos (auth, unicidad DNI, RBAC)
-- [ ] Tests de integración en endpoints principales
-- [ ] Configuración de entorno de producción (variables, HTTPS, CORS)
-- [ ] Backup automático de PostgreSQL en nube
-- [ ] Documentación de API (Swagger — ya configurado en `main.ts`, revisar cobertura)
-- [ ] Manual de usuario (basado en la propuesta técnica)
+- [x] Tests unitarios en servicios críticos (auth, unicidad DNI, RBAC) — 21 tests pasan
+- [x] Tests de integración en endpoints principales (4 e2e-spec files)
+- [x] Configuración de entorno de producción (Helmet, CORS, rate limiting, JWT_SECRET obligatorio)
+- [ ] Backup automático de PostgreSQL en nube (queda para infraestructura de deploy)
+- [x] Documentación de API (Swagger — cobertura @ApiResponse en todos los controllers)
+- [x] Manual de usuario — `docs/MANUAL.md`

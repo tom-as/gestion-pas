@@ -56,10 +56,10 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalMd)}>
+      <div className={cn(cls.modal, cls.modalMd, '!rounded-md')}>
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <h2 className="text-base font-semibold text-slate-200">Nueva compañía aseguradora</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors">
+          <h2 className="text-base font-semibold txt-primary">Nueva compañía aseguradora</h2>
+          <button onClick={onClose} className="txt-faint hover:txt-primary transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -68,16 +68,16 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 space-y-1">
                 <label className={cls.label}>Nombre *</label>
-                <input className={cn(cls.input, errors.nombre && cls.inputError)} {...register('nombre')} />
+                <input className={cn(cls.input, '!rounded-sm', errors.nombre && cls.inputError)} {...register('nombre')} />
                 {errors.nombre && <p className="text-xs text-red-500">{errors.nombre.message}</p>}
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Días de gracia</label>
-                <input type="number" min="0" className={cls.input} placeholder="5" {...register('periodoDGraciaDias')} />
+                <input type="number" min="0" className={cn(cls.input, '!rounded-sm')} placeholder="5" {...register('periodoDGraciaDias')} />
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Periodicidad refacturación</label>
-                <select className={cls.select} {...register('periodicidadRefacturacion')}>
+                <select className={cn(cls.select, '!rounded-sm')} {...register('periodicidadRefacturacion')}>
                   <option value="">Sin definir</option>
                   {Object.entries(PERIOD_LABEL).map(([v, l]) => (
                     <option key={v} value={v}>{l}</option>
@@ -86,11 +86,11 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
               </div>
               <div className="col-span-2 space-y-1">
                 <label className={cls.label}>Mecanismo de notificación</label>
-                <input className={cls.input} placeholder="portal / email / ninguno" {...register('mecanismoNotificacion')} />
+                <input className={cn(cls.input, '!rounded-sm')} placeholder="portal / email / ninguno" {...register('mecanismoNotificacion')} />
               </div>
             </div>
             {serverError && (
-              <div className="flex items-start gap-2 mt-3 p-3 rounded-lg bg-red-500/8 border border-red-500/20 text-sm text-red-400">
+              <div className="flex items-start gap-2 mt-3 p-3 rounded bg-red-500/8 border border-red-500/20 text-sm text-red-400">
                 <svg className="w-4 h-4 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 {serverError}
               </div>
@@ -132,7 +132,7 @@ export default function CompaniasPage() {
       </div>
 
       {/* Table */}
-      <div className={cn(cls.card, 'overflow-hidden')}>
+      <div className={cn('card-base rounded-none overflow-hidden border-x-0')}>
         <table className={cls.table}>
           <thead>
             <tr>
@@ -144,7 +144,7 @@ export default function CompaniasPage() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr><td colSpan={4} className="px-4 py-12 text-center text-slate-400 text-sm">
+              <tr><td colSpan={4} className="px-4 py-12 text-center txt-tertiary text-sm">
                 <div className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-4 w-4 text-brand-500" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
@@ -155,24 +155,24 @@ export default function CompaniasPage() {
               </td></tr>
             )}
             {!isLoading && companias.length === 0 && (
-              <tr><td colSpan={4} className="px-4 py-12 text-center text-slate-400 text-sm">
+              <tr><td colSpan={4} className="px-4 py-12 text-center txt-tertiary text-sm">
                 No hay compañías registradas
               </td></tr>
             )}
             {companias.map((c) => (
               <tr key={c.id} className={cls.trHover}>
-                <td className={cn(cls.td, 'font-semibold text-slate-200')}>{c.nombre}</td>
+                <td className={cn(cls.td, 'font-semibold txt-primary')}>{c.nombre}</td>
                 <td className={cls.td}>
                   {c.periodoDGraciaDias != null
                     ? <span className={cn(cls.badge, cls.badgeBlue)}>{c.periodoDGraciaDias} días</span>
-                    : <span className="text-slate-400">—</span>}
+                    : <span className="txt-tertiary">—</span>}
                 </td>
                 <td className={cls.td}>
                   {c.periodicidadRefacturacion
                     ? <span className={cn(cls.badge, cls.badgeGray)}>{PERIOD_LABEL[c.periodicidadRefacturacion]}</span>
-                    : <span className="text-slate-400">—</span>}
+                    : <span className="txt-tertiary">—</span>}
                 </td>
-                <td className={cn(cls.td, 'text-slate-500 capitalize')}>{c.mecanismoNotificacion ?? '—'}</td>
+                <td className={cn(cls.td, 'txt-faint capitalize')}>{c.mecanismoNotificacion ?? '—'}</td>
               </tr>
             ))}
           </tbody>
