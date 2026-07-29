@@ -73,9 +73,9 @@ function BienForm({
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalMd)}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <span className="text-base font-semibold text-slate-800 dark:text-slate-200">Nuevo bien asegurado</span>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <span className="text-base font-semibold text-slate-200">Nuevo bien asegurado</span>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         {/* Body */}
         <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
@@ -153,7 +153,7 @@ function BienForm({
                   </div>
 
                   <div className="flex items-end pb-2">
-                    <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 cursor-pointer">
+                    <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
                       <input type="checkbox" className="w-4 h-4 rounded accent-brand-600" {...register('tieneGnc')} />
                       Tiene GNC
                     </label>
@@ -162,9 +162,9 @@ function BienForm({
               )}
             </div>
 
-            {serverError && <p className="mt-3 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
 
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>
                 Cancelar
               </button>
@@ -207,7 +207,7 @@ export default function BienesPage() {
         <div className="flex items-center gap-3">
           {aseguradoId && (
             <Link to={`/asegurados/${aseguradoId}`}
-              className="text-sm text-brand-600 hover:text-brand-700 font-medium">
+              className="text-sm text-accent-400 hover:text-accent-300 font-medium">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-1"><polyline points="15 18 9 12 15 6"/></svg>Volver al asegurado
             </Link>
           )}

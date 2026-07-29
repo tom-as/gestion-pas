@@ -57,9 +57,9 @@ function ProductorForm({ onClose, organizadorId }: { onClose: () => void; organi
   return (
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalMd)}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <h2 className="text-base font-semibold text-slate-800 dark:text-slate-200">Nuevo productor</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <h2 className="text-base font-semibold text-slate-200">Nuevo productor</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
@@ -96,12 +96,12 @@ function ProductorForm({ onClose, organizadorId }: { onClose: () => void; organi
               </div>
             </div>
             {serverError && (
-              <div className="flex items-start gap-2 mt-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-sm text-red-700 dark:text-red-400">
+              <div className="flex items-start gap-2 mt-3 p-3 rounded-lg bg-red-500/8 border border-red-500/20 text-sm text-red-400">
                 <svg className="w-4 h-4 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 {serverError}
               </div>
             )}
-            <div className="flex justify-end gap-2 pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex justify-end gap-2 pt-4 mt-4 border-t border-white/6">
               <button type="button" onClick={onClose} className={cn(cls.btn, cls.btnMd, cls.btnSecond)}>Cancelar</button>
               <button type="submit" disabled={isSubmitting} className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}>
                 {isSubmitting ? 'Guardando…' : 'Guardar'}
@@ -172,7 +172,7 @@ export default function ProductoresPage() {
             )}
             {productores.map((p) => (
               <tr key={p.id} className={cls.trHover}>
-                <td className={cn(cls.td, 'font-semibold text-slate-800 dark:text-slate-200')}>{p.nombre}</td>
+                <td className={cn(cls.td, 'font-semibold text-slate-200')}>{p.nombre}</td>
                 <td className={cn(cls.td, 'font-mono text-xs text-slate-500')}>{p.dniCuil}</td>
                 <td className={cn(cls.td, 'text-slate-500')}>{p.telefono ?? '—'}</td>
                 <td className={cn(cls.td, 'text-slate-500')}>{p.email ?? '—'}</td>

@@ -7,7 +7,6 @@ import api from '@/lib/api';
 import { formatDate, formatMoney } from '@/lib/format';
 import { EstadoPoliza, EstadoSiniestro, EstadoReclamo } from '@gestion-pas/types';
 import { cn, cls, estadoPolicaBadge } from '@/lib/cn';
-import { useDarkMode } from '@/lib/useDarkMode';
 
 /* ── Tipos de respuesta ──────────────────────────────────── */
 interface CarteraResp { total: number; asegurados: { id: string; nombre: string; dniCuil: string; productor: { nombre: string } | null }[] }
@@ -32,17 +31,17 @@ const FALLBACK_COLORS = ['#3b82f6', '#f59e0b', '#22c55e', '#ef4444', '#8b5cf6', 
 /* ── Stat card ────────────────────────────────────────────── */
 type StatColor = 'accent' | 'green' | 'yellow' | 'red';
 const STAT_COLOR_MAP: Record<StatColor, string> = {
-  accent: 'text-brand-600',
-  green:  'text-green-600',
-  yellow: 'text-amber-600',
-  red:    'text-red-600',
+  accent: '#6690ff',
+  green:  '#34d399',
+  yellow: '#fbbf24',
+  red:    '#f87171',
 };
 
 function StatCard({ label, value, color = 'accent' }: { label: string; value: string | number; color?: StatColor }) {
   return (
-    <div className={cn(cls.cardPad, 'flex flex-col gap-1')}>
-      <div className={cn('text-3xl font-bold leading-none', STAT_COLOR_MAP[color])}>{value}</div>
-      <div className="text-xs text-slate-400 dark:text-slate-500 mt-1">{label}</div>
+    <div className="stat-card p-5 flex flex-col gap-2">
+      <div className="text-3xl font-bold leading-none tabular-nums" style={{ color: STAT_COLOR_MAP[color] }}>{value}</div>
+      <div className="text-xs text-slate-500 mt-1">{label}</div>
     </div>
   );
 }
@@ -50,7 +49,7 @@ function StatCard({ label, value, color = 'accent' }: { label: string; value: st
 /* ── Seccion wrapper ─────────────────────────────────────── */
 function ReporteSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className={cn(cls.cardPad, 'mb-5')}>
+    <div className="surface rounded-xl p-6 mb-5" style={{ borderLeft: '3px solid rgba(61,107,255,0.4)' }}>
       <h2 className={cn(cls.sectionTitle, 'mb-4')}>{title}</h2>
       {children}
     </div>
@@ -64,9 +63,7 @@ function ChartTooltip({ active, payload, label, dark, formatter }: {
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className={`px-3 py-2 rounded-lg text-xs shadow-lg border ${
-      dark ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-white border-slate-200 text-slate-700'
-    }`}>
+    <div className={`px-3 py-2 rounded-lg text-xs shadow-lg border ${'bg-navy-800 border-white/8 text-slate-200'}`}>
       {label && <p className="font-semibold mb-1 capitalize">{label.replace(/_/g, ' ')}</p>}
       {payload.map((p) => (
         <p key={p.name} style={{ color: p.color }}>
@@ -190,7 +187,7 @@ function ComisionesBarChart({ data, dark }: {
    PÁGINA
 ══════════════════════════════════════════════════════════ */
 export default function ReportesPage() {
-  const { dark } = useDarkMode();
+  const dark = true;
 
   const cartera = useQuery<CarteraResp>({
     queryKey: ['r', 'cartera'],

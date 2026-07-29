@@ -8,6 +8,7 @@ import api from '@/lib/api';
 import { formatDate, formatMoney } from '@/lib/format';
 import { EstadoPoliza } from '@gestion-pas/types';
 import { cn, cls, estadoPolicaBadge, estadoCuotaBadge } from '@/lib/cn';
+import { motion } from 'framer-motion';
 
 /* ── Tipos ──────────────────────────────────────────────── */
 interface Ref { id: string; nombre: string }
@@ -101,9 +102,9 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
   return (
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalLg)}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <span className="text-base font-semibold text-slate-800 dark:text-slate-200">Nueva poliza</span>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <span className="text-base font-semibold text-slate-200">Nueva poliza</span>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
@@ -170,8 +171,8 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
               </Field>
             </div>
 
-            {serverError && <p className="mt-3 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">{serverError}</p>}
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
                 {isSubmitting ? 'Guardando…' : 'Guardar'}
@@ -204,9 +205,9 @@ function EndosoForm({ polizaId, onClose }: { polizaId: string; onClose: () => vo
   return (
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalMd)}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <span className="text-base font-semibold text-slate-800 dark:text-slate-200">Registrar endoso</span>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <span className="text-base font-semibold text-slate-200">Registrar endoso</span>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
@@ -227,8 +228,8 @@ function EndosoForm({ polizaId, onClose }: { polizaId: string; onClose: () => vo
                 <input type="number" className={cls.input} {...register('sumaAseguradaActualizada')} />
               </Field>
             </div>
-            {serverError && <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{serverError}</p>}
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100">
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
                 {isSubmitting ? 'Guardando…' : 'Guardar'}
@@ -261,9 +262,9 @@ function CuotaForm({ polizaId, onClose }: { polizaId: string; onClose: () => voi
   return (
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalSm)}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <span className="text-base font-semibold text-slate-800 dark:text-slate-200">Nueva cuota</span>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <span className="text-base font-semibold text-slate-200">Nueva cuota</span>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 hover:bg-white/8 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
@@ -278,8 +279,8 @@ function CuotaForm({ polizaId, onClose }: { polizaId: string; onClose: () => voi
                 <input type="date" className={cls.input} {...register('fechaVencimiento')} />
               </Field>
             </div>
-            {serverError && <p className="mt-3 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">{serverError}</p>}
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
                 {isSubmitting ? 'Guardando…' : 'Guardar'}
@@ -295,9 +296,9 @@ function CuotaForm({ polizaId, onClose }: { polizaId: string; onClose: () => voi
 /* ── Detail row helper ──────────────────────────────────── */
 function DR({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex justify-between py-2.5 border-b border-slate-100 dark:border-slate-800 last:border-0">
-      <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide">{label}</span>
-      <span className="text-sm text-slate-700 dark:text-slate-300 text-right">{value}</span>
+    <div className="flex justify-between py-2.5 border-b border-white/5 last:border-0">
+      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
+      <span className="text-sm text-slate-300 text-right">{value}</span>
     </div>
   );
 }
@@ -339,7 +340,7 @@ function PolizaDetalle({ id }: { id: string }) {
 
   return (
     <div>
-      <Link to="/polizas" className="inline-block mb-4 text-sm text-brand-600 hover:text-brand-700 font-medium">
+      <Link to="/polizas" className="inline-block mb-4 text-sm text-accent-400 hover:text-accent-300 font-medium">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-1"><polyline points="15 18 9 12 15 6"/></svg>Volver a pólizas
       </Link>
 
@@ -498,7 +499,12 @@ function PolizasListado() {
         </button>
       </div>
 
-      <div className={cn(cls.card, 'overflow-hidden')}>
+      <motion.div
+        className={cn(cls.card, 'overflow-hidden')}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <table className={cls.table}>
           <thead>
             <tr>
@@ -519,7 +525,7 @@ function PolizasListado() {
             )}
             {polizas.map((p) => (
               <tr key={p.id} className={cls.trHover} onClick={() => navigate(`/polizas/${p.id}`)}>
-                <td className={cn(cls.td, 'font-medium text-brand-600')}>{p.numeroPoliza}</td>
+                <td className={cn(cls.td, 'font-medium text-accent-400')}>{p.numeroPoliza}</td>
                 <td className={cls.td}>{p.asegurado.nombre}</td>
                 <td className={cls.td}>{p.compania.nombre}</td>
                 <td className={cls.td}>{formatDate(p.vigenciaFin)}</td>
@@ -533,7 +539,7 @@ function PolizasListado() {
             ))}
           </tbody>
         </table>
-      </div>
+      </motion.div>
 
       {showForm && <PolizaForm onClose={() => setShowForm(false)} />}
     </div>

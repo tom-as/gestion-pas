@@ -1,11 +1,14 @@
 /**
- * cn.ts — Utilidad para combinar clases Tailwind condicionalmente
+ * cn.ts — Design system dark-navy para Gestión PAS
+ *
+ * Regla fundamental: NINGUNA clase usa colores "light" (`bg-white`, `bg-slate-50`,
+ * `text-slate-900`, `dark:` prefijos). Toda la app es dark-navy permanente.
  */
 export function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-/* ── Design system — dark navy ──────────────────────────── */
+/* ── Design system ──────────────────────────────────────── */
 
 export const cls = {
   /* ── Buttons ─────────────────────────────────────────── */
@@ -15,7 +18,7 @@ export const cls = {
   btnLg:      'px-6 py-3 text-sm',
 
   /* Primary — accent blue con glow */
-  btnPrimary: 'bg-accent-500 hover:bg-accent-400 text-white shadow-[0_0_0_1px_rgba(61,107,255,0.5),0_4px_16px_rgba(61,107,255,0.3)] hover:shadow-[0_0_0_1px_rgba(61,107,255,0.6),0_6px_24px_rgba(61,107,255,0.4)]',
+  btnPrimary: 'bg-accent-500 hover:bg-accent-400 text-white shadow-[0_0_0_1px_rgba(61,107,255,0.5),0_4px_16px_rgba(61,107,255,0.3)] hover:shadow-[0_0_0_1px_rgba(61,107,255,0.65),0_6px_24px_rgba(61,107,255,0.42)]',
 
   /* Secondary — glass surface */
   btnSecond:  'bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 hover:border-white/20',
@@ -34,34 +37,41 @@ export const cls = {
   label:      'block text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-1.5',
 
   /* ── Cards / surfaces ────────────────────────────────── */
-  card:       'bg-navy-700/60 rounded-2xl border border-white/8',
-  cardPad:    'bg-navy-700/60 rounded-2xl border border-white/8 p-6',
+  /* card: para paneles pequeños embebidos */
+  card:       'rounded-xl border border-white/6 bg-navy-700/50',
+  cardPad:    'rounded-xl border border-white/6 bg-navy-700/50 p-6',
+
+  /* surface: reemplaza bg-white dark:bg-slate-900 — panel principal */
+  surface:    'surface rounded-xl overflow-hidden',
 
   /* ── Tables ──────────────────────────────────────────── */
   table:      'w-full text-sm',
-  th:         'px-5 py-3.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-widest bg-navy-800/60 border-b border-white/5 whitespace-nowrap',
-  td:         'px-5 py-4 text-slate-300 border-b border-white/5',
-  trHover:    'transition-colors hover:bg-white/3 cursor-pointer',
+  th:         'px-5 py-3.5 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-widest bg-navy-800/70 border-b border-white/5 whitespace-nowrap',
+  td:         'px-5 py-4 text-slate-300 border-b border-white/[0.04]',
+  trHover:    'tr-hover cursor-pointer',
 
   /* ── Badges ──────────────────────────────────────────── */
-  badge:      'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-wide',
-  badgeGreen: 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/25',
-  badgeAmber: 'bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/25',
-  badgeRed:   'bg-red-500/15 text-red-400 ring-1 ring-red-500/25',
-  badgeBlue:  'bg-accent-500/15 text-accent-400 ring-1 ring-accent-500/25',
-  badgeGray:  'bg-white/8 text-slate-400 ring-1 ring-white/10',
-  badgeViolet:'bg-violet-500/15 text-violet-400 ring-1 ring-violet-500/25',
+  badge:      'inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-semibold tracking-wide',
+  badgeGreen: 'bg-emerald-500/12 text-emerald-400 ring-1 ring-emerald-500/20',
+  badgeAmber: 'bg-amber-500/12 text-amber-400 ring-1 ring-amber-500/20',
+  badgeRed:   'bg-red-500/12 text-red-400 ring-1 ring-red-500/20',
+  badgeBlue:  'bg-accent-500/12 text-accent-400 ring-1 ring-accent-500/20',
+  badgeGray:  'bg-white/6 text-slate-400 ring-1 ring-white/8',
+  badgeViolet:'bg-violet-500/12 text-violet-400 ring-1 ring-violet-500/20',
 
   /* ── Page typography ─────────────────────────────────── */
   pageTitle:    'text-2xl font-bold text-slate-100 tracking-tight',
   sectionTitle: 'text-sm font-semibold text-slate-300 tracking-tight',
 
   /* ── Modal ───────────────────────────────────────────── */
-  overlay:  'fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-md',
-  modal:    'bg-navy-800 rounded-2xl border border-white/10 w-full overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.5)]',
+  overlay:  'fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-950/85 backdrop-blur-md',
+  modal:    'bg-navy-800 rounded-xl border border-white/8 w-full overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.55)]',
   modalSm:  'max-w-md',
   modalMd:  'max-w-lg',
   modalLg:  'max-w-2xl',
+
+  /* Modal divider (reemplaza border-slate-100 dark:border-slate-800) */
+  modalDivider: 'border-b border-white/6',
 };
 
 /* ── Helpers de badge por enum ──────────────────────────── */

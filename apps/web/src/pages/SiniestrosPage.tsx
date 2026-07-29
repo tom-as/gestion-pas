@@ -10,6 +10,7 @@ import { EstadoSiniestro, TipoSiniestro, TipoBien } from '@gestion-pas/types';
 import { useAuth } from '@/context/AuthContext';
 import VehiculoSilueta, { ZONAS } from '@/components/VehiculoSilueta';
 import { cn, cls, estadoSiniestroBadge } from '@/lib/cn';
+import { motion } from 'framer-motion';
 
 /* ── Tipos ──────────────────────────────────────────────── */
 interface Ref { id: string; nombre: string }
@@ -132,9 +133,9 @@ function SiniestroForm({ onClose }: { onClose: () => void }) {
   return (
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalLg)}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <span className="text-base font-semibold text-slate-800 dark:text-slate-200">Registrar siniestro</span>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <span className="text-base font-semibold text-slate-200">Registrar siniestro</span>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
@@ -238,9 +239,9 @@ function SiniestroForm({ onClose }: { onClose: () => void }) {
               </div>
             )}
 
-            {serverError && <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{serverError}</p>}
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
 
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>
                 Cancelar
               </button>
@@ -261,9 +262,9 @@ function SiniestroForm({ onClose }: { onClose: () => void }) {
 function EstadoStepper({ estado }: { estado: EstadoSiniestro }) {
   if (estado === EstadoSiniestro.RECHAZADO) {
     return (
-      <div className="flex items-center gap-2.5 px-4 py-3 bg-red-50 border border-red-200 rounded-lg">
+      <div className="flex items-center gap-2.5 px-4 py-3 bg-red-500/8 border border-red-500/20 rounded-lg">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="text-red-500 flex-shrink-0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        <span className="font-semibold text-red-800">Siniestro rechazado</span>
+        <span className="font-semibold text-red-300">Siniestro rechazado</span>
       </div>
     );
   }
@@ -280,7 +281,7 @@ function EstadoStepper({ estado }: { estado: EstadoSiniestro }) {
             <div className="flex flex-col items-center gap-1" style={{ minWidth: 80 }}>
               <div className={cn(
                 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold',
-                done ? 'bg-green-600 text-white' : active ? 'bg-brand-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-400',
+                done ? 'bg-green-600 text-white' : active ? 'bg-brand-600 text-white' : 'bg-white/8 text-slate-500',
               )}>
                 {done
                   ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -288,13 +289,13 @@ function EstadoStepper({ estado }: { estado: EstadoSiniestro }) {
               </div>
               <span className={cn(
                 'text-xs text-center',
-                active ? 'font-semibold text-slate-800 dark:text-slate-200' : done ? 'text-green-600' : 'text-slate-400',
+                active ? 'font-semibold text-slate-200' : done ? 'text-green-600' : 'text-slate-400',
               )}>
                 {ESTADO_LABEL[e]}
               </span>
             </div>
             {i < ESTADO_ORDEN.length - 1 && (
-              <div className={cn('flex-1 h-0.5 mb-5', done ? 'bg-green-600' : 'bg-slate-200 dark:bg-slate-700')} />
+              <div className={cn('flex-1 h-0.5 mb-5', done ? 'bg-green-600' : 'bg-white/10')} />
             )}
           </div>
         );
@@ -306,9 +307,9 @@ function EstadoStepper({ estado }: { estado: EstadoSiniestro }) {
 /* ── Detail row helper ──────────────────────────────────── */
 function DR({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex justify-between py-2.5 border-b border-slate-100 dark:border-slate-800 last:border-0">
-      <span className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wide">{label}</span>
-      <span className="text-sm text-slate-700 dark:text-slate-300 text-right">{value}</span>
+    <div className="flex justify-between py-2.5 border-b border-white/5 last:border-0">
+      <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</span>
+      <span className="text-sm text-slate-300 text-right">{value}</span>
     </div>
   );
 }
@@ -344,7 +345,7 @@ function SiniestroDetalle({ id }: { id: string }) {
 
   return (
     <div>
-      <Link to="/siniestros" className="inline-block mb-4 text-sm text-brand-600 hover:text-brand-700 font-medium">
+      <Link to="/siniestros" className="inline-block mb-4 text-sm text-accent-400 hover:text-accent-300 font-medium">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-1"><polyline points="15 18 9 12 15 6"/></svg>Volver a siniestros
       </Link>
 
@@ -490,7 +491,12 @@ function SiniestrosListado() {
         </button>
       </div>
 
-      <div className={cn(cls.card, 'overflow-hidden')}>
+      <motion.div
+        className={cn(cls.card, 'overflow-hidden')}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <table className={cls.table}>
           <thead>
             <tr>
@@ -531,7 +537,7 @@ function SiniestrosListado() {
             ))}
           </tbody>
         </table>
-      </div>
+      </motion.div>
 
       {showForm && <SiniestroForm onClose={() => setShowForm(false)} />}
     </div>

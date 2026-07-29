@@ -78,9 +78,9 @@ function DocumentoForm({ onClose, defaultEntidad, defaultEntidadId }: {
   return (
     <div className={cls.overlay}>
       <div className={cn(cls.modal, cls.modalMd)}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
-          <span className="text-base font-semibold text-slate-800 dark:text-slate-200">Agregar documento</span>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
+          <span className="text-base font-semibold text-slate-200">Agregar documento</span>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-200 transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
         <div className="px-6 py-5">
           <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
@@ -122,8 +122,8 @@ function DocumentoForm({ onClose, defaultEntidad, defaultEntidadId }: {
                   {...register('tramiteContexto')} />
               </div>
             </div>
-            {serverError && <p className="mt-3 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg px-3 py-2">{serverError}</p>}
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded-lg px-3 py-2">{serverError}</p>}
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>Cancelar</button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
                 {isSubmitting ? 'Guardando...' : 'Guardar'}
