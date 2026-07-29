@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram name="CasosDeUso-GestionPAS">
+<mxGraphModel dx="1800" dy="900" grid="1" gridSize="10" page="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+
+    <!-- ══════════════════════════════════════════════════
+         TÍTULO
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="2" value="&lt;b&gt;&lt;font style='font-size:16px'&gt;Diagrama de Casos de Uso — Gestión PAS&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+      <mxGeometry x="300" y="-50" width="900" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         ACTORES
+    ══════════════════════════════════════════════════ -->
+
+    <!-- Actor: Organizador -->
+    <mxCell id="10" value="Organizador" style="shape=mxgraph.flowchart.start_2;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="50" y="500" width="40" height="40" as="geometry"/>
+    </mxCell>
+    <mxCell id="10b" value="Organizador" style="text;align=center;fillColor=none;strokeColor=none;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="25" y="546" width="90" height="20" as="geometry"/>
+    </mxCell>
+    <mxCell id="10s" value="" style="shape=mxgraph.basic.person;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="45" y="440" width="50" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="10l" value="Organizador" style="text;align=center;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="20" y="505" width="100" height="20" as="geometry"/>
+    </mxCell>
+
+    <!-- Actor: Productor -->
+    <mxCell id="11s" value="" style="shape=mxgraph.basic.person;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="45" y="940" width="50" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="11l" value="Productor (PAS)" style="text;align=center;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="15" y="1005" width="110" height="20" as="geometry"/>
+    </mxCell>
+
+    <!-- Actor: Asegurado -->
+    <mxCell id="12s" value="" style="shape=mxgraph.basic.person;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="45" y="1360" width="50" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="12l" value="Asegurado (Cliente)" style="text;align=center;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="10" y="1425" width="120" height="20" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         BOUNDARY del sistema
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="SYS" value="Sistema de Gestión PAS" style="swimlane;startSize=30;fillColor=none;strokeColor=#333333;strokeWidth=2;dashed=0;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="200" y="20" width="1200" height="1600" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M1 — AUTENTICACIÓN
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M1" value="M1 — Autenticación y Usuarios" style="swimlane;startSize=24;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="40" width="1140" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC1" value="Iniciar sesión (JWT)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="M1">
+      <mxGeometry x="30" y="30" width="170" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC2" value="Crear usuario (org, prod, aseg)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="M1">
+      <mxGeometry x="230" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC3" value="Activar / Desactivar usuario" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="M1">
+      <mxGeometry x="450" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC4" value="Validar JWT en cada peticion" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="M1">
+      <mxGeometry x="670" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC5" value="Verificar rol (RBAC)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="M1">
+      <mxGeometry x="890" y="30" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M2 — ASEGURADOS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M2" value="M2 — Asegurados" style="swimlane;startSize=24;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="160" width="1140" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC10" value="Listar asegurados (filtro cartera)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M2">
+      <mxGeometry x="30" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC11" value="Buscar asegurado (nombre/DNI)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M2">
+      <mxGeometry x="250" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC12" value="Crear asegurado (validar DNI unico)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M2">
+      <mxGeometry x="470" y="28" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC13" value="Ver ficha de asegurado" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M2">
+      <mxGeometry x="700" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC14" value="Actualizar datos del asegurado" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M2">
+      <mxGeometry x="910" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M3 — BIENES ASEGURADOS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M3" value="M3 — Bienes Asegurados" style="swimlane;startSize=24;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="280" width="1140" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC20" value="Listar bienes de un asegurado" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M3">
+      <mxGeometry x="30" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC21" value="Registrar bien (automotor/hogar/vida)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M3">
+      <mxGeometry x="250" y="28" width="210" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC22" value="Actualizar bien asegurado" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M3">
+      <mxGeometry x="490" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC23" value="Ver detalle del bien" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="M3">
+      <mxGeometry x="700" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M4/M5 — PÓLIZAS, ENDOSOS, CUOTAS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M4" value="M4/M5 — Pólizas, Endosos y Cuotas" style="swimlane;startSize=24;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="400" width="1140" height="170" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC30" value="Listar polizas (filtro cartera)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="30" y="30" width="170" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC31" value="Crear poliza (asegurado+bien+prod+cia)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="220" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC32" value="Cambiar estado de poliza (suspender/reactivar/anular)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="430" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC33" value="Registrar endoso (modificacion de poliza)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="640" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC34" value="Ver historial de endosos" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="850" y="30" width="180" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC35" value="Registrar cuota" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="30" y="100" width="160" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC36" value="Marcar cuota PAGADA / RECHAZADA" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="220" y="100" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC37" value="Consultar vencimientos proximos" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="440" y="100" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC38" value="Auto-suspension de polizas vencidas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M4">
+      <mxGeometry x="660" y="100" width="200" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- include entre UC37 y UC38 -->
+    <mxCell id="INC1" value="&lt;&lt;include&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#9673a6;fontSize=10;" edge="1" parent="M4" source="UC37" target="UC38">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M6 — SINIESTROS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M6" value="M6 — Siniestros" style="swimlane;startSize=24;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="590" width="1140" height="110" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC40" value="Listar siniestros (filtro cartera)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M6">
+      <mxGeometry x="30" y="30" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC41" value="Registrar siniestro (con tipo y relato)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M6">
+      <mxGeometry x="250" y="30" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC42" value="Marcar zonas dano en silueta visual" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M6">
+      <mxGeometry x="480" y="30" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC43" value="Cambiar estado del siniestro (EN_GESTION/RESUELTO/RECHAZADO)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M6">
+      <mxGeometry x="710" y="30" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC44" value="Ver detalle / seguimiento estado" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M6">
+      <mxGeometry x="940" y="30" width="170" height="50" as="geometry"/>
+    </mxCell>
+    <!-- extend UC42 hacia UC41 -->
+    <mxCell id="INC2" value="&lt;&lt;extend&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#d79b00;fontSize=10;" edge="1" parent="M6" source="UC42" target="UC41">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M7 — RECLAMOS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M7" value="M7 — Reclamos" style="swimlane;startSize=24;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="720" width="1140" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC50" value="Listar reclamos (filtro cartera)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M7">
+      <mxGeometry x="30" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC51" value="Registrar reclamo (tipo + descripcion)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M7">
+      <mxGeometry x="250" y="28" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC52" value="Cambiar estado reclamo (EN_GESTION/RESUELTO)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M7">
+      <mxGeometry x="480" y="28" width="210" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC53" value="Ver detalle del reclamo" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="M7">
+      <mxGeometry x="720" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M10 — DOCUMENTOS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M10" value="M10 — Documentos" style="swimlane;startSize=24;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="840" width="1140" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC60" value="Listar documentos de una entidad" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="M10">
+      <mxGeometry x="30" y="28" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC61" value="Subir referencia de documento (URL)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="M10">
+      <mxGeometry x="260" y="28" width="200" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC62" value="Vincular doc a poliza/siniestro/cuota/reclamo" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="M10">
+      <mxGeometry x="490" y="28" width="220" height="50" as="geometry"/>
+    </mxCell>
+    <!-- include: UC61 includes UC62 -->
+    <mxCell id="INC3" value="&lt;&lt;include&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#6c8ebf;fontSize=10;" edge="1" parent="M10" source="UC61" target="UC62">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M8/M9 — PRODUCTORES Y COMPAÑÍAS
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M89" value="M8/M9 — Productores y Companias (solo Organizador)" style="swimlane;startSize=24;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="960" width="1140" height="100" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC70" value="Listar todos los productores" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="M89">
+      <mxGeometry x="30" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC71" value="Crear / actualizar productor" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="M89">
+      <mxGeometry x="240" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC72" value="Ver propia ficha (Productor)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="M89">
+      <mxGeometry x="450" y="28" width="180" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC73" value="Listar companias aseguradoras" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="M89">
+      <mxGeometry x="660" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC74" value="Crear / actualizar compania" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="M89">
+      <mxGeometry x="880" y="28" width="190" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         M11 — REPORTES
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="M11" value="M11 — Reportes y Dashboard" style="swimlane;startSize=24;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" vertex="1" parent="SYS">
+      <mxGeometry x="30" y="1080" width="1140" height="110" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC80" value="R1: Cartera de asegurados" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="20" y="30" width="150" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC81" value="R2: Vencimientos proximos (N dias)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="190" y="30" width="160" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC82" value="R3: Siniestros por estado" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="370" y="30" width="150" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC83" value="R4: Reclamos filtrados" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="540" y="30" width="150" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC84" value="R5: Polizas por estado/vencimiento" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="710" y="30" width="160" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC85" value="R6: Comisiones por productor" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="890" y="30" width="150" height="50" as="geometry"/>
+    </mxCell>
+    <mxCell id="UC86" value="R7: Bienes con datos incompletos" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="M11">
+      <mxGeometry x="950" y="30" width="170" height="50" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         RELACIONES ACTORES → CASOS DE USO
+         (fuera del swimlane SYS para que sean flechas externas)
+    ══════════════════════════════════════════════════ -->
+
+    <!-- ORGANIZADOR → M1 -->
+    <mxCell id="R_ORG_UC1" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="70" y="100"/>
+          <mxPoint x="315" y="100"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_ORG_UC2" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC2">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="70" y="100"/>
+          <mxPoint x="525" y="100"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_ORG_UC3" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC3">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="70" y="100"/>
+          <mxPoint x="745" y="100"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ORGANIZADOR → M2 (todos los CU) -->
+    <mxCell id="R_ORG_M2a" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC10">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="320"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_ORG_M2b" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC12">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="330"/>
+          <mxPoint x="670" y="330"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ORGANIZADOR → M4 create poliza -->
+    <mxCell id="R_ORG_M4a" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC31">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="560"/>
+          <mxPoint x="615" y="560"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ORGANIZADOR → M11 todos reportes -->
+    <mxCell id="R_ORG_M11" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC80">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="1210"/>
+          <mxPoint x="295" y="1210"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ORGANIZADOR → M89 productores/companias -->
+    <mxCell id="R_ORG_M89a" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC70">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="1060"/>
+          <mxPoint x="315" y="1060"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_ORG_M89b" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC71">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="1060"/>
+          <mxPoint x="525" y="1060"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_ORG_M89c" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC73">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="1060"/>
+          <mxPoint x="855" y="1060"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_ORG_M89d" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="UC74">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="470"/>
+          <mxPoint x="140" y="1060"/>
+          <mxPoint x="1075" y="1060"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M1 login -->
+    <mxCell id="R_PROD_UC1" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="140" y="970"/>
+          <mxPoint x="140" y="100"/>
+          <mxPoint x="315" y="100"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M2 ver + crear en su cartera -->
+    <mxCell id="R_PROD_M2a" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC10">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="150" y="320"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_PROD_M2b" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC12">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="150" y="970"/>
+          <mxPoint x="150" y="320"/>
+          <mxPoint x="670" y="320"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M4 crear poliza + cuotas -->
+    <mxCell id="R_PROD_M4a" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC30">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="155" y="970"/>
+          <mxPoint x="155" y="555"/>
+          <mxPoint x="415" y="555"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="R_PROD_M4b" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC36">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="155" y="970"/>
+          <mxPoint x="155" y="620"/>
+          <mxPoint x="605" y="620"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M6 siniestros -->
+    <mxCell id="R_PROD_M6" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC41">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="155" y="970"/>
+          <mxPoint x="155" y="760"/>
+          <mxPoint x="635" y="760"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M7 reclamos -->
+    <mxCell id="R_PROD_M7" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC51">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="155" y="970"/>
+          <mxPoint x="155" y="880"/>
+          <mxPoint x="635" y="880"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M8 ver su ficha -->
+    <mxCell id="R_PROD_M8" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC72">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="840" y="1060"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- PRODUCTOR → M11 reportes de su cartera -->
+    <mxCell id="R_PROD_M11" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#82b366;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="UC81">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="155" y="970"/>
+          <mxPoint x="155" y="1210"/>
+          <mxPoint x="575" y="1210"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ASEGURADO → M1 login -->
+    <mxCell id="R_ASEG_UC1" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#d79b00;strokeWidth=1.5;" edge="1" parent="1" source="12s" target="UC1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="1390"/>
+          <mxPoint x="145" y="1390"/>
+          <mxPoint x="145" y="90"/>
+          <mxPoint x="315" y="90"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ASEGURADO → M2 ver solo su info -->
+    <mxCell id="R_ASEG_M2" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#d79b00;strokeWidth=1.5;" edge="1" parent="1" source="12s" target="UC13">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="1390"/>
+          <mxPoint x="145" y="1390"/>
+          <mxPoint x="145" y="300"/>
+          <mxPoint x="895" y="300"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ASEGURADO → M4 ver sus polizas -->
+    <mxCell id="R_ASEG_M4" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#d79b00;strokeWidth=1.5;" edge="1" parent="1" source="12s" target="UC30">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="1390"/>
+          <mxPoint x="145" y="1390"/>
+          <mxPoint x="145" y="545"/>
+          <mxPoint x="415" y="545"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ASEGURADO → M6 ver seguimiento siniestro -->
+    <mxCell id="R_ASEG_M6" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#d79b00;strokeWidth=1.5;" edge="1" parent="1" source="12s" target="UC44">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="1390"/>
+          <mxPoint x="145" y="1390"/>
+          <mxPoint x="145" y="770"/>
+          <mxPoint x="1125" y="770"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ASEGURADO → M7 ver sus reclamos -->
+    <mxCell id="R_ASEG_M7" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#d79b00;strokeWidth=1.5;" edge="1" parent="1" source="12s" target="UC53">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="1390"/>
+          <mxPoint x="145" y="1390"/>
+          <mxPoint x="145" y="880"/>
+          <mxPoint x="905" y="880"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         LEYENDA
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="LEG" value="&lt;b&gt;Leyenda&lt;/b&gt;&lt;br/&gt;—— asociacion actor-caso de uso&lt;br/&gt;- - include: subcaso obligatorio&lt;br/&gt;- - extend: subcaso opcional/condicional&lt;br/&gt;——▷ generalizacion de actor&lt;br/&gt;[ ] nota de precondicion" style="text;html=1;align=left;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;fontSize=10;spacingLeft=8;" vertex="1" parent="1">
+      <mxGeometry x="1450" y="500" width="260" height="100" as="geometry"/>
+    </mxCell>
+
+    <!-- Nota roles -->
+    <mxCell id="ROLES" value="&lt;b&gt;Restricciones de rol aplicadas via RBAC:&lt;/b&gt;&lt;br/&gt;- Organizador: acceso total&lt;br/&gt;- Productor: solo su cartera (filtro en DB)&lt;br/&gt;- Asegurado: solo sus propios datos&lt;br/&gt;Guards globales: JwtAuthGuard + RolesGuard + ThrottlerGuard" style="text;html=1;align=left;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontSize=10;spacingLeft=8;" vertex="1" parent="1">
+      <mxGeometry x="1450" y="200" width="260" height="110" as="geometry"/>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         CORRECCIÓN 2 — Actor «system» para auto-suspensión
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="300" value="" style="shape=mxgraph.basic.person;fillColor=#1E1E1E;strokeColor=#3E3E3E;fontColor=#FFFFFF;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="1470" y="690" width="50" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="301" value="«system»" style="text;align=center;fontStyle=3;fontSize=11;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+      <mxGeometry x="1450" y="755" width="90" height="20" as="geometry"/>
+    </mxCell>
+    <!-- «system» → UC38 auto-suspension (edge crosses from outside into SYS swimlane) -->
+    <mxCell id="302" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#1E1E1E;strokeWidth=1.5;dashed=0;" edge="1" parent="1" source="300" target="UC38">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1495" y="720"/>
+          <mxPoint x="1430" y="720"/>
+          <mxPoint x="1430" y="870"/>
+          <mxPoint x="1060" y="870"/>
+          <mxPoint x="1060" y="730"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         CORRECCIÓN 3 — Notas de precondición en casos de uso clave
+    ══════════════════════════════════════════════════ -->
+
+    <!-- Precondición: UC1 Iniciar sesión -->
+    <mxCell id="303" value="&lt;b&gt;Precondicion:&lt;/b&gt; Usuario activo en BD, credenciales validas (email + password bcrypt)" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontSize=9;fillColor=#ffffc0;strokeColor=#b8860b;size=12;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="1450" y="40" width="260" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="306" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;dashed=1;strokeColor=#b8860b;fontSize=9;" edge="1" parent="1" source="303" target="UC1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1450" y="70"/>
+          <mxPoint x="1200" y="70"/>
+          <mxPoint x="1200" y="85"/>
+          <mxPoint x="415" y="85"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Precondición: UC12 Crear asegurado -->
+    <mxCell id="304" value="&lt;b&gt;Precondicion:&lt;/b&gt; Rol ORGANIZADOR o PRODUCTOR autenticado. DNI no existente en la BD (unicidad garantizada por constraint)." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontSize=9;fillColor=#ffffc0;strokeColor=#b8860b;size=12;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="1450" y="280" width="260" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="307" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;dashed=1;strokeColor=#b8860b;fontSize=9;" edge="1" parent="1" source="304" target="UC12">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1450" y="315"/>
+          <mxPoint x="1200" y="315"/>
+          <mxPoint x="1200" y="240"/>
+          <mxPoint x="870" y="240"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Precondición: UC38 Auto-suspensión -->
+    <mxCell id="305" value="&lt;b&gt;Precondicion:&lt;/b&gt; Job planificado (cron). Poliza en estado VIGENTE con fecha_vigencia_hasta anterior a NOW(). Ejecutado por el sistema sin intervencion humana." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontSize=9;fillColor=#ffffc0;strokeColor=#b8860b;size=12;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="1450" y="820" width="260" height="80" as="geometry"/>
+    </mxCell>
+    <mxCell id="308" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=none;dashed=1;strokeColor=#b8860b;fontSize=9;" edge="1" parent="1" source="305" target="UC38">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1450" y="860"/>
+          <mxPoint x="1100" y="860"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- ══════════════════════════════════════════════════
+         CORRECCIÓN 4 — Actor base «Usuario» + generalizaciones
+         Organizador, Productor y Asegurado heredan de Usuario
+         (todos deben autenticarse vía JWT)
+    ══════════════════════════════════════════════════ -->
+    <mxCell id="309" value="" style="shape=mxgraph.basic.person;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;" vertex="1" parent="1">
+      <mxGeometry x="45" y="200" width="50" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="310" value="Usuario" style="text;align=center;fontStyle=1;fontSize=11;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+      <mxGeometry x="25" y="265" width="90" height="20" as="geometry"/>
+    </mxCell>
+    <!-- Organizador generaliza Usuario -->
+    <mxCell id="311" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#666666;strokeWidth=1.5;" edge="1" parent="1" source="10s" target="309">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <!-- Productor generaliza Usuario -->
+    <mxCell id="312" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#666666;strokeWidth=1.5;" edge="1" parent="1" source="11s" target="309">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="970"/>
+          <mxPoint x="160" y="970"/>
+          <mxPoint x="160" y="230"/>
+          <mxPoint x="95" y="230"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <!-- Asegurado generaliza Usuario -->
+    <mxCell id="313" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#666666;strokeWidth=1.5;" edge="1" parent="1" source="12s" target="309">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="70" y="1390"/>
+          <mxPoint x="165" y="1390"/>
+          <mxPoint x="165" y="230"/>
+          <mxPoint x="95" y="230"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
+  </diagram>
+</mxfile>

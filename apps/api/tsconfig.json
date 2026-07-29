@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "outDir": "./dist",
+    "rootDir": "../..",
+    "incremental": true,
+    "paths": {
+      "@gestion-pas/types": ["../../packages/types/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*", "../../packages/types/src/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}

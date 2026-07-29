@@ -1,0 +1,12 @@
+export { Organizador } from './organizador.entity';
+export { Productor } from './productor.entity';
+export { Asegurado } from './asegurado.entity';
+export { BienAsegurado } from './bien-asegurado.entity';
+export { CompaniaAseguradora } from './compania-aseguradora.entity';
+export { Poliza } from './poliza.entity';
+export { Endoso } from './endoso.entity';
+export { Cuota } from './cuota.entity';
+export { Siniestro } from './siniestro.entity';
+export { Reclamo } from './reclamo.entity';
+export { Documento } from './documento.entity';
+export { Usuario } from './usuario.entity';
