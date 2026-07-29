@@ -262,13 +262,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       {/* ════════════════════════════════════════════════════
           CONTENIDO PRINCIPAL
       ════════════════════════════════════════════════════ */}
-      <main className="flex-1 overflow-y-auto" style={{ background: '#0d1117' }}>
-        {/* Top bar */}
+      <main
+        className="flex-1 overflow-y-auto content-area"
+        style={{ background: '#080c14' }}
+      >
+        {/* Top bar — flota sobre el page-canvas */}
         <div
-          className="sticky top-0 z-10 h-12 px-8 flex items-center justify-between"
+          className="sticky top-0 z-20 h-12 px-8 flex items-center justify-between"
           style={{
-            background: 'rgba(13,17,23,0.88)',
-            backdropFilter: 'blur(12px)',
+            background: 'rgba(8,12,20,0.82)',
+            backdropFilter: 'blur(16px)',
             borderBottom: '1px solid rgba(255,255,255,0.04)',
           }}
         >
@@ -279,7 +282,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <span className="text-slate-400 font-medium">{breadcrumbLabel}</span>
           </div>
 
-          {/* Indicador de sección activa — pill derecho */}
+          {/* Indicador de sección activa */}
           <div
             className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold"
             style={{ background: 'rgba(61,107,255,0.08)', color: '#6690ff' }}
@@ -289,19 +292,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Página — con fade al cambiar de ruta */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-6xl mx-auto px-8 py-8"
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        {/* Página — placa flotante con efecto vidrio */}
+        <div className="max-w-6xl mx-auto px-6 py-6 relative z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10, scale: 0.995 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.998 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="page-canvas p-8"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </main>
     </div>
   );
