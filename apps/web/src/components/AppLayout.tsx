@@ -264,7 +264,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       ════════════════════════════════════════════════════ */}
       <main
         className="flex-1 overflow-y-auto content-area"
-        style={{ background: '#080c14' }}
+        style={{
+          background: [
+            'radial-gradient(ellipse 90% 55% at 60% -8%, rgba(61,107,255,0.11) 0%, transparent 60%)',
+            'radial-gradient(ellipse 50% 40% at 95% 85%, rgba(99,60,220,0.07) 0%, transparent 60%)',
+            '#070b14',
+          ].join(', '),
+        }}
       >
         {/* Top bar — flota sobre el page-canvas */}
         <div
