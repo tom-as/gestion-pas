@@ -14,6 +14,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    host: '0.0.0.0',   // escucha en todas las interfaces — accesible desde la LAN
     proxy: {
       // Redirige /api/* hacia el backend NestJS en desarrollo
       '/api': {

@@ -40,7 +40,9 @@ async function bootstrap() {
     console.warn('ADVERTENCIA: FRONTEND_URL no definida en producción — CORS puede bloquear el frontend.');
   }
   app.enableCors({
-    origin: frontendUrl ?? 'http://localhost:5173',
+    // En desarrollo se acepta cualquier origen (permite acceso desde la LAN).
+    // En producción se restringe al FRONTEND_URL definido en el .env.
+    origin: isProduction ? frontendUrl : true,
     credentials: true,
   });
 
