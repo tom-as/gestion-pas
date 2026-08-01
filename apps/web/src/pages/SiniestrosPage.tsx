@@ -363,13 +363,13 @@ function SiniestroDetalle({ id }: { id: string }) {
       </div>
 
       {/* Stepper */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className={cn('surface rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Estado del tramite</h2>
         <EstadoStepper estado={siniestro.estado} />
       </div>
 
       {/* Datos */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className={cn('surface rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos del siniestro</h2>
         <div>
           <DR label="Asegurado" value={siniestro.asegurado.nombre} />
@@ -411,7 +411,7 @@ function SiniestroDetalle({ id }: { id: string }) {
 
       {/* Silueta con zonas marcadas */}
       {esAuto && (
-        <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+        <div className={cn('surface rounded-sm p-6', 'mb-5')}>
           <h2 className={cn(cls.sectionTitle, 'mb-4')}>Zonas de dano marcadas</h2>
           {siniestro.zonasAfectadas && siniestro.zonasAfectadas.length > 0 ? (
             <VehiculoSilueta
@@ -427,7 +427,7 @@ function SiniestroDetalle({ id }: { id: string }) {
 
       {/* Panel de gestion — solo para org/productor */}
       {!isAsegurado && (
-        <div className={cn('card-base rounded-sm p-6')}>
+        <div className={cn('surface rounded-sm p-6')}>
           <h2 className={cn(cls.sectionTitle, 'mb-4')}>Gestion del siniestro</h2>
           <div className="flex flex-wrap gap-3 items-end">
             <div className="flex flex-col gap-1" style={{ minWidth: 200 }}>
@@ -492,7 +492,7 @@ function SiniestrosListado() {
       </div>
 
       <motion.div
-        className={cn('card-base rounded-none overflow-hidden border-x-0')}
+        className="surface rounded-sm overflow-hidden"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}

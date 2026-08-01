@@ -5,7 +5,8 @@ const KEY = 'gestion-pas-dark';
 function readPreference(): boolean {
   const stored = localStorage.getItem(KEY);
   if (stored !== null) return stored === 'true';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // Design is dark-first — default to dark
+  return true;
 }
 
 export function useDarkMode() {

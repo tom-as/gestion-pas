@@ -269,13 +269,13 @@ function ReclamoDetalle({ id }: { id: string }) {
       </div>
 
       {/* Stepper */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className="surface rounded-sm p-6 mb-5">
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Estado del reclamo</h2>
         <ReclamoStepper estado={reclamo.estado} />
       </div>
 
       {/* Datos */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className="surface rounded-sm p-6 mb-5">
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos del reclamo</h2>
         <div>
           <DR label="Asegurado" value={reclamo.asegurado.nombre} />
@@ -293,7 +293,7 @@ function ReclamoDetalle({ id }: { id: string }) {
 
       {/* Gestion — org y productor */}
       {!isAsegurado && reclamo.estado !== EstadoReclamo.RESUELTO && (
-        <div className={cn('card-base rounded-sm p-6')}>
+        <div className="surface rounded-sm p-6">
           <h2 className={cn(cls.sectionTitle, 'mb-4')}>Gestion</h2>
           <div className="flex flex-wrap gap-3">
             {reclamo.estado === EstadoReclamo.ABIERTO && (
@@ -337,7 +337,7 @@ function ReclamosListado() {
       </div>
 
       <motion.div
-        className={cn('card-base rounded-none overflow-hidden border-x-0')}
+        className="surface rounded-sm overflow-hidden"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}

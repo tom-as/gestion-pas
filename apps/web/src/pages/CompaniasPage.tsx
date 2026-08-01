@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { motion } from 'framer-motion';
 import api from '@/lib/api';
 import { PeriodicidadRefacturacion } from '@gestion-pas/types';
 import { useAuth } from '@/context/AuthContext';
@@ -132,7 +133,12 @@ export default function CompaniasPage() {
       </div>
 
       {/* Table */}
-      <div className={cn('card-base rounded-none overflow-hidden border-x-0')}>
+      <motion.div
+        className="surface rounded-sm overflow-hidden"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      >
         <table className={cls.table}>
           <thead>
             <tr>
@@ -177,7 +183,7 @@ export default function CompaniasPage() {
             ))}
           </tbody>
         </table>
-      </div>
+      </motion.div>
 
       {showForm && <CompaniaForm onClose={() => setShowForm(false)} />}
     </div>

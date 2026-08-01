@@ -231,7 +231,7 @@ export default function AseguradoDetailPage() {
 
         {/* Columna izquierda — datos personales */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="surface rounded-none overflow-hidden">
+          <div className="surface rounded-sm overflow-hidden">
             <div className="px-5 py-3.5 panel-sep">
               <p className="text-[11px] font-semibold uppercase tracking-widest txt-faint">Datos personales</p>
             </div>
@@ -259,7 +259,7 @@ export default function AseguradoDetailPage() {
         <div className="lg:col-span-2 space-y-5">
 
           {/* Bienes asegurados */}
-          <div className="surface rounded-none overflow-hidden">
+          <div className="surface rounded-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3.5 panel-sep">
               <p className="text-[11px] font-semibold uppercase tracking-widest txt-faint">Bienes asegurados</p>
               <span className={cn(cls.badge, cls.badgeGray)}>{asegurado.bienes.length}</span>
@@ -311,7 +311,7 @@ export default function AseguradoDetailPage() {
           </div>
 
           {/* Pólizas */}
-          <div className="surface rounded-none overflow-hidden">
+          <div className="surface rounded-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3.5 panel-sep">
               <p className="text-[11px] font-semibold uppercase tracking-widest txt-faint">Pólizas</p>
               <span className={cn(cls.badge, cls.badgeGray)}>{asegurado.polizas.length}</span>

@@ -18,48 +18,37 @@ interface PolizasResp    { total: number; porEstado: Record<string, number>; pol
 interface ComisionesResp { total: number; productores: { id: string; nombre: string; estado: string; polizasActivas: number; totalImporteCuotasMes: number }[] }
 interface IncompletosResp{ total: number; bienes: { id: string; tipo: string; asegurado: { nombre: string } | null; camposFaltantes: string[] }[] }
 
-/* ── Paleta semántica (4 colores, sin fallback random) ────── */
+/* ── Paleta monocromática — pasos de opacidad del azul accent */
 const ESTADO_COLORS: Record<string, string> = {
   // siniestros / reclamos
-  abierto:    '#3d6bff',
-  en_gestion: '#f59e0b',
-  resuelto:   '#10b981',
-  rechazado:  '#ef4444',
+  abierto:    'rgba(61,107,255,1.0)',
+  en_gestion: 'rgba(61,107,255,0.55)',
+  resuelto:   'rgba(61,107,255,0.30)',
+  rechazado:  'rgba(61,107,255,0.15)',
   // pólizas
-  activa:     '#10b981',
-  suspendida: '#f59e0b',
-  anulada:    '#ef4444',
+  activa:     'rgba(61,107,255,1.0)',
+  suspendida: 'rgba(61,107,255,0.45)',
+  anulada:    'rgba(61,107,255,0.18)',
 };
-// Fallback mínimo: solo azul/verde/amber/rojo — sin cyan ni violeta
-const FALLBACK_COLORS = ['#3d6bff', '#10b981', '#f59e0b', '#ef4444'];
+const FALLBACK_COLORS = [
+  'rgba(61,107,255,1.0)',
+  'rgba(61,107,255,0.65)',
+  'rgba(61,107,255,0.40)',
+  'rgba(61,107,255,0.20)',
+];
 
 /* ── KPI card superior ───────────────────────────────────── */
 type KpiColor = 'blue' | 'green' | 'amber' | 'red';
-const KPI_DOT: Record<KpiColor, string> = {
-  blue:  '#3d6bff',
-  green: '#10b981',
-  amber: '#f59e0b',
-  red:   '#ef4444',
-};
-const KPI_VALUE_COLOR: Record<KpiColor, string> = {
-  blue:  'text-[#3d6bff]',
-  green: 'text-[#10b981]',
-  amber: 'text-[#f59e0b]',
-  red:   'text-[#ef4444]',
-};
 
-function KpiCard({ label, value, color = 'blue', footnote }: {
+function KpiCard({ label, value, footnote }: {
   label: string; value: string | number; color?: KpiColor; footnote?: string;
 }) {
   return (
     <div className="stat-card px-5 py-4 flex flex-col gap-1.5 min-w-0">
-      {/* dot + label */}
-      <div className="flex items-center gap-1.5">
-        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: KPI_DOT[color] }} />
-        <span className="text-[11px] txt-faint truncate uppercase tracking-widest font-semibold">{label}</span>
-      </div>
+      {/* label */}
+      <span className="text-[11px] txt-faint truncate uppercase tracking-widest font-semibold">{label}</span>
       {/* value */}
-      <div className={cn('text-3xl font-bold leading-none tabular-nums', KPI_VALUE_COLOR[color])}>{value}</div>
+      <div className="text-3xl font-bold leading-none tabular-nums text-white">{value}</div>
       {/* optional footnote */}
       {footnote && <div className="text-[10px] txt-faint">{footnote}</div>}
     </div>
@@ -214,7 +203,7 @@ function Section({ title, badge, defaultOpen = false, children }: {
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="surface rounded-none mb-3 overflow-hidden">
+    <div className="surface rounded-sm mb-3 overflow-hidden">
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between px-6 py-4 text-left group"
@@ -327,7 +316,7 @@ export default function ReportesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
 
         {/* Siniestros por estado */}
-        <div className="card-base rounded-sm p-6">
+        <div className="surface rounded-sm p-6">
           <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
             Siniestros por estado
           </p>
@@ -336,7 +325,7 @@ export default function ReportesPage() {
         </div>
 
         {/* Reclamos por estado */}
-        <div className="card-base rounded-sm p-6">
+        <div className="surface rounded-sm p-6">
           <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
             Reclamos por estado
           </p>
@@ -348,7 +337,7 @@ export default function ReportesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
 
         {/* Pólizas — donut */}
-        <div className="card-base rounded-sm p-6">
+        <div className="surface rounded-sm p-6">
           <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
             Distribución de pólizas
           </p>
@@ -357,7 +346,7 @@ export default function ReportesPage() {
         </div>
 
         {/* Comisiones estimadas */}
-        <div className="card-base rounded-sm p-6">
+        <div className="surface rounded-sm p-6">
           <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
             Comisiones estimadas por productor
           </p>

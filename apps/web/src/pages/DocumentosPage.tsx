@@ -168,7 +168,7 @@ export default function DocumentosPage() {
       </div>
 
       {/* Filtro por entidad */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className="surface rounded-sm p-6 mb-5">
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Buscar documentos por entidad</h2>
         <div className="flex flex-wrap gap-3 items-end">
           <div className="flex flex-col gap-1" style={{ minWidth: 160 }}>
@@ -195,7 +195,7 @@ export default function DocumentosPage() {
       </div>
 
       {/* Resultados */}
-      <div className={cn('card-base rounded-none overflow-hidden border-x-0')}>
+      <div className="surface rounded-sm overflow-hidden">
         <table className={cls.table}>
           <thead>
             <tr>

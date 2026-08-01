@@ -218,7 +218,7 @@ export default function BienesPage() {
       </div>
 
       {/* Table */}
-      <div className={cn('card-base rounded-none overflow-hidden border-x-0')}>
+      <div className="surface rounded-sm overflow-hidden">
         <table className={cls.table}>
           <thead>
             <tr>

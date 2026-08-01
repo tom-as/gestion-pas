@@ -367,7 +367,7 @@ function PolizaDetalle({ id }: { id: string }) {
       </div>
 
       {/* Datos principales */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className={cn('surface rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos de la poliza</h2>
         <div>
           <DR label="Asegurado" value={poliza.asegurado.nombre} />
@@ -388,7 +388,7 @@ function PolizaDetalle({ id }: { id: string }) {
       </div>
 
       {/* Endosos */}
-      <div className={cn('card-base rounded-sm p-6', 'mb-5')}>
+      <div className={cn('surface rounded-sm p-6', 'mb-5')}>
         <div className="flex items-center justify-between mb-4">
           <h2 className={cls.sectionTitle}>Endosos ({endosos.length})</h2>
           <button className={cn(cls.btn, cls.btnSm, cls.btnSecond)} onClick={() => setShowEndoso(true)}>
@@ -423,7 +423,7 @@ function PolizaDetalle({ id }: { id: string }) {
       </div>
 
       {/* Cuotas */}
-      <div className={cn('card-base rounded-sm p-6')}>
+      <div className={cn('surface rounded-sm p-6')}>
         <div className="flex items-center justify-between mb-4">
           <h2 className={cls.sectionTitle}>Cuotas ({cuotas.length})</h2>
           <button className={cn(cls.btn, cls.btnSm, cls.btnSecond)} onClick={() => setShowCuota(true)}>
@@ -500,7 +500,7 @@ function PolizasListado() {
       </div>
 
       <motion.div
-        className={cn('card-base rounded-none overflow-hidden border-x-0')}
+        className="surface rounded-sm overflow-hidden"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
