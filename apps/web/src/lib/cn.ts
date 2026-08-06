@@ -10,13 +10,13 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 
 export const cls = {
   /* ── Buttons ─────────────────────────────────────────── */
-  btn:        'inline-flex items-center gap-1.5 font-semibold rounded transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] select-none focus-visible:outline-2 focus-visible:outline-offset-2',
-  btnSm:      'px-3 py-1.5 text-xs',
-  btnMd:      'px-4 py-2 text-sm',
-  btnLg:      'px-5 py-2.5 text-sm',
+  btn:        'inline-flex items-center gap-1.5 font-medium rounded transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] select-none focus-visible:outline-2 focus-visible:outline-offset-2',
+  btnSm:      'px-3 py-1.5 text-[13px]',
+  btnMd:      'px-4 py-2 text-[14px]',
+  btnLg:      'px-5 py-2.5 text-[14px]',
 
   /* Primary */
-  btnPrimary: 'bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white shadow-sm',
+  btnPrimary: 'bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white shadow-sm font-medium',
 
   /* Secondary */
   btnSecond:  'bg-[var(--btn-second-bg)] hover:opacity-80 text-[var(--btn-second-text)] border border-[var(--btn-second-border)]',
@@ -28,27 +28,27 @@ export const cls = {
   btnGhost:   'text-[var(--btn-ghost-text)] hover:text-[var(--text-secondary)] hover:bg-black/4 dark:hover:bg-white/5',
 
   /* ── Inputs ──────────────────────────────────────────── */
-  input:      'input-base w-full px-3 py-2 text-sm rounded outline-none transition-colors border focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)]',
+  input:      'input-base w-full px-3 py-2 text-[14px] font-[400] rounded outline-none transition-colors border focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)]',
   inputError: 'border-red-500/50 bg-red-500/4 focus:border-red-500',
-  select:     'input-base w-full px-3 py-2 text-sm rounded outline-none transition-colors border focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)] cursor-pointer',
-  textarea:   'input-base w-full px-3 py-2 text-sm rounded outline-none transition-colors border focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)] resize-none',
-  label:      'block text-[11px] font-semibold txt-muted uppercase tracking-wider mb-1.5',
+  select:     'input-base w-full px-3 py-2 text-[14px] font-[400] rounded outline-none transition-colors border focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)] cursor-pointer',
+  textarea:   'input-base w-full px-3 py-2 text-[14px] font-[400] rounded outline-none transition-colors border focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-primary)_20%,transparent)] resize-none',
+  /* label: uppercase + tracking solo aquí */
+  label:      'block text-[12px] font-[500] txt-muted uppercase tracking-[0.05em] mb-1.5',
 
   /* ── Cards / surfaces ────────────────────────────────── */
   card:       'card-base rounded-md',
   cardPad:    'card-base rounded-md p-5',
-
-  /* surface: panel principal */
   surface:    'surface rounded-sm overflow-hidden',
 
   /* ── Tables ──────────────────────────────────────────── */
-  table:      'w-full text-sm',
-  th:         'th-cell px-5 py-3 text-left text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap',
-  td:         'td-cell px-5 py-3.5',
+  table:      'w-full text-[14px]',
+  /* th: uppercase + tracking solo aquí */
+  th:         'th-cell px-5 py-3 text-left text-[11px] font-[500] uppercase tracking-[0.05em] whitespace-nowrap',
+  td:         'td-cell px-5 py-3.5 text-[14px]',
   trHover:    'tr-hover cursor-pointer',
 
-  /* ── Badges genéricos ────────────────────────────────── */
-  badge:      'inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold',
+  /* ── Badges ──────────────────────────────────────────── */
+  badge:      'inline-flex items-center gap-1 px-2 py-0.5 rounded text-[12px] font-[500]',
   badgeGreen: 'bg-[var(--policy-active-bg)] text-[var(--policy-active-text)] ring-1 ring-[var(--policy-active-border)]',
   badgeAmber: 'bg-[var(--policy-grace-bg)] text-[var(--policy-grace-text)] ring-1 ring-[var(--policy-grace-border)]',
   badgeRed:   'bg-[var(--policy-cancelled-bg)] text-[var(--policy-cancelled-text)] ring-1 ring-[var(--policy-cancelled-border)]',
@@ -57,8 +57,8 @@ export const cls = {
   badgeViolet:'bg-[var(--claim-docs-bg)] text-[var(--claim-docs-text)] ring-1 ring-[var(--claim-docs-border)]',
 
   /* ── Page typography ─────────────────────────────────── */
-  pageTitle:    'text-xl font-bold txt-primary tracking-tight',
-  sectionTitle: 'text-xs font-semibold txt-tertiary uppercase tracking-wider',
+  pageTitle:    'text-[28px] font-[600] txt-primary leading-tight',
+  sectionTitle: 'text-[18px] font-[600] txt-primary leading-snug',
 
   /* ── Modal ───────────────────────────────────────────── */
   overlay:  'fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--modal-overlay)] backdrop-blur-sm',
@@ -66,8 +66,6 @@ export const cls = {
   modalSm:  'max-w-md',
   modalMd:  'max-w-lg',
   modalLg:  'max-w-2xl',
-
-  /* Modal divider */
   modalDivider: 'modal-divider-base border-b',
 };
 

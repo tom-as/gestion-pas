@@ -356,7 +356,7 @@ function InfoBlock({ label, value, note, muted = false }: {
 }) {
   return (
     <div>
-      <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>
+      <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 3 }}>
         {label}
       </p>
       <p style={{ fontSize: 13, fontWeight: muted ? 400 : 600, color: muted ? 'var(--text-faint)' : 'var(--text-primary)' }}>

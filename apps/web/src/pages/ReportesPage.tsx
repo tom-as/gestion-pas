@@ -67,10 +67,10 @@ function KpiCard({ label, value, color = 'blue', footnote }: {
         minWidth: 0,
       }}
     >
-      <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>
+      <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: 6 }}>
         {label}
       </span>
-      <div style={{ fontSize: 26, fontWeight: 800, lineHeight: 1, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
+      <div style={{ fontSize: 26, fontWeight: 600, lineHeight: 1, fontVariantNumeric: 'tabular-nums', color: 'var(--text-primary)' }}>
         {value}
       </div>
       {footnote && (
@@ -99,12 +99,12 @@ function ChartTooltip({ active, payload, label, formatter }: {
       }}
     >
       {displayLabel && (
-        <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4, textTransform: 'capitalize' }}>
+        <p style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, textTransform: 'capitalize' }}>
           {displayLabel}
         </p>
       )}
       {payload.map((p) => (
-        <p key={p.name} style={{ color: p.color, fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
+        <p key={p.name} style={{ color: p.color, fontFamily: 'var(--font-mono)', fontWeight: 500, fontVariantNumeric: 'tabular-nums' }}>
           {formatter ? formatter(p.value) : p.value}
         </p>
       ))}
@@ -256,9 +256,9 @@ function Section({ title, badge, defaultOpen = false, children }: {
         }}
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{title}</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{title}</span>
           {badge !== undefined && (
-            <span className={cn(cls.badge, cls.badgeGray)} style={{ fontFamily: 'var(--font-mono)' }}>{badge}</span>
+            <span className={cn(cls.badge, cls.badgeGray)}>{badge}</span>
           )}
         </span>
         <svg
@@ -394,7 +394,7 @@ export default function ReportesPage() {
             padding: '16px 20px',
           }}
         >
-          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
             Siniestros por estado
           </p>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
@@ -415,7 +415,7 @@ export default function ReportesPage() {
             padding: '16px 20px',
           }}
         >
-          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
             Reclamos por estado
           </p>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
@@ -439,7 +439,7 @@ export default function ReportesPage() {
             padding: '16px 20px',
           }}
         >
-          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
             Distribución de pólizas
           </p>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
@@ -460,7 +460,7 @@ export default function ReportesPage() {
             padding: '16px 20px',
           }}
         >
-          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+          <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
             Comisiones estimadas por productor
           </p>
           <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>

@@ -234,7 +234,7 @@ function AseguradoPanel({ asegurado, onClose }: { asegurado: Asegurado; onClose:
             border: '1px solid var(--border-subtle)',
           }}
         >
-          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+          <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
             Productor asignado
           </p>
           <ProducerBadge nombre={asegurado.productor?.nombre ?? '—'} />
@@ -532,7 +532,7 @@ export default function AseguradosPage() {
                             background: isActive ? 'var(--accent-primary)' : 'var(--claim-docs-bg)',
                             color: isActive ? '#fff' : 'var(--claim-docs-text)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 11, fontWeight: 700,
+                            fontSize: 11, fontWeight: 600,
                             transition: 'background 0.15s ease, color 0.15s ease',
                           }}
                         >

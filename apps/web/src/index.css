@@ -563,12 +563,19 @@ html.dark .page-canvas {
 /* ── Panel separator ─────────────────────────────────────── */
 .panel-sep { border-bottom: 1px solid var(--panel-sep); }
 
-/* ── Mono — identificadores operativos ──────────────────── */
+/* ── Mono + tabular — identificadores operativos ────────── */
 .font-record {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: var(--text-label);       /* 12px */
+  font-weight: var(--weight-medium);  /* 500 */
   letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Números tabulares sin mono — métricas, importes en sans */
+.num-tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 /* ── Accent border left — indicadores de estado ─────────── */

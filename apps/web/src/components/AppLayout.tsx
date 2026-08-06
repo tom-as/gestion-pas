@@ -117,8 +117,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <NavIcon.polizas size={14} />
           </div>
           <span
-            className="text-sm font-bold tracking-tight whitespace-nowrap"
+            className="whitespace-nowrap"
             style={{
+              fontSize: 14, fontWeight: 600,
               color: 'var(--text-primary)',
               opacity: 0,
               transform: 'translateX(-6px)',

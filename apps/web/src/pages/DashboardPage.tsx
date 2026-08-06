@@ -66,26 +66,26 @@ function KpiPrimary({ label, value, trend, sub, icon, loading }: KpiPrimaryProps
       <div className="flex items-start justify-between gap-3">
         <div style={{ color: 'var(--text-faint)' }}>{icon}</div>
         {trend && (
-          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--sla-safe-text)', display: 'flex', alignItems: 'center', gap: 3 }}>
+          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--sla-safe-text)', display: 'flex', alignItems: 'center', gap: 3 }}>
             <IconTrendUp size={11} />
             {trend}
           </span>
         )}
       </div>
       <div style={{ marginTop: 12 }}>
-        <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
           {label}
         </p>
         {loading
           ? <Sk w={48} h={32} />
           : (
-            <p style={{ fontSize: 30, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1, fontFamily: 'var(--font-mono)' }}>
+            <p style={{ fontSize: 30, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
               {value}
             </p>
           )
         }
         {sub && !loading && (
-          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{sub}</p>
+          <p style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-muted)', marginTop: 4 }}>{sub}</p>
         )}
       </div>
     </div>
@@ -103,12 +103,12 @@ function KpiSecondary({ label, value, loading }: { label: string; value: number 
         padding: '12px 14px',
       }}
     >
-      <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+      <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
         {label}
       </p>
       {loading
         ? <Sk w={36} h={22} />
-        : <p style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{value}</p>
+        : <p style={{ fontSize: 22, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{value}</p>
       }
     </div>
   );
@@ -202,7 +202,7 @@ function VencimientosSection() {
 
             {/* Right: fecha + importe */}
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                 {formatMoney(c.importe)}
               </p>
               <ExpirationIndicator diasRestantes={dias} fechaLabel={formatDate(c.fechaVencimiento)} />
@@ -240,7 +240,7 @@ function ActivityFeed() {
           borderBottom: '1px solid var(--border-subtle)',
         }}
       >
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Actividad reciente
         </p>
         <span
@@ -316,7 +316,7 @@ function QuickActions() {
       }}
     >
       <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border-subtle)' }}>
-        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Accesos rápidos
         </p>
       </div>
@@ -408,7 +408,7 @@ export default function DashboardPage() {
 
         {/* Título operativo */}
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.2 }}>
+          <h1 style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.2 }}>
             Resumen operativo
           </h1>
           {!isLoadingStats && totalTareas > 0 && (
@@ -464,7 +464,7 @@ export default function DashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h2 id="sec-atencion" style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+          <h2 id="sec-atencion" style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
             Atención requerida
           </h2>
           <div className="space-y-2">
@@ -509,7 +509,7 @@ export default function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h2 id="sec-indicadores" style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+        <h2 id="sec-indicadores" style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>
           Indicadores generales
         </h2>
 
@@ -556,7 +556,7 @@ export default function DashboardPage() {
           transition={{ duration: 0.25, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-            <h2 id="sec-vencimientos" style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h2 id="sec-vencimientos" style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)' }}>
               Próximos vencimientos
             </h2>
             <button
