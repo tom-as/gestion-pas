@@ -1,544 +1,419 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" type="device">
-  <diagram name="Clases-GestionPAS">
-<mxGraphModel dx="2000" dy="1000" grid="1" gridSize="10" page="0">
-  <root>
-    <mxCell id="0"/>
-    <mxCell id="1" parent="0"/>
-
-    <!-- TÍTULO -->
-    <mxCell id="TTL" value="&lt;b&gt;&lt;font style='font-size:16px'&gt;Diagrama de Clases — Gestión PAS (NestJS + TypeORM)&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px;color:#555'&gt;Entidades · Servicios · Controllers · Guards · DTOs · Interfaces · Enums&lt;/font&gt;" style="text;html=1;align=center;fillColor=none;strokeColor=none;" vertex="1" parent="1">
-      <mxGeometry x="200" y="-60" width="1200" height="46" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         CAPA DE CAPAS (swimlanes de fondo)
-    ══════════════════════════════════════════════ -->
-    <mxCell id="LYR_ENT" value="Capa de Entidades (TypeORM)" style="swimlane;startSize=22;fillColor=none;strokeColor=#aaaaaa;dashed=1;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="20" y="20" width="1560" height="1000" as="geometry"/>
-    </mxCell>
-    <mxCell id="LYR_SVC" value="Capa de Servicios (NestJS @Injectable)" style="swimlane;startSize=22;fillColor=none;strokeColor=#6c8ebf;dashed=1;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="20" y="1040" width="1560" height="440" as="geometry"/>
-    </mxCell>
-    <mxCell id="LYR_CTL" value="Capa de Controllers (NestJS @Controller)" style="swimlane;startSize=22;fillColor=none;strokeColor=#82b366;dashed=1;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="20" y="1500" width="1560" height="300" as="geometry"/>
-    </mxCell>
-    <mxCell id="LYR_SEC" value="Capa de Seguridad (Guards + Strategy)" style="swimlane;startSize=22;fillColor=none;strokeColor=#d79b00;dashed=1;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="20" y="1820" width="1560" height="230" as="geometry"/>
-    </mxCell>
-    <mxCell id="LYR_DTO" value="DTOs + Interfaces + Enums" style="swimlane;startSize=22;fillColor=none;strokeColor=#9673a6;dashed=1;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="20" y="2070" width="1560" height="320" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         ENTIDADES — ROW 1: Organizador · Productor · Usuario
-    ══════════════════════════════════════════════ -->
-
-    <!-- Organizador -->
-    <mxCell id="E_ORG" value="&lt;&lt;Entity&gt;&gt; Organizador" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="40" y="60" width="260" height="128" as="geometry"/>
-    </mxCell>
-    <mxCell id="EO_F" value="- id: string  {PK uuid}&#xa;- nombre: string&#xa;- dniCuil: string  {UNIQUE}&#xa;- telefono: string | null&#xa;- email: string | null" style="text;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_ORG">
-      <mxGeometry x="0" y="28" width="260" height="80" as="geometry"/>
-    </mxCell>
-    <mxCell id="EO_M" value="+ productores: Productor[]" style="text;align=left;spacingLeft=8;fillColor=#c8ddf5;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="E_ORG">
-      <mxGeometry x="0" y="108" width="260" height="20" as="geometry"/>
-    </mxCell>
-
-    <!-- Productor -->
-    <mxCell id="E_PRD" value="&lt;&lt;Entity&gt;&gt; Productor" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="340" y="60" width="270" height="196" as="geometry"/>
-    </mxCell>
-    <mxCell id="EP_F" value="- id: string  {PK uuid}&#xa;- nombre: string&#xa;- dniCuil: string  {UNIQUE}&#xa;- telefono: string | null&#xa;- email: string | null&#xa;- fechaIncorporacion: Date | null&#xa;- companiasOpera: string | null&#xa;- estado: EstadoProductor" style="text;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_PRD">
-      <mxGeometry x="0" y="28" width="270" height="130" as="geometry"/>
-    </mxCell>
-    <mxCell id="EP_M" value="+ organizador: Organizador&#xa;+ asegurados: Asegurado[]&#xa;+ polizas: Poliza[]" style="text;align=left;spacingLeft=8;fillColor=#c8ddf5;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="E_PRD">
-      <mxGeometry x="0" y="158" width="270" height="38" as="geometry"/>
-    </mxCell>
-
-    <!-- Usuario -->
-    <mxCell id="E_USR" value="&lt;&lt;Entity&gt;&gt; Usuario" style="swimlane;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="660" y="60" width="300" height="196" as="geometry"/>
-    </mxCell>
-    <mxCell id="EU_F" value="- id: string  {PK uuid}&#xa;- identificadorAcceso: string  {UNIQUE}&#xa;- credencial: string  {bcryptjs hash}&#xa;- perfil: UserRole&#xa;- estado: UserStatus&#xa;- ultimaSesion: Date | null" style="text;align=left;spacingLeft=8;fillColor=#fff2cc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_USR">
-      <mxGeometry x="0" y="28" width="300" height="110" as="geometry"/>
-    </mxCell>
-    <mxCell id="EU_M" value="+ organizador: Organizador | null  {FK, CASCADE}&#xa;+ productor: Productor | null      {FK, CASCADE}&#xa;+ asegurado: Asegurado | null      {FK, CASCADE}" style="text;align=left;spacingLeft=8;fillColor=#fff0a0;strokeColor=#d6b656;fontSize=9;" vertex="1" parent="E_USR">
-      <mxGeometry x="0" y="138" width="300" height="58" as="geometry"/>
-    </mxCell>
-
-    <!-- Asegurado -->
-    <mxCell id="E_ASG" value="&lt;&lt;Entity&gt;&gt; Asegurado" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="40" y="310" width="270" height="210" as="geometry"/>
-    </mxCell>
-    <mxCell id="EA_F" value="- id: string  {PK uuid}&#xa;- nombre: string&#xa;- dniCuil: string  {UNIQUE}  ← regla crítica&#xa;- fechaNacimiento: Date | null&#xa;- direccion: string | null&#xa;- codigoPostal: string | null&#xa;- telefono: string | null&#xa;- email: string | null" style="text;align=left;spacingLeft=8;fillColor=#d5e8d4;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_ASG">
-      <mxGeometry x="0" y="28" width="270" height="130" as="geometry"/>
-    </mxCell>
-    <mxCell id="EA_M" value="+ productor: Productor  {FK}&#xa;+ bienes: BienAsegurado[]&#xa;+ polizas: Poliza[]&#xa;+ siniestros: Siniestro[]&#xa;+ reclamos: Reclamo[]" style="text;align=left;spacingLeft=8;fillColor=#b8ddb5;strokeColor=#82b366;fontSize=9;" vertex="1" parent="E_ASG">
-      <mxGeometry x="0" y="158" width="270" height="52" as="geometry"/>
-    </mxCell>
-
-    <!-- BienAsegurado -->
-    <mxCell id="E_BIE" value="&lt;&lt;Entity&gt;&gt; BienAsegurado" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="360" y="310" width="290" height="266" as="geometry"/>
-    </mxCell>
-    <mxCell id="EB_F" value="- id: string  {PK uuid}&#xa;- tipo: TipoBien&#xa;- sumaAsegurada: number | null&#xa;──── atributos automotor ────&#xa;- patente: string | null&#xa;- marca: string | null&#xa;- modelo: string | null&#xa;- version: string | null&#xa;- anioFabricacion: number | null&#xa;- uso: UsoVehiculo | null&#xa;- tieneGnc: boolean | null&#xa;- accesoriosDeclarados: string | null" style="text;align=left;spacingLeft=8;fillColor=#d5e8d4;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_BIE">
-      <mxGeometry x="0" y="28" width="290" height="196" as="geometry"/>
-    </mxCell>
-    <mxCell id="EB_M" value="+ asegurado: Asegurado&#xa;+ polizas: Poliza[]&#xa;+ siniestros: Siniestro[]&#xa;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#b8ddb5;strokeColor=#82b366;fontSize=9;" vertex="1" parent="E_BIE">
-      <mxGeometry x="0" y="224" width="290" height="42" as="geometry"/>
-    </mxCell>
-
-    <!-- CompaniaAseguradora -->
-    <mxCell id="E_CIA" value="&lt;&lt;Entity&gt;&gt; CompaniaAseguradora" style="swimlane;startSize=28;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="1060" y="310" width="300" height="162" as="geometry"/>
-    </mxCell>
-    <mxCell id="EC_F" value="- id: string  {PK uuid}&#xa;- nombre: string  {UNIQUE}&#xa;- periodoDGraciaDias: number | null&#xa;- periodicidadRefacturacion: PeriodicidadRefacturacion | null&#xa;- mecanismoNotificacion: string | null" style="text;align=left;spacingLeft=8;fillColor=#f8cecc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_CIA">
-      <mxGeometry x="0" y="28" width="300" height="98" as="geometry"/>
-    </mxCell>
-    <mxCell id="EC_M" value="+ polizas: Poliza[]&#xa;+ siniestros: Siniestro[]&#xa;+ reclamos: Reclamo[]" style="text;align=left;spacingLeft=8;fillColor=#f5c8c5;strokeColor=#b85450;fontSize=9;" vertex="1" parent="E_CIA">
-      <mxGeometry x="0" y="126" width="300" height="36" as="geometry"/>
-    </mxCell>
-
-    <!-- Poliza -->
-    <mxCell id="E_POL" value="&lt;&lt;Entity&gt;&gt; Poliza" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="710" y="310" width="300" height="242" as="geometry"/>
-    </mxCell>
-    <mxCell id="EPL_F" value="- id: string  {PK uuid}&#xa;- numeroPoliza: string&#xa;- vigenciaInicio: Date  {date — ISO string}&#xa;- vigenciaFin: Date  {date — ISO string}&#xa;- importeCuotaVigente: number&#xa;- modalidadPago: string | null&#xa;- estado: EstadoPoliza&#xa;- periodicidadRefacturacion: PeriodicidadRefacturacion | null" style="text;align=left;spacingLeft=8;fillColor=#e1d5e7;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_POL">
-      <mxGeometry x="0" y="28" width="300" height="140" as="geometry"/>
-    </mxCell>
-    <mxCell id="EPL_M" value="+ asegurado: Asegurado&#xa;+ bien: BienAsegurado&#xa;+ productor: Productor&#xa;+ compania: CompaniaAseguradora&#xa;+ endosos: Endoso[]&#xa;+ cuotas: Cuota[]&#xa;+ siniestros: Siniestro[]&#xa;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#d5c8e0;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="E_POL">
-      <mxGeometry x="0" y="168" width="300" height="74" as="geometry"/>
-    </mxCell>
-
-    <!-- Endoso -->
-    <mxCell id="E_END" value="&lt;&lt;Entity&gt;&gt; Endoso" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="550" y="630" width="280" height="164" as="geometry"/>
-    </mxCell>
-    <mxCell id="EEN_F" value="- id: string  {PK uuid}&#xa;- numeroEndoso: string&#xa;- tipoModificacion: string&#xa;- importeActualizado: number | null&#xa;- sumaAseguradaActualizada: number | null&#xa;- fechaEmision: Date" style="text;align=left;spacingLeft=8;fillColor=#e1d5e7;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_END">
-      <mxGeometry x="0" y="28" width="280" height="106" as="geometry"/>
-    </mxCell>
-    <mxCell id="EEN_M" value="+ poliza: Poliza  {FK, CASCADE}" style="text;align=left;spacingLeft=8;fillColor=#d5c8e0;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="E_END">
-      <mxGeometry x="0" y="134" width="280" height="30" as="geometry"/>
-    </mxCell>
-
-    <!-- Cuota -->
-    <mxCell id="E_CUO" value="&lt;&lt;Entity&gt;&gt; Cuota" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="870" y="630" width="290" height="182" as="geometry"/>
-    </mxCell>
-    <mxCell id="ECU_F" value="- id: string  {PK uuid}&#xa;- numeroCuota: number&#xa;- importe: number&#xa;- fechaVencimiento: Date  {YYYY-MM-DD}&#xa;- estado: EstadoCuota&#xa;- fechaPagoEfectivo: Date | null&#xa;- medioPago: string | null" style="text;align=left;spacingLeft=8;fillColor=#e1d5e7;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_CUO">
-      <mxGeometry x="0" y="28" width="290" height="124" as="geometry"/>
-    </mxCell>
-    <mxCell id="ECU_M" value="+ poliza: Poliza  {FK, CASCADE}&#xa;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#d5c8e0;strokeColor=#9673a6;fontSize=9;" vertex="1" parent="E_CUO">
-      <mxGeometry x="0" y="152" width="290" height="30" as="geometry"/>
-    </mxCell>
-
-    <!-- Siniestro -->
-    <mxCell id="E_SIN" value="&lt;&lt;Entity&gt;&gt; Siniestro" style="swimlane;startSize=28;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="40" y="630" width="290" height="214" as="geometry"/>
-    </mxCell>
-    <mxCell id="ES_F" value="- id: string  {PK uuid}&#xa;- tipo: TipoSiniestro&#xa;- fechaOcurrencia: Date&#xa;- horaOcurrencia: string | null&#xa;- lugarOcurrencia: string | null&#xa;- relato: string | null&#xa;- datosTerceros: string | null&#xa;- estado: EstadoSiniestro&#xa;- numeroDenunciaCompania: string | null" style="text;align=left;spacingLeft=8;fillColor=#ffe6cc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_SIN">
-      <mxGeometry x="0" y="28" width="290" height="148" as="geometry"/>
-    </mxCell>
-    <mxCell id="ES_M" value="+ asegurado: Asegurado&#xa;+ bien: BienAsegurado&#xa;+ productor: Productor&#xa;+ compania: CompaniaAseguradora&#xa;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#ffd9a0;strokeColor=#d79b00;fontSize=9;" vertex="1" parent="E_SIN">
-      <mxGeometry x="0" y="176" width="290" height="38" as="geometry"/>
-    </mxCell>
-
-    <!-- Reclamo -->
-    <mxCell id="E_REC" value="&lt;&lt;Entity&gt;&gt; Reclamo" style="swimlane;startSize=28;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="1210" y="630" width="280" height="164" as="geometry"/>
-    </mxCell>
-    <mxCell id="ER_F" value="- id: string  {PK uuid}&#xa;- tipo: TipoReclamo&#xa;- descripcion: string | null&#xa;- estado: EstadoReclamo&#xa;- fechaApertura: Date" style="text;align=left;spacingLeft=8;fillColor=#ffe6cc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_REC">
-      <mxGeometry x="0" y="28" width="280" height="100" as="geometry"/>
-    </mxCell>
-    <mxCell id="ER_M" value="+ asegurado: Asegurado&#xa;+ productor: Productor&#xa;+ compania: CompaniaAseguradora | null" style="text;align=left;spacingLeft=8;fillColor=#ffd9a0;strokeColor=#d79b00;fontSize=9;" vertex="1" parent="E_REC">
-      <mxGeometry x="0" y="128" width="280" height="36" as="geometry"/>
-    </mxCell>
-
-    <!-- Documento -->
-    <mxCell id="E_DOC" value="&lt;&lt;Entity&gt;&gt; Documento  — FK polimórfica (solo 1 FK poblada por fila)" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="550" y="880" width="480" height="120" as="geometry"/>
-    </mxCell>
-    <mxCell id="ED_F" value="- id: string  {PK}   - tipo: TipoDocumento   - entidadVinculada: EntidadDocumento&#xa;- archivoUrl: string  {URL al object storage S3/GCS}&#xa;- tramiteContexto: string | null   - fechaIncorporacion: Date" style="text;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=none;verticalAlign=top;fontSize=9;" vertex="1" parent="E_DOC">
-      <mxGeometry x="0" y="28" width="480" height="54" as="geometry"/>
-    </mxCell>
-    <mxCell id="ED_M" value="+ asegurado? | bienAsegurado? | poliza? | cuota? | siniestro? | reclamo?  (ON DELETE SET NULL)" style="text;align=left;spacingLeft=8;fillColor=#c8ddf5;strokeColor=#6c8ebf;fontSize=9;" vertex="1" parent="E_DOC">
-      <mxGeometry x="0" y="82" width="480" height="38" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         SERVICIOS
-    ══════════════════════════════════════════════ -->
-
-    <!-- AuthService -->
-    <mxCell id="S_AUTH" value="&lt;&lt;Service&gt;&gt; AuthService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="40" y="1060" width="300" height="158" as="geometry"/>
-    </mxCell>
-    <mxCell id="SA_F" value="- usuarioRepo: Repository&lt;Usuario&gt;&#xa;- organizadorRepo: Repository&lt;Organizador&gt;&#xa;- productorRepo: Repository&lt;Productor&gt;&#xa;- aseguradoRepo: Repository&lt;Asegurado&gt;&#xa;- jwtService: JwtService" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_AUTH">
-      <mxGeometry x="0" y="28" width="300" height="82" as="geometry"/>
-    </mxCell>
-    <mxCell id="SA_M" value="+ login(dto: LoginDto): Promise&lt;TokenResponse&gt;&#xa;+ createUsuario(dto, creador): Promise&lt;Usuario&gt;&#xa;+ updateStatus(id, estado, sol): Promise&lt;Usuario&gt;&#xa;- linkEntidad(usuario, perfil, id): Promise&lt;void&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_AUTH">
-      <mxGeometry x="0" y="110" width="300" height="48" as="geometry"/>
-    </mxCell>
-
-    <!-- AseguradosService -->
-    <mxCell id="S_ASG" value="&lt;&lt;Service&gt;&gt; AseguradosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="360" y="1060" width="300" height="158" as="geometry"/>
-    </mxCell>
-    <mxCell id="SAG_F" value="- aseguradoRepo: Repository&lt;Asegurado&gt;&#xa;- productorRepo: Repository&lt;Productor&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_ASG">
-      <mxGeometry x="0" y="28" width="300" height="40" as="geometry"/>
-    </mxCell>
-    <mxCell id="SAG_M" value="+ findAll(usuario, search?): Promise&lt;Asegurado[]&gt;&#xa;  Filtro de cartera en query DB — no en memoria&#xa;+ findOne(id, usuario): Promise&lt;Asegurado&gt;&#xa;+ create(dto, usuario): Promise&lt;Asegurado&gt;&#xa;  Lanza 409 si dniCuil duplicado&#xa;+ update(id, dto, usuario): Promise&lt;Asegurado&gt;&#xa;- checkAccess(asegurado, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_ASG">
-      <mxGeometry x="0" y="68" width="300" height="90" as="geometry"/>
-    </mxCell>
-
-    <!-- PolizasService -->
-    <mxCell id="S_POL" value="&lt;&lt;Service&gt;&gt; PolizasService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="680" y="1060" width="310" height="188" as="geometry"/>
-    </mxCell>
-    <mxCell id="SPL_F" value="- polizaRepo, endosoRepo, aseguradoRepo&#xa;- bienRepo, productorRepo, companiaRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_POL">
-      <mxGeometry x="0" y="28" width="310" height="36" as="geometry"/>
-    </mxCell>
-    <mxCell id="SPL_M" value="+ findAll(usuario): Promise&lt;Poliza[]&gt;&#xa;+ findOne(id, usuario): Promise&lt;Poliza&gt;&#xa;+ create(dto, usuario): Promise&lt;Poliza&gt;&#xa;+ update(id, dto, usuario): Promise&lt;Poliza&gt;&#xa;+ createEndoso(polizaId, dto, usr): Promise&lt;Endoso&gt;&#xa;+ findEndosos(polizaId, usr): Promise&lt;Endoso[]&gt;&#xa;- suspenderVencidas(): Promise&lt;void&gt;  {sin cron, en read}&#xa;- checkAccess(poliza, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_POL">
-      <mxGeometry x="0" y="64" width="310" height="124" as="geometry"/>
-    </mxCell>
-
-    <!-- CuotasService -->
-    <mxCell id="S_CUO" value="&lt;&lt;Service&gt;&gt; CuotasService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="1010" y="1060" width="310" height="188" as="geometry"/>
-    </mxCell>
-    <mxCell id="SCU_F" value="- cuotaRepo: Repository&lt;Cuota&gt;&#xa;- polizaRepo: Repository&lt;Poliza&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_CUO">
-      <mxGeometry x="0" y="28" width="310" height="36" as="geometry"/>
-    </mxCell>
-    <mxCell id="SCU_M" value="+ findOne(id, usuario): Promise&lt;Cuota&gt;&#xa;+ findByPoliza(polizaId, usuario): Promise&lt;Cuota[]&gt;&#xa;+ create(dto, usuario): Promise&lt;Cuota&gt;&#xa;+ update(id, dto, usuario): Promise&lt;Cuota&gt;&#xa;+ findVencimientosProximos(dias, usr): Promise&lt;Cuota[]&gt;&#xa;  Compara fechas como strings ISO YYYY-MM-DD&#xa;- loadPoliza(polizaId): Promise&lt;Poliza&gt;&#xa;- checkPolizaAccess(poliza, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_CUO">
-      <mxGeometry x="0" y="64" width="310" height="124" as="geometry"/>
-    </mxCell>
-
-    <!-- SiniestrosService -->
-    <mxCell id="S_SIN" value="&lt;&lt;Service&gt;&gt; SiniestrosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="40" y="1260" width="300" height="130" as="geometry"/>
-    </mxCell>
-    <mxCell id="SSI_F" value="- siniestroRepo, aseguradoRepo&#xa;- bienRepo, productorRepo, companiaRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_SIN">
-      <mxGeometry x="0" y="28" width="300" height="36" as="geometry"/>
-    </mxCell>
-    <mxCell id="SSI_M" value="+ findAll(usuario): Promise&lt;Siniestro[]&gt;&#xa;+ findOne(id, usuario): Promise&lt;Siniestro&gt;&#xa;+ create(dto, usuario): Promise&lt;Siniestro&gt;&#xa;+ updateEstado(id, dto, usuario): Promise&lt;Siniestro&gt;&#xa;- checkAccess(siniestro, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_SIN">
-      <mxGeometry x="0" y="64" width="300" height="66" as="geometry"/>
-    </mxCell>
-
-    <!-- ReclamosService -->
-    <mxCell id="S_REC" value="&lt;&lt;Service&gt;&gt; ReclamosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="360" y="1260" width="300" height="130" as="geometry"/>
-    </mxCell>
-    <mxCell id="SRE_F" value="- reclamoRepo, aseguradoRepo&#xa;- productorRepo, companiaRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_REC">
-      <mxGeometry x="0" y="28" width="300" height="36" as="geometry"/>
-    </mxCell>
-    <mxCell id="SRE_M" value="+ findAll(usuario): Promise&lt;Reclamo[]&gt;&#xa;+ findOne(id, usuario): Promise&lt;Reclamo&gt;&#xa;+ create(dto, usuario): Promise&lt;Reclamo&gt;&#xa;+ updateEstado(id, dto, usuario): Promise&lt;Reclamo&gt;&#xa;- checkAccess(reclamo, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_REC">
-      <mxGeometry x="0" y="64" width="300" height="66" as="geometry"/>
-    </mxCell>
-
-    <!-- DocumentosService -->
-    <mxCell id="S_DOC" value="&lt;&lt;Service&gt;&gt; DocumentosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="680" y="1260" width="310" height="130" as="geometry"/>
-    </mxCell>
-    <mxCell id="SDO_F" value="- documentoRepo, aseguradoRepo, bienRepo&#xa;- polizaRepo, cuotaRepo, siniestroRepo, reclamoRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_DOC">
-      <mxGeometry x="0" y="28" width="310" height="36" as="geometry"/>
-    </mxCell>
-    <mxCell id="SDO_M" value="+ findByEntidad(entidad, entidadId): Promise&lt;Documento[]&gt;&#xa;+ create(dto): Promise&lt;Documento&gt;&#xa;- loadEntidad(entidad, id): Promise&lt;object&gt;&#xa;  Resuelve repo por enum via Record map&#xa;- entidadToField(entidad): string" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_DOC">
-      <mxGeometry x="0" y="64" width="310" height="66" as="geometry"/>
-    </mxCell>
-
-    <!-- ReportesService -->
-    <mxCell id="S_REP" value="&lt;&lt;Service&gt;&gt; ReportesService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="1010" y="1260" width="310" height="166" as="geometry"/>
-    </mxCell>
-    <mxCell id="SRP_F" value="- aseguradoRepo, bienRepo, polizaRepo, cuotaRepo&#xa;- siniestroRepo, reclamoRepo, productorRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" vertex="1" parent="S_REP">
-      <mxGeometry x="0" y="28" width="310" height="36" as="geometry"/>
-    </mxCell>
-    <mxCell id="SRP_M" value="+ carteraAsegurados(usuario): Promise&lt;Asegurado[]&gt;&#xa;+ vencimientosProximos(dias, usr): Promise&lt;Cuota[]&gt;&#xa;+ siniestros(estado?, usr): Promise&lt;Siniestro[]&gt;&#xa;+ reclamos(estado?, tipo?, cia?, usr): Promise&lt;Reclamo[]&gt;&#xa;+ polizas(estado?, vencenEnDias?, usr): Promise&lt;Poliza[]&gt;&#xa;+ comisiones(usr): Promise&lt;object[]&gt;&#xa;+ datosIncompletos(usr): Promise&lt;BienAsegurado[]&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="S_REP">
-      <mxGeometry x="0" y="64" width="310" height="102" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         CONTROLLERS
-    ══════════════════════════════════════════════ -->
-
-    <!-- AuthController -->
-    <mxCell id="C_AUTH" value="&lt;&lt;Controller&gt;&gt; AuthController&#xa;@ApiTags('auth')  @Controller('auth')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="40" y="1520" width="270" height="100" as="geometry"/>
-    </mxCell>
-    <mxCell id="CA_M" value="@Public() POST login → AuthService.login()&#xa;@Roles(ORG) POST users → AuthService.createUsuario()&#xa;@Roles(ORG) PATCH users/:id/status → AuthService.updateStatus()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_AUTH">
-      <mxGeometry x="0" y="34" width="270" height="66" as="geometry"/>
-    </mxCell>
-
-    <!-- AseguradosController -->
-    <mxCell id="C_ASG" value="&lt;&lt;Controller&gt;&gt; AseguradosController&#xa;@Controller('asegurados')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="330" y="1520" width="280" height="100" as="geometry"/>
-    </mxCell>
-    <mxCell id="CAS_M" value="GET / → findAll()  · GET /:id → findOne()&#xa;@Roles(ORG,PROD) POST / → create()&#xa;@Roles(ORG,PROD) PATCH /:id → update()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_ASG">
-      <mxGeometry x="0" y="34" width="280" height="66" as="geometry"/>
-    </mxCell>
-
-    <!-- PolizasController -->
-    <mxCell id="C_POL" value="&lt;&lt;Controller&gt;&gt; PolizasController&#xa;@Controller('polizas')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="630" y="1520" width="280" height="110" as="geometry"/>
-    </mxCell>
-    <mxCell id="CPL_M" value="GET / → findAll()  · GET /:id → findOne()&#xa;@Roles(ORG,PROD) POST / → create()&#xa;@Roles(ORG,PROD) PATCH /:id → update()&#xa;@Roles(ORG,PROD) POST /:id/endosos · GET /:id/endosos" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_POL">
-      <mxGeometry x="0" y="34" width="280" height="76" as="geometry"/>
-    </mxCell>
-
-    <!-- CuotasController -->
-    <mxCell id="C_CUO" value="&lt;&lt;Controller&gt;&gt; CuotasController&#xa;@Controller('cuotas')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="930" y="1520" width="280" height="110" as="geometry"/>
-    </mxCell>
-    <mxCell id="CCU_M" value="GET vencimientos-proximos  ← declarado ANTES que :id&#xa;GET /?polizaId= · GET /:id&#xa;@Roles(ORG,PROD) POST / → create()&#xa;@Roles(ORG,PROD) PATCH /:id → update()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_CUO">
-      <mxGeometry x="0" y="34" width="280" height="76" as="geometry"/>
-    </mxCell>
-
-    <!-- SiniestrosController -->
-    <mxCell id="C_SIN" value="&lt;&lt;Controller&gt;&gt; SiniestrosController&#xa;@Controller('siniestros')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="40" y="1650" width="270" height="90" as="geometry"/>
-    </mxCell>
-    <mxCell id="CSI_M" value="GET / · GET /:id&#xa;@Roles(ORG,PROD) POST / → create()&#xa;@Roles(ORG,PROD) PATCH /:id/estado → updateEstado()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_SIN">
-      <mxGeometry x="0" y="34" width="270" height="56" as="geometry"/>
-    </mxCell>
-
-    <!-- ReclamosController -->
-    <mxCell id="C_REC" value="&lt;&lt;Controller&gt;&gt; ReclamosController&#xa;@Controller('reclamos')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="330" y="1650" width="270" height="90" as="geometry"/>
-    </mxCell>
-    <mxCell id="CRE_M" value="GET / · GET /:id&#xa;@Roles(ORG,PROD) POST / → create()&#xa;@Roles(ORG,PROD) PATCH /:id/estado → updateEstado()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_REC">
-      <mxGeometry x="0" y="34" width="270" height="56" as="geometry"/>
-    </mxCell>
-
-    <!-- DocumentosController -->
-    <mxCell id="C_DOC" value="&lt;&lt;Controller&gt;&gt; DocumentosController&#xa;@Controller('documentos')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="620" y="1650" width="280" height="90" as="geometry"/>
-    </mxCell>
-    <mxCell id="CDO_M" value="GET /?entidad=&amp;entidadId=  ← UUID validado con regex&#xa;@Roles(ORG,PROD) POST / → create()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_DOC">
-      <mxGeometry x="0" y="34" width="280" height="56" as="geometry"/>
-    </mxCell>
-
-    <!-- ReportesController -->
-    <mxCell id="C_REP" value="&lt;&lt;Controller&gt;&gt; ReportesController&#xa;@Roles(ORG,PROD)  @Controller('reportes')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="920" y="1650" width="310" height="110" as="geometry"/>
-    </mxCell>
-    <mxCell id="CRP_M" value="GET cartera-asegurados (R1)&#xa;GET vencimientos-proximos (R2)&#xa;GET siniestros (R3) · GET reclamos (R4)&#xa;GET polizas (R5) · GET comisiones (R6)&#xa;GET datos-incompletos (R7)" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" vertex="1" parent="C_REP">
-      <mxGeometry x="0" y="34" width="310" height="76" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         GUARDS + STRATEGY
-    ══════════════════════════════════════════════ -->
-
-    <!-- JwtAuthGuard -->
-    <mxCell id="G_JWT" value="&lt;&lt;Guard&gt;&gt; JwtAuthGuard&#xa;extends AuthGuard('jwt')" style="swimlane;startSize=34;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="40" y="1840" width="300" height="110" as="geometry"/>
-    </mxCell>
-    <mxCell id="GJ_F" value="- reflector: Reflector" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_JWT">
-      <mxGeometry x="0" y="34" width="300" height="22" as="geometry"/>
-    </mxCell>
-    <mxCell id="GJ_M" value="+ canActivate(ctx: ExecutionContext): boolean&#xa;  Si @Public() → return true (cortocircuita JWT)&#xa;  Si no → delega a Passport JWT strategy" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_JWT">
-      <mxGeometry x="0" y="56" width="300" height="54" as="geometry"/>
-    </mxCell>
-
-    <!-- RolesGuard -->
-    <mxCell id="G_ROL" value="&lt;&lt;Guard&gt;&gt; RolesGuard&#xa;implements CanActivate" style="swimlane;startSize=34;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="360" y="1840" width="310" height="120" as="geometry"/>
-    </mxCell>
-    <mxCell id="GR_F" value="- reflector: Reflector" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_ROL">
-      <mxGeometry x="0" y="34" width="310" height="22" as="geometry"/>
-    </mxCell>
-    <mxCell id="GR_M" value="+ canActivate(ctx): boolean&#xa;  Lee @Roles() metadata con Reflector&#xa;  Si sin @Roles() → permite (cualquier autenticado)&#xa;  Si perfil no en lista → ForbiddenException (403)" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_ROL">
-      <mxGeometry x="0" y="56" width="310" height="64" as="geometry"/>
-    </mxCell>
-
-    <!-- ThrottlerGuard -->
-    <mxCell id="G_THR" value="&lt;&lt;Guard&gt;&gt; ThrottlerGuard  (APP_GUARD global)" style="swimlane;startSize=28;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="690" y="1840" width="310" height="80" as="geometry"/>
-    </mxCell>
-    <mxCell id="GT_M" value="100 req/min por IP — ThrottlerModule.forRoot([{ttl:60000, limit:100}])&#xa;Registrado como primer APP_GUARD en AppModule" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_THR">
-      <mxGeometry x="0" y="28" width="310" height="52" as="geometry"/>
-    </mxCell>
-
-    <!-- JwtStrategy -->
-    <mxCell id="G_STR" value="&lt;&lt;Strategy&gt;&gt; JwtStrategy&#xa;extends PassportStrategy(Strategy)" style="swimlane;startSize=34;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="1020" y="1840" width="310" height="120" as="geometry"/>
-    </mxCell>
-    <mxCell id="GS_F" value="- usuarioRepo: Repository&lt;Usuario&gt;&#xa;secretOrKey: JWT_SECRET  {obligatorio en prod}" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_STR">
-      <mxGeometry x="0" y="34" width="310" height="38" as="geometry"/>
-    </mxCell>
-    <mxCell id="GS_M" value="+ validate(payload: JwtPayload): Promise&lt;Usuario&gt;&#xa;  Carga usuario desde DB con relaciones (org/prod/aseg)&#xa;  Lanza 401 si no existe o estado=INACTIVO" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" vertex="1" parent="G_STR">
-      <mxGeometry x="0" y="72" width="310" height="48" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         DTOs · INTERFACES · ENUMS
-    ══════════════════════════════════════════════ -->
-
-    <!-- LoginDto -->
-    <mxCell id="D_LOG" value="&lt;&lt;DTO&gt;&gt; LoginDto" style="swimlane;startSize=26;fillColor=#e8d5f5;strokeColor=#9673a6;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="40" y="2090" width="210" height="76" as="geometry"/>
-    </mxCell>
-    <mxCell id="DL_F" value="+ identificadorAcceso: string  @IsEmail&#xa;+ password: string  @IsString @MinLength(6)" style="text;align=left;spacingLeft=8;fillColor=#e8d5f5;strokeColor=none;fontSize=9;" vertex="1" parent="D_LOG">
-      <mxGeometry x="0" y="26" width="210" height="50" as="geometry"/>
-    </mxCell>
-
-    <!-- CreateAseguradoDto -->
-    <mxCell id="D_ASG" value="&lt;&lt;DTO&gt;&gt; CreateAseguradoDto" style="swimlane;startSize=26;fillColor=#e8d5f5;strokeColor=#9673a6;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="270" y="2090" width="240" height="102" as="geometry"/>
-    </mxCell>
-    <mxCell id="DA_F" value="+ nombre: string&#xa;+ dniCuil: string  @Length(7,20)&#xa;+ fechaNacimiento?: string  @IsDateString&#xa;+ direccion?, codigoPostal?, telefono?, email?&#xa;+ productorId: string  @IsUUID" style="text;align=left;spacingLeft=8;fillColor=#e8d5f5;strokeColor=none;fontSize=9;" vertex="1" parent="D_ASG">
-      <mxGeometry x="0" y="26" width="240" height="76" as="geometry"/>
-    </mxCell>
-
-    <!-- CreatePolizaDto -->
-    <mxCell id="D_POL" value="&lt;&lt;DTO&gt;&gt; CreatePolizaDto" style="swimlane;startSize=26;fillColor=#e8d5f5;strokeColor=#9673a6;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="530" y="2090" width="250" height="116" as="geometry"/>
-    </mxCell>
-    <mxCell id="DP_F" value="+ aseguradoId: string  @IsUUID&#xa;+ bienId: string  @IsUUID&#xa;+ productorId: string  @IsUUID&#xa;+ companiaId: string  @IsUUID&#xa;+ numeroPoliza, vigenciaInicio, vigenciaFin&#xa;+ importeCuotaVigente: number  @IsNumber&#xa;+ estado: EstadoPoliza" style="text;align=left;spacingLeft=8;fillColor=#e8d5f5;strokeColor=none;fontSize=9;" vertex="1" parent="D_POL">
-      <mxGeometry x="0" y="26" width="250" height="90" as="geometry"/>
-    </mxCell>
-
-    <!-- TokenResponse interface -->
-    <mxCell id="I_TOK" value="&lt;&lt;interface&gt;&gt; TokenResponse" style="swimlane;startSize=26;fillColor=#fffde7;strokeColor=#c9a900;fontStyle=3;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="800" y="2090" width="240" height="88" as="geometry"/>
-    </mxCell>
-    <mxCell id="IT_F" value="+ accessToken: string&#xa;+ perfil: string&#xa;+ id: string&#xa;+ aseguradoId: string | null&#xa;+ organizadorId: string | null" style="text;align=left;spacingLeft=8;fillColor=#fffde7;strokeColor=none;fontSize=9;" vertex="1" parent="I_TOK">
-      <mxGeometry x="0" y="26" width="240" height="62" as="geometry"/>
-    </mxCell>
-
-    <!-- JwtPayload interface -->
-    <mxCell id="I_JWT" value="&lt;&lt;interface&gt;&gt; JwtPayload" style="swimlane;startSize=26;fillColor=#fffde7;strokeColor=#c9a900;fontStyle=3;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="1060" y="2090" width="220" height="76" as="geometry"/>
-    </mxCell>
-    <mxCell id="IJ_F" value="+ sub: string   {usuario.id}&#xa;+ role: string  {usuario.perfil}&#xa;+ iat?: number&#xa;+ exp?: number" style="text;align=left;spacingLeft=8;fillColor=#fffde7;strokeColor=none;fontSize=9;" vertex="1" parent="I_JWT">
-      <mxGeometry x="0" y="26" width="220" height="50" as="geometry"/>
-    </mxCell>
-
-    <!-- Enums -->
-    <mxCell id="EN_ALL" value="&lt;&lt;enum&gt;&gt; @gestion-pas/types (14 enums)" style="swimlane;startSize=26;fillColor=#f5f5f5;strokeColor=#666;fontStyle=1;fontSize=10;" vertex="1" parent="1">
-      <mxGeometry x="40" y="2220" width="1280" height="50" as="geometry"/>
-    </mxCell>
-    <mxCell id="EN_V" value="UserRole(3) · UserStatus(2) · TipoBien(4) · UsoVehiculo(2) · EstadoPoliza(3) · PeriodicidadRefacturacion(4) · EstadoCuota(4) · TipoSiniestro(6) · EstadoSiniestro(4) · TipoReclamo(4) · EstadoReclamo(3) · EstadoProductor(2) · TipoDocumento(5) · EntidadDocumento(6)" style="text;align=left;spacingLeft=8;fillColor=#f5f5f5;strokeColor=none;fontSize=9;" vertex="1" parent="EN_ALL">
-      <mxGeometry x="0" y="26" width="1280" height="24" as="geometry"/>
-    </mxCell>
-
-    <!-- ══════════════════════════════════════════════
-         RELACIONES CLAVE
-    ══════════════════════════════════════════════ -->
-
-    <!-- Organizador 1 a N Productor -->
-    <mxCell id="REL_OP" value="1..*" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" parent="1" source="E_ORG" target="E_PRD">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <!-- Productor 1 a N Asegurado -->
-    <mxCell id="REL_PA" value="1..*" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="E_PRD" target="E_ASG">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <!-- Asegurado 1 a N BienAsegurado -->
-    <mxCell id="REL_AB" value="1..*" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="E_ASG" target="E_BIE">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <!-- Poliza 1 a N Endoso -->
-    <mxCell id="REL_PE" value="1..*  CASCADE" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#9673a6;strokeWidth=2;exitX=0.3;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="E_POL" target="E_END">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <!-- Poliza 1 a N Cuota -->
-    <mxCell id="REL_PC" value="1..*  CASCADE" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#9673a6;strokeWidth=2;exitX=0.7;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="E_POL" target="E_CUO">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <!-- Cuota 0..N - Documento -->
-    <mxCell id="REL_CD" value="0..N  SET NULL" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERzeroToOne;dashed=1;strokeColor=#6c8ebf;strokeWidth=1;" edge="1" parent="1" source="E_CUO" target="E_DOC">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <!-- Siniestro 0..N - Documento -->
-    <mxCell id="REL_SD" value="0..N  SET NULL" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERzeroToOne;dashed=1;strokeColor=#d79b00;strokeWidth=1;" edge="1" parent="1" source="E_SIN" target="E_DOC">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-
-    <!-- Services usan Entities (dashed) -->
-    <mxCell id="REL_SAUTH_USR" value="usa" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#003070;strokeWidth=1;" edge="1" parent="1" source="S_AUTH" target="E_USR">
-      <mxGeometry relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="190" y="1050"/>
-          <mxPoint x="810" y="1050"/>
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="REL_SASG_ASG" value="usa" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#003070;strokeWidth=1;" edge="1" parent="1" source="S_ASG" target="E_ASG">
-      <mxGeometry relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="510" y="1042"/>
-          <mxPoint x="175" y="1042"/>
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="REL_SPOL_POL" value="usa" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#003070;strokeWidth=1;" edge="1" parent="1" source="S_POL" target="E_POL">
-      <mxGeometry relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="835" y="1044"/>
-          <mxPoint x="860" y="1044"/>
-        </Array>
-      </mxGeometry>
-    </mxCell>
-
-    <!-- Controllers usan Services (solid) -->
-    <mxCell id="REL_CA_SA" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_AUTH" target="S_AUTH">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CAS_SAG" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_ASG" target="S_ASG">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CPL_SPL" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_POL" target="S_POL">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CCU_SCU" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_CUO" target="S_CUO">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CSI_SSI" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_SIN" target="S_SIN">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CRE_SRE" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_REC" target="S_REC">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CDO_SDO" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_DOC" target="S_DOC">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_CRP_SRP" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" edge="1" parent="1" source="C_REP" target="S_REP">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-
-    <!-- Guards APP_GUARD pipeline -->
-    <mxCell id="REL_G1G2" value="ejecutado antes" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#7a4000;strokeWidth=1.5;dashed=0;" edge="1" parent="1" source="G_THR" target="G_JWT">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_G2G3" value="ejecutado antes" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#7a4000;strokeWidth=1.5;" edge="1" parent="1" source="G_JWT" target="G_ROL">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="REL_JWT_STR" value="delega a" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#7a4000;strokeWidth=1;" edge="1" parent="1" source="G_JWT" target="G_STR">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-
-    <!-- AuthService retorna TokenResponse -->
-    <mxCell id="REL_AS_TR" value="retorna" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#c9a900;strokeWidth=1;" edge="1" parent="1" source="S_AUTH" target="I_TOK">
-      <mxGeometry relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="190" y="2000"/>
-          <mxPoint x="920" y="2000"/>
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <!-- JwtStrategy valida JwtPayload -->
-    <mxCell id="REL_STR_JP" value="valida" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#c9a900;strokeWidth=1;" edge="1" parent="1" source="G_STR" target="I_JWT">
-      <mxGeometry relative="1" as="geometry">
-        <Array as="points">
-          <mxPoint x="1175" y="2000"/>
-          <mxPoint x="1170" y="2000"/>
-        </Array>
-      </mxGeometry>
-    </mxCell>
-
-  </root>
-</mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram name="Clases-GestionPAS" id="0">
+        <mxGraphModel dx="1285" dy="2860" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="TTL" value="&lt;b&gt;&lt;font style='font-size:16px'&gt;Diagrama de Clases — Gestión PAS (NestJS + TypeORM)&lt;/font&gt;&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px;color:#555'&gt;Entidades · Servicios · Controllers · Guards · DTOs · Interfaces · Enums&lt;/font&gt;" style="text;html=1;align=center;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="200" y="-60" width="1200" height="46" as="geometry"/>
+                </mxCell>
+                <mxCell id="LYR_ENT" value="Capa de Entidades (TypeORM)" style="swimlane;startSize=22;fillColor=none;strokeColor=#aaaaaa;dashed=1;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="20" width="1560" height="1000" as="geometry"/>
+                </mxCell>
+                <mxCell id="LYR_SVC" value="Capa de Servicios (NestJS @Injectable)" style="swimlane;startSize=22;fillColor=none;strokeColor=#6c8ebf;dashed=1;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="1040" width="1560" height="440" as="geometry"/>
+                </mxCell>
+                <mxCell id="LYR_CTL" value="Capa de Controllers (NestJS @Controller)" style="swimlane;startSize=22;fillColor=none;strokeColor=#82b366;dashed=1;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="1500" width="1560" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="LYR_SEC" value="Capa de Seguridad (Guards + Strategy)" style="swimlane;startSize=22;fillColor=none;strokeColor=#d79b00;dashed=1;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="1820" width="1560" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="LYR_DTO" value="DTOs + Interfaces + Enums" style="swimlane;startSize=22;fillColor=none;strokeColor=#9673a6;dashed=1;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="2070" width="1560" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_ORG" value="&lt;&lt;Entity&gt;&gt; Organizador" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="60" width="260" height="128" as="geometry"/>
+                </mxCell>
+                <mxCell id="EO_F" value="- id: string  {PK uuid}&#10;- nombre: string&#10;- dniCuil: string  {UNIQUE}&#10;- telefono: string | null&#10;- email: string | null" style="text;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_ORG" vertex="1">
+                    <mxGeometry y="28" width="260" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="EO_M" value="+ productores: Productor[]" style="text;align=left;spacingLeft=8;fillColor=#c8ddf5;strokeColor=#6c8ebf;fontSize=9;" parent="E_ORG" vertex="1">
+                    <mxGeometry y="108" width="260" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_PRD" value="&lt;&lt;Entity&gt;&gt; Productor" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="60" width="270" height="196" as="geometry"/>
+                </mxCell>
+                <mxCell id="EP_F" value="- id: string  {PK uuid}&#10;- nombre: string&#10;- dniCuil: string  {UNIQUE}&#10;- telefono: string | null&#10;- email: string | null&#10;- fechaIncorporacion: Date | null&#10;- companiasOpera: string | null&#10;- estado: EstadoProductor" style="text;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_PRD" vertex="1">
+                    <mxGeometry y="28" width="270" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="EP_M" value="+ organizador: Organizador&#10;+ asegurados: Asegurado[]&#10;+ polizas: Poliza[]" style="text;align=left;spacingLeft=8;fillColor=#c8ddf5;strokeColor=#6c8ebf;fontSize=9;" parent="E_PRD" vertex="1">
+                    <mxGeometry y="158" width="270" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_USR" value="&lt;&lt;Entity&gt;&gt; Usuario" style="swimlane;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="60" width="300" height="196" as="geometry"/>
+                </mxCell>
+                <mxCell id="EU_F" value="- id: string  {PK uuid}&#10;- identificadorAcceso: string  {UNIQUE}&#10;- credencial: string  {bcryptjs hash}&#10;- perfil: UserRole&#10;- estado: UserStatus&#10;- ultimaSesion: Date | null" style="text;align=left;spacingLeft=8;fillColor=#fff2cc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_USR" vertex="1">
+                    <mxGeometry y="28" width="300" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="EU_M" value="+ organizador: Organizador | null  {FK, CASCADE}&#10;+ productor: Productor | null      {FK, CASCADE}&#10;+ asegurado: Asegurado | null      {FK, CASCADE}" style="text;align=left;spacingLeft=8;fillColor=#fff0a0;strokeColor=#d6b656;fontSize=9;" parent="E_USR" vertex="1">
+                    <mxGeometry y="138" width="300" height="58" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_ASG" value="&lt;&lt;Entity&gt;&gt; Asegurado" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="310" width="270" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="EA_F" value="- id: string  {PK uuid}&#10;- nombre: string&#10;- dniCuil: string  {UNIQUE}  ← regla crítica&#10;- fechaNacimiento: Date | null&#10;- direccion: string | null&#10;- codigoPostal: string | null&#10;- telefono: string | null&#10;- email: string | null" style="text;align=left;spacingLeft=8;fillColor=#d5e8d4;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_ASG" vertex="1">
+                    <mxGeometry y="28" width="270" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="EA_M" value="+ productor: Productor  {FK}&#10;+ bienes: BienAsegurado[]&#10;+ polizas: Poliza[]&#10;+ siniestros: Siniestro[]&#10;+ reclamos: Reclamo[]" style="text;align=left;spacingLeft=8;fillColor=#b8ddb5;strokeColor=#82b366;fontSize=9;" parent="E_ASG" vertex="1">
+                    <mxGeometry y="158" width="270" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_BIE" value="&lt;&lt;Entity&gt;&gt; BienAsegurado" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="310" width="290" height="266" as="geometry"/>
+                </mxCell>
+                <mxCell id="EB_F" value="- id: string  {PK uuid}&#10;- tipo: TipoBien&#10;- sumaAsegurada: number | null&#10;──── atributos automotor ────&#10;- patente: string | null&#10;- marca: string | null&#10;- modelo: string | null&#10;- version: string | null&#10;- anioFabricacion: number | null&#10;- uso: UsoVehiculo | null&#10;- tieneGnc: boolean | null&#10;- accesoriosDeclarados: string | null" style="text;align=left;spacingLeft=8;fillColor=#d5e8d4;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_BIE" vertex="1">
+                    <mxGeometry y="28" width="290" height="196" as="geometry"/>
+                </mxCell>
+                <mxCell id="EB_M" value="+ asegurado: Asegurado&#10;+ polizas: Poliza[]&#10;+ siniestros: Siniestro[]&#10;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#b8ddb5;strokeColor=#82b366;fontSize=9;" parent="E_BIE" vertex="1">
+                    <mxGeometry y="224" width="290" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_CIA" value="&lt;&lt;Entity&gt;&gt; CompaniaAseguradora" style="swimlane;startSize=28;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1060" y="310" width="300" height="162" as="geometry"/>
+                </mxCell>
+                <mxCell id="EC_F" value="- id: string  {PK uuid}&#10;- nombre: string  {UNIQUE}&#10;- periodoDGraciaDias: number | null&#10;- periodicidadRefacturacion: PeriodicidadRefacturacion | null&#10;- mecanismoNotificacion: string | null" style="text;align=left;spacingLeft=8;fillColor=#f8cecc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_CIA" vertex="1">
+                    <mxGeometry y="28" width="300" height="98" as="geometry"/>
+                </mxCell>
+                <mxCell id="EC_M" value="+ polizas: Poliza[]&#10;+ siniestros: Siniestro[]&#10;+ reclamos: Reclamo[]" style="text;align=left;spacingLeft=8;fillColor=#f5c8c5;strokeColor=#b85450;fontSize=9;" parent="E_CIA" vertex="1">
+                    <mxGeometry y="126" width="300" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_POL" value="&lt;&lt;Entity&gt;&gt; Poliza" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="710" y="310" width="300" height="242" as="geometry"/>
+                </mxCell>
+                <mxCell id="EPL_F" value="- id: string  {PK uuid}&#10;- numeroPoliza: string&#10;- vigenciaInicio: Date  {date — ISO string}&#10;- vigenciaFin: Date  {date — ISO string}&#10;- importeCuotaVigente: number&#10;- modalidadPago: string | null&#10;- estado: EstadoPoliza&#10;- periodicidadRefacturacion: PeriodicidadRefacturacion | null" style="text;align=left;spacingLeft=8;fillColor=#e1d5e7;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_POL" vertex="1">
+                    <mxGeometry y="28" width="300" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="EPL_M" value="+ asegurado: Asegurado&#10;+ bien: BienAsegurado&#10;+ productor: Productor&#10;+ compania: CompaniaAseguradora&#10;+ endosos: Endoso[]&#10;+ cuotas: Cuota[]&#10;+ siniestros: Siniestro[]&#10;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#d5c8e0;strokeColor=#9673a6;fontSize=9;" parent="E_POL" vertex="1">
+                    <mxGeometry y="168" width="300" height="74" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_END" value="&lt;&lt;Entity&gt;&gt; Endoso" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="630" width="280" height="164" as="geometry"/>
+                </mxCell>
+                <mxCell id="EEN_F" value="- id: string  {PK uuid}&#10;- numeroEndoso: string&#10;- tipoModificacion: string&#10;- importeActualizado: number | null&#10;- sumaAseguradaActualizada: number | null&#10;- fechaEmision: Date" style="text;align=left;spacingLeft=8;fillColor=#e1d5e7;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_END" vertex="1">
+                    <mxGeometry y="28" width="280" height="106" as="geometry"/>
+                </mxCell>
+                <mxCell id="EEN_M" value="+ poliza: Poliza  {FK, CASCADE}" style="text;align=left;spacingLeft=8;fillColor=#d5c8e0;strokeColor=#9673a6;fontSize=9;" parent="E_END" vertex="1">
+                    <mxGeometry y="134" width="280" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_CUO" value="&lt;&lt;Entity&gt;&gt; Cuota" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="630" width="290" height="182" as="geometry"/>
+                </mxCell>
+                <mxCell id="ECU_F" value="- id: string  {PK uuid}&#10;- numeroCuota: number&#10;- importe: number&#10;- fechaVencimiento: Date  {YYYY-MM-DD}&#10;- estado: EstadoCuota&#10;- fechaPagoEfectivo: Date | null&#10;- medioPago: string | null" style="text;align=left;spacingLeft=8;fillColor=#e1d5e7;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_CUO" vertex="1">
+                    <mxGeometry y="28" width="290" height="124" as="geometry"/>
+                </mxCell>
+                <mxCell id="ECU_M" value="+ poliza: Poliza  {FK, CASCADE}&#10;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#d5c8e0;strokeColor=#9673a6;fontSize=9;" parent="E_CUO" vertex="1">
+                    <mxGeometry y="152" width="290" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_SIN" value="&lt;&lt;Entity&gt;&gt; Siniestro" style="swimlane;startSize=28;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="630" width="290" height="214" as="geometry"/>
+                </mxCell>
+                <mxCell id="ES_F" value="- id: string  {PK uuid}&#10;- tipo: TipoSiniestro&#10;- fechaOcurrencia: Date&#10;- horaOcurrencia: string | null&#10;- lugarOcurrencia: string | null&#10;- relato: string | null&#10;- datosTerceros: string | null&#10;- estado: EstadoSiniestro&#10;- numeroDenunciaCompania: string | null" style="text;align=left;spacingLeft=8;fillColor=#ffe6cc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_SIN" vertex="1">
+                    <mxGeometry y="28" width="290" height="148" as="geometry"/>
+                </mxCell>
+                <mxCell id="ES_M" value="+ asegurado: Asegurado&#10;+ bien: BienAsegurado&#10;+ productor: Productor&#10;+ compania: CompaniaAseguradora&#10;+ documentos: Documento[]" style="text;align=left;spacingLeft=8;fillColor=#ffd9a0;strokeColor=#d79b00;fontSize=9;" parent="E_SIN" vertex="1">
+                    <mxGeometry y="176" width="290" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_REC" value="&lt;&lt;Entity&gt;&gt; Reclamo" style="swimlane;startSize=28;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1210" y="630" width="280" height="164" as="geometry"/>
+                </mxCell>
+                <mxCell id="ER_F" value="- id: string  {PK uuid}&#10;- tipo: TipoReclamo&#10;- descripcion: string | null&#10;- estado: EstadoReclamo&#10;- fechaApertura: Date" style="text;align=left;spacingLeft=8;fillColor=#ffe6cc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_REC" vertex="1">
+                    <mxGeometry y="28" width="280" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="ER_M" value="+ asegurado: Asegurado&#10;+ productor: Productor&#10;+ compania: CompaniaAseguradora | null" style="text;align=left;spacingLeft=8;fillColor=#ffd9a0;strokeColor=#d79b00;fontSize=9;" parent="E_REC" vertex="1">
+                    <mxGeometry y="128" width="280" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="E_DOC" value="&lt;&lt;Entity&gt;&gt; Documento  — FK polimórfica (solo 1 FK poblada por fila)" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="880" width="480" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="ED_F" value="- id: string  {PK}   - tipo: TipoDocumento   - entidadVinculada: EntidadDocumento&#10;- archivoUrl: string  {URL al object storage S3/GCS}&#10;- tramiteContexto: string | null   - fechaIncorporacion: Date" style="text;align=left;spacingLeft=8;fillColor=#dae8fc;strokeColor=none;verticalAlign=top;fontSize=9;" parent="E_DOC" vertex="1">
+                    <mxGeometry y="28" width="480" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="ED_M" value="+ asegurado? | bienAsegurado? | poliza? | cuota? | siniestro? | reclamo?  (ON DELETE SET NULL)" style="text;align=left;spacingLeft=8;fillColor=#c8ddf5;strokeColor=#6c8ebf;fontSize=9;" parent="E_DOC" vertex="1">
+                    <mxGeometry y="82" width="480" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_AUTH" value="&lt;&lt;Service&gt;&gt; AuthService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1060" width="300" height="158" as="geometry"/>
+                </mxCell>
+                <mxCell id="SA_F" value="- usuarioRepo: Repository&lt;Usuario&gt;&#10;- organizadorRepo: Repository&lt;Organizador&gt;&#10;- productorRepo: Repository&lt;Productor&gt;&#10;- aseguradoRepo: Repository&lt;Asegurado&gt;&#10;- jwtService: JwtService" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_AUTH" vertex="1">
+                    <mxGeometry y="28" width="300" height="82" as="geometry"/>
+                </mxCell>
+                <mxCell id="SA_M" value="+ login(dto: LoginDto): Promise&lt;TokenResponse&gt;&#10;+ createUsuario(dto, creador): Promise&lt;Usuario&gt;&#10;+ updateStatus(id, estado, sol): Promise&lt;Usuario&gt;&#10;- linkEntidad(usuario, perfil, id): Promise&lt;void&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_AUTH" vertex="1">
+                    <mxGeometry y="110" width="300" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_ASG" value="&lt;&lt;Service&gt;&gt; AseguradosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="1060" width="300" height="158" as="geometry"/>
+                </mxCell>
+                <mxCell id="SAG_F" value="- aseguradoRepo: Repository&lt;Asegurado&gt;&#10;- productorRepo: Repository&lt;Productor&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_ASG" vertex="1">
+                    <mxGeometry y="28" width="300" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="SAG_M" value="+ findAll(usuario, search?): Promise&lt;Asegurado[]&gt;&#10;  Filtro de cartera en query DB — no en memoria&#10;+ findOne(id, usuario): Promise&lt;Asegurado&gt;&#10;+ create(dto, usuario): Promise&lt;Asegurado&gt;&#10;  Lanza 409 si dniCuil duplicado&#10;+ update(id, dto, usuario): Promise&lt;Asegurado&gt;&#10;- checkAccess(asegurado, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_ASG" vertex="1">
+                    <mxGeometry y="68" width="300" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_POL" value="&lt;&lt;Service&gt;&gt; PolizasService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="1060" width="310" height="188" as="geometry"/>
+                </mxCell>
+                <mxCell id="SPL_F" value="- polizaRepo, endosoRepo, aseguradoRepo&#10;- bienRepo, productorRepo, companiaRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_POL" vertex="1">
+                    <mxGeometry y="28" width="310" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="SPL_M" value="+ findAll(usuario): Promise&lt;Poliza[]&gt;&#10;+ findOne(id, usuario): Promise&lt;Poliza&gt;&#10;+ create(dto, usuario): Promise&lt;Poliza&gt;&#10;+ update(id, dto, usuario): Promise&lt;Poliza&gt;&#10;+ createEndoso(polizaId, dto, usr): Promise&lt;Endoso&gt;&#10;+ findEndosos(polizaId, usr): Promise&lt;Endoso[]&gt;&#10;- suspenderVencidas(): Promise&lt;void&gt;  {sin cron, en read}&#10;- checkAccess(poliza, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_POL" vertex="1">
+                    <mxGeometry y="64" width="310" height="124" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_CUO" value="&lt;&lt;Service&gt;&gt; CuotasService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1010" y="1060" width="310" height="188" as="geometry"/>
+                </mxCell>
+                <mxCell id="SCU_F" value="- cuotaRepo: Repository&lt;Cuota&gt;&#10;- polizaRepo: Repository&lt;Poliza&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_CUO" vertex="1">
+                    <mxGeometry y="28" width="310" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="SCU_M" value="+ findOne(id, usuario): Promise&lt;Cuota&gt;&#10;+ findByPoliza(polizaId, usuario): Promise&lt;Cuota[]&gt;&#10;+ create(dto, usuario): Promise&lt;Cuota&gt;&#10;+ update(id, dto, usuario): Promise&lt;Cuota&gt;&#10;+ findVencimientosProximos(dias, usr): Promise&lt;Cuota[]&gt;&#10;  Compara fechas como strings ISO YYYY-MM-DD&#10;- loadPoliza(polizaId): Promise&lt;Poliza&gt;&#10;- checkPolizaAccess(poliza, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_CUO" vertex="1">
+                    <mxGeometry y="64" width="310" height="124" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_SIN" value="&lt;&lt;Service&gt;&gt; SiniestrosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1260" width="300" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="SSI_F" value="- siniestroRepo, aseguradoRepo&#10;- bienRepo, productorRepo, companiaRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_SIN" vertex="1">
+                    <mxGeometry y="28" width="300" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="SSI_M" value="+ findAll(usuario): Promise&lt;Siniestro[]&gt;&#10;+ findOne(id, usuario): Promise&lt;Siniestro&gt;&#10;+ create(dto, usuario): Promise&lt;Siniestro&gt;&#10;+ updateEstado(id, dto, usuario): Promise&lt;Siniestro&gt;&#10;- checkAccess(siniestro, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_SIN" vertex="1">
+                    <mxGeometry y="64" width="300" height="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_REC" value="&lt;&lt;Service&gt;&gt; ReclamosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="1260" width="300" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="SRE_F" value="- reclamoRepo, aseguradoRepo&#10;- productorRepo, companiaRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_REC" vertex="1">
+                    <mxGeometry y="28" width="300" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="SRE_M" value="+ findAll(usuario): Promise&lt;Reclamo[]&gt;&#10;+ findOne(id, usuario): Promise&lt;Reclamo&gt;&#10;+ create(dto, usuario): Promise&lt;Reclamo&gt;&#10;+ updateEstado(id, dto, usuario): Promise&lt;Reclamo&gt;&#10;- checkAccess(reclamo, usuario): void" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_REC" vertex="1">
+                    <mxGeometry y="64" width="300" height="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_DOC" value="&lt;&lt;Service&gt;&gt; DocumentosService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="1260" width="310" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="SDO_F" value="- documentoRepo, aseguradoRepo, bienRepo&#10;- polizaRepo, cuotaRepo, siniestroRepo, reclamoRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_DOC" vertex="1">
+                    <mxGeometry y="28" width="310" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="SDO_M" value="+ findByEntidad(entidad, entidadId): Promise&lt;Documento[]&gt;&#10;+ create(dto): Promise&lt;Documento&gt;&#10;- loadEntidad(entidad, id): Promise&lt;object&gt;&#10;  Resuelve repo por enum via Record map&#10;- entidadToField(entidad): string" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_DOC" vertex="1">
+                    <mxGeometry y="64" width="310" height="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="S_REP" value="&lt;&lt;Service&gt;&gt; ReportesService" style="swimlane;startSize=28;fillColor=#0050a0;strokeColor=#003070;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1010" y="1260" width="310" height="166" as="geometry"/>
+                </mxCell>
+                <mxCell id="SRP_F" value="- aseguradoRepo, bienRepo, polizaRepo, cuotaRepo&#10;- siniestroRepo, reclamoRepo, productorRepo" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;verticalAlign=top;fontSize=9;" parent="S_REP" vertex="1">
+                    <mxGeometry y="28" width="310" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="SRP_M" value="+ carteraAsegurados(usuario): Promise&lt;Asegurado[]&gt;&#10;+ vencimientosProximos(dias, usr): Promise&lt;Cuota[]&gt;&#10;+ siniestros(estado?, usr): Promise&lt;Siniestro[]&gt;&#10;+ reclamos(estado?, tipo?, cia?, usr): Promise&lt;Reclamo[]&gt;&#10;+ polizas(estado?, vencenEnDias?, usr): Promise&lt;Poliza[]&gt;&#10;+ comisiones(usr): Promise&lt;object[]&gt;&#10;+ datosIncompletos(usr): Promise&lt;BienAsegurado[]&gt;" style="text;align=left;spacingLeft=8;fillColor=#0050a0;strokeColor=none;fontColor=#fff;fontSize=9;" parent="S_REP" vertex="1">
+                    <mxGeometry y="64" width="310" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_AUTH" value="&lt;&lt;Controller&gt;&gt; AuthController&#10;@ApiTags('auth')  @Controller('auth')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1520" width="270" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="CA_M" value="@Public() POST login → AuthService.login()&#10;@Roles(ORG) POST users → AuthService.createUsuario()&#10;@Roles(ORG) PATCH users/:id/status → AuthService.updateStatus()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_AUTH" vertex="1">
+                    <mxGeometry y="34" width="270" height="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_ASG" value="&lt;&lt;Controller&gt;&gt; AseguradosController&#10;@Controller('asegurados')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="1520" width="280" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="CAS_M" value="GET / → findAll()  · GET /:id → findOne()&#10;@Roles(ORG,PROD) POST / → create()&#10;@Roles(ORG,PROD) PATCH /:id → update()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_ASG" vertex="1">
+                    <mxGeometry y="34" width="280" height="66" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_POL" value="&lt;&lt;Controller&gt;&gt; PolizasController&#10;@Controller('polizas')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="630" y="1520" width="280" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="CPL_M" value="GET / → findAll()  · GET /:id → findOne()&#10;@Roles(ORG,PROD) POST / → create()&#10;@Roles(ORG,PROD) PATCH /:id → update()&#10;@Roles(ORG,PROD) POST /:id/endosos · GET /:id/endosos" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_POL" vertex="1">
+                    <mxGeometry y="34" width="280" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_CUO" value="&lt;&lt;Controller&gt;&gt; CuotasController&#10;@Controller('cuotas')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="930" y="1520" width="280" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="CCU_M" value="GET vencimientos-proximos  ← declarado ANTES que :id&#10;GET /?polizaId= · GET /:id&#10;@Roles(ORG,PROD) POST / → create()&#10;@Roles(ORG,PROD) PATCH /:id → update()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_CUO" vertex="1">
+                    <mxGeometry y="34" width="280" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_SIN" value="&lt;&lt;Controller&gt;&gt; SiniestrosController&#10;@Controller('siniestros')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1650" width="270" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="CSI_M" value="GET / · GET /:id&#10;@Roles(ORG,PROD) POST / → create()&#10;@Roles(ORG,PROD) PATCH /:id/estado → updateEstado()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_SIN" vertex="1">
+                    <mxGeometry y="34" width="270" height="56" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_REC" value="&lt;&lt;Controller&gt;&gt; ReclamosController&#10;@Controller('reclamos')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="1650" width="270" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="CRE_M" value="GET / · GET /:id&#10;@Roles(ORG,PROD) POST / → create()&#10;@Roles(ORG,PROD) PATCH /:id/estado → updateEstado()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_REC" vertex="1">
+                    <mxGeometry y="34" width="270" height="56" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_DOC" value="&lt;&lt;Controller&gt;&gt; DocumentosController&#10;@Controller('documentos')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="620" y="1650" width="280" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="CDO_M" value="GET /?entidad=&amp;entidadId=  ← UUID validado con regex&#10;@Roles(ORG,PROD) POST / → create()" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_DOC" vertex="1">
+                    <mxGeometry y="34" width="280" height="56" as="geometry"/>
+                </mxCell>
+                <mxCell id="C_REP" value="&lt;&lt;Controller&gt;&gt; ReportesController&#10;@Roles(ORG,PROD)  @Controller('reportes')" style="swimlane;startSize=34;fillColor=#1a6b2e;strokeColor=#0d4018;fontColor=#fff;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="920" y="1650" width="310" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="CRP_M" value="GET cartera-asegurados (R1)&#10;GET vencimientos-proximos (R2)&#10;GET siniestros (R3) · GET reclamos (R4)&#10;GET polizas (R5) · GET comisiones (R6)&#10;GET datos-incompletos (R7)" style="text;align=left;spacingLeft=8;fillColor=#1a6b2e;strokeColor=none;fontColor=#fff;fontSize=8;" parent="C_REP" vertex="1">
+                    <mxGeometry y="34" width="310" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="G_JWT" value="&lt;&lt;Guard&gt;&gt; JwtAuthGuard&#10;extends AuthGuard('jwt')" style="swimlane;startSize=34;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="1840" width="300" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="GJ_F" value="- reflector: Reflector" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_JWT" vertex="1">
+                    <mxGeometry y="34" width="300" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="GJ_M" value="+ canActivate(ctx: ExecutionContext): boolean&#10;  Si @Public() → return true (cortocircuita JWT)&#10;  Si no → delega a Passport JWT strategy" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_JWT" vertex="1">
+                    <mxGeometry y="56" width="300" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="G_ROL" value="&lt;&lt;Guard&gt;&gt; RolesGuard&#10;implements CanActivate" style="swimlane;startSize=34;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="1840" width="310" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="GR_F" value="- reflector: Reflector" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_ROL" vertex="1">
+                    <mxGeometry y="34" width="310" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="GR_M" value="+ canActivate(ctx): boolean&#10;  Lee @Roles() metadata con Reflector&#10;  Si sin @Roles() → permite (cualquier autenticado)&#10;  Si perfil no en lista → ForbiddenException (403)" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_ROL" vertex="1">
+                    <mxGeometry y="56" width="310" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="G_THR" value="&lt;&lt;Guard&gt;&gt; ThrottlerGuard  (APP_GUARD global)" style="swimlane;startSize=28;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="690" y="1840" width="310" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="GT_M" value="100 req/min por IP — ThrottlerModule.forRoot([{ttl:60000, limit:100}])&#10;Registrado como primer APP_GUARD en AppModule" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_THR" vertex="1">
+                    <mxGeometry y="28" width="310" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="G_STR" value="&lt;&lt;Strategy&gt;&gt; JwtStrategy&#10;extends PassportStrategy(Strategy)" style="swimlane;startSize=34;fillColor=#b86000;strokeColor=#7a4000;fontColor=#fff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1020" y="1840" width="310" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="GS_F" value="- usuarioRepo: Repository&lt;Usuario&gt;&#10;secretOrKey: JWT_SECRET  {obligatorio en prod}" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_STR" vertex="1">
+                    <mxGeometry y="34" width="310" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="GS_M" value="+ validate(payload: JwtPayload): Promise&lt;Usuario&gt;&#10;  Carga usuario desde DB con relaciones (org/prod/aseg)&#10;  Lanza 401 si no existe o estado=INACTIVO" style="text;align=left;spacingLeft=8;fillColor=#b86000;strokeColor=none;fontColor=#fff;fontSize=9;" parent="G_STR" vertex="1">
+                    <mxGeometry y="72" width="310" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="D_LOG" value="&lt;&lt;DTO&gt;&gt; LoginDto" style="swimlane;startSize=26;fillColor=#e8d5f5;strokeColor=#9673a6;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="2090" width="210" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="DL_F" value="+ identificadorAcceso: string  @IsEmail&#10;+ password: string  @IsString @MinLength(6)" style="text;align=left;spacingLeft=8;fillColor=#e8d5f5;strokeColor=none;fontSize=9;" parent="D_LOG" vertex="1">
+                    <mxGeometry y="26" width="210" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="D_ASG" value="&lt;&lt;DTO&gt;&gt; CreateAseguradoDto" style="swimlane;startSize=26;fillColor=#e8d5f5;strokeColor=#9673a6;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="2090" width="240" height="102" as="geometry"/>
+                </mxCell>
+                <mxCell id="DA_F" value="+ nombre: string&#10;+ dniCuil: string  @Length(7,20)&#10;+ fechaNacimiento?: string  @IsDateString&#10;+ direccion?, codigoPostal?, telefono?, email?&#10;+ productorId: string  @IsUUID" style="text;align=left;spacingLeft=8;fillColor=#e8d5f5;strokeColor=none;fontSize=9;" parent="D_ASG" vertex="1">
+                    <mxGeometry y="26" width="240" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="D_POL" value="&lt;&lt;DTO&gt;&gt; CreatePolizaDto" style="swimlane;startSize=26;fillColor=#e8d5f5;strokeColor=#9673a6;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="2090" width="250" height="116" as="geometry"/>
+                </mxCell>
+                <mxCell id="DP_F" value="+ aseguradoId: string  @IsUUID&#10;+ bienId: string  @IsUUID&#10;+ productorId: string  @IsUUID&#10;+ companiaId: string  @IsUUID&#10;+ numeroPoliza, vigenciaInicio, vigenciaFin&#10;+ importeCuotaVigente: number  @IsNumber&#10;+ estado: EstadoPoliza" style="text;align=left;spacingLeft=8;fillColor=#e8d5f5;strokeColor=none;fontSize=9;" parent="D_POL" vertex="1">
+                    <mxGeometry y="26" width="250" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="I_TOK" value="&lt;&lt;interface&gt;&gt; TokenResponse" style="swimlane;startSize=26;fillColor=#fffde7;strokeColor=#c9a900;fontStyle=3;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="800" y="2090" width="240" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="IT_F" value="+ accessToken: string&#10;+ perfil: string&#10;+ id: string&#10;+ aseguradoId: string | null&#10;+ organizadorId: string | null" style="text;align=left;spacingLeft=8;fillColor=#fffde7;strokeColor=none;fontSize=9;" parent="I_TOK" vertex="1">
+                    <mxGeometry y="26" width="240" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="I_JWT" value="&lt;&lt;interface&gt;&gt; JwtPayload" style="swimlane;startSize=26;fillColor=#fffde7;strokeColor=#c9a900;fontStyle=3;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="1060" y="2090" width="220" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="IJ_F" value="+ sub: string   {usuario.id}&#10;+ role: string  {usuario.perfil}&#10;+ iat?: number&#10;+ exp?: number" style="text;align=left;spacingLeft=8;fillColor=#fffde7;strokeColor=none;fontSize=9;" parent="I_JWT" vertex="1">
+                    <mxGeometry y="26" width="220" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="EN_ALL" value="&lt;&lt;enum&gt;&gt; @gestion-pas/types (14 enums)" style="swimlane;startSize=26;fillColor=#f5f5f5;strokeColor=#666;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="2220" width="1280" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="EN_V" value="UserRole(3) · UserStatus(2) · TipoBien(4) · UsoVehiculo(2) · EstadoPoliza(3) · PeriodicidadRefacturacion(4) · EstadoCuota(4) · TipoSiniestro(6) · EstadoSiniestro(4) · TipoReclamo(4) · EstadoReclamo(3) · EstadoProductor(2) · TipoDocumento(5) · EntidadDocumento(6)" style="text;align=left;spacingLeft=8;fillColor=#f5f5f5;strokeColor=none;fontSize=9;" parent="EN_ALL" vertex="1">
+                    <mxGeometry y="26" width="1280" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_OP" value="1..*" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#6c8ebf;strokeWidth=2;" parent="1" source="E_ORG" target="E_PRD" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_PA" value="1..*" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" parent="1" source="E_PRD" target="E_ASG" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_AB" value="1..*" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="E_ASG" target="E_BIE" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_PE" value="1..*  CASCADE" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#9673a6;strokeWidth=2;exitX=0.3;exitY=1;entryX=0.5;entryY=0;" parent="1" source="E_POL" target="E_END" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_PC" value="1..*  CASCADE" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERmandOne;strokeColor=#9673a6;strokeWidth=2;exitX=0.7;exitY=1;entryX=0.5;entryY=0;" parent="1" source="E_POL" target="E_CUO" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CD" value="0..N  SET NULL" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERzeroToOne;dashed=1;strokeColor=#6c8ebf;strokeWidth=1;" parent="1" source="E_CUO" target="E_DOC" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_SD" value="0..N  SET NULL" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;startArrow=ERzeroToOne;dashed=1;strokeColor=#d79b00;strokeWidth=1;" parent="1" source="E_SIN" target="E_DOC" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_SAUTH_USR" value="usa" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#003070;strokeWidth=1;" parent="1" source="S_AUTH" target="E_USR" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="190" y="1050"/>
+                            <mxPoint x="810" y="1050"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="REL_SASG_ASG" value="usa" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#003070;strokeWidth=1;" parent="1" source="S_ASG" target="E_ASG" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="510" y="1042"/>
+                            <mxPoint x="175" y="1042"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="REL_SPOL_POL" value="usa" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#003070;strokeWidth=1;" parent="1" source="S_POL" target="E_POL" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="835" y="1044"/>
+                            <mxPoint x="860" y="1044"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="REL_CA_SA" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_AUTH" target="S_AUTH" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CAS_SAG" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_ASG" target="S_ASG" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CPL_SPL" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_POL" target="S_POL" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CCU_SCU" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_CUO" target="S_CUO" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CSI_SSI" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_SIN" target="S_SIN" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CRE_SRE" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_REC" target="S_REC" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CDO_SDO" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_DOC" target="S_DOC" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_CRP_SRP" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#0d4018;strokeWidth=1.5;" parent="1" source="C_REP" target="S_REP" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_G1G2" value="ejecutado antes" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#7a4000;strokeWidth=1.5;dashed=0;" parent="1" source="G_THR" target="G_JWT" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_G2G3" value="ejecutado antes" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;strokeColor=#7a4000;strokeWidth=1.5;" parent="1" source="G_JWT" target="G_ROL" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_JWT_STR" value="delega a" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#7a4000;strokeWidth=1;" parent="1" source="G_JWT" target="G_STR" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="REL_AS_TR" value="retorna" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#c9a900;strokeWidth=1;" parent="1" source="S_AUTH" target="I_TOK" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="190" y="2000"/>
+                            <mxPoint x="920" y="2000"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="REL_STR_JP" value="valida" style="edgeStyle=orthogonalEdgeStyle;endArrow=open;dashed=1;strokeColor=#c9a900;strokeWidth=1;" parent="1" source="G_STR" target="I_JWT" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1175" y="2000"/>
+                            <mxPoint x="1170" y="2000"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
