@@ -95,7 +95,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: 'var(--bg-main)' }}>
+    <div className="min-h-screen flex" style={{ background: 'var(--surface-app)' }}>
 
       {/* ══════════════════════════════════════════════════════
           SIDEBAR
@@ -318,7 +318,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* ── Main content ────────────────────────────────── */}
         <main
           className="flex-1 overflow-y-auto content-area"
-          style={{ background: 'var(--bg-main-gradient)' }}
+          style={{ background: 'var(--surface-app)' }}
         >
           <div className="max-w-7xl mx-auto px-6 py-8">
             <AnimatePresence mode="wait">
