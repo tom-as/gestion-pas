@@ -18,58 +18,93 @@ interface PolizasResp    { total: number; porEstado: Record<string, number>; pol
 interface ComisionesResp { total: number; productores: { id: string; nombre: string; estado: string; polizasActivas: number; totalImporteCuotasMes: number }[] }
 interface IncompletosResp{ total: number; bienes: { id: string; tipo: string; asegurado: { nombre: string } | null; camposFaltantes: string[] }[] }
 
-/* ── Paleta monocromática — pasos de opacidad del azul accent */
+/* ── Paleta semántica — cada estado tiene su color propio */
 const ESTADO_COLORS: Record<string, string> = {
   // siniestros / reclamos
-  abierto:    'rgba(61,107,255,1.0)',
-  en_gestion: 'rgba(61,107,255,0.55)',
-  resuelto:   'rgba(61,107,255,0.30)',
-  rechazado:  'rgba(61,107,255,0.15)',
+  abierto:    '#3d6bda',   // azul — reportado
+  en_gestion: '#b8820a',   // ámbar — en proceso
+  resuelto:   '#0e9e6a',   // verde — aprobado
+  rechazado:  '#c03030',   // rojo — rechazado
   // pólizas
-  activa:     'rgba(61,107,255,1.0)',
-  suspendida: 'rgba(61,107,255,0.45)',
-  anulada:    'rgba(61,107,255,0.18)',
+  activa:     '#0e9e6a',   // verde
+  suspendida: '#b8820a',   // ámbar
+  anulada:    '#c03030',   // rojo
 };
-const FALLBACK_COLORS = [
-  'rgba(61,107,255,1.0)',
-  'rgba(61,107,255,0.65)',
-  'rgba(61,107,255,0.40)',
-  'rgba(61,107,255,0.20)',
-];
+const FALLBACK_COLORS = ['#3d6bda', '#b8820a', '#0e9e6a', '#8050c8', '#c03030'];
+
+/* Estado etiquetas legibles */
+const ESTADO_LABEL: Record<string, string> = {
+  abierto:    'Abierto',
+  en_gestion: 'En gestión',
+  resuelto:   'Resuelto',
+  rechazado:  'Rechazado',
+  activa:     'Activa',
+  suspendida: 'Suspendida',
+  anulada:    'Anulada',
+};
 
 /* ── KPI card superior ───────────────────────────────────── */
 type KpiColor = 'blue' | 'green' | 'amber' | 'red';
 
-function KpiCard({ label, value, footnote }: {
+const KPI_LEFT: Record<KpiColor, string> = {
+  blue:  'var(--accent-primary)',
+  green: 'var(--policy-active-text)',
+  amber: 'var(--policy-grace-text)',
+  red:   'var(--policy-cancelled-text)',
+};
+
+function KpiCard({ label, value, color = 'blue', footnote }: {
   label: string; value: string | number; color?: KpiColor; footnote?: string;
 }) {
   return (
-    <div className="stat-card px-5 py-4 flex flex-col gap-1.5 min-w-0">
-      {/* label */}
-      <span className="text-[11px] txt-faint truncate uppercase tracking-widest font-semibold">{label}</span>
-      {/* value */}
-      <div className="text-3xl font-bold leading-none tabular-nums text-white">{value}</div>
-      {/* optional footnote */}
-      {footnote && <div className="text-[10px] txt-faint">{footnote}</div>}
+    <div
+      style={{
+        background: 'var(--surface-record)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: 4,
+        borderLeft: `3px solid ${KPI_LEFT[color]}`,
+        padding: '12px 14px',
+        minWidth: 0,
+      }}
+    >
+      <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>
+        {label}
+      </span>
+      <div style={{ fontSize: 26, fontWeight: 800, lineHeight: 1, fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
+        {value}
+      </div>
+      {footnote && (
+        <div style={{ fontSize: 11, color: 'var(--text-faint)', marginTop: 4 }}>{footnote}</div>
+      )}
     </div>
   );
 }
 
-/* ── Tooltip minimal ─────────────────────────────────────── */
+/* ── Tooltip con etiquetas ───────────────────────────────── */
 function ChartTooltip({ active, payload, label, formatter }: {
   active?: boolean; payload?: { name: string; value: number; color: string }[];
   label?: string; formatter?: (v: number) => string;
 }) {
   if (!active || !payload?.length) return null;
+  const displayLabel = label
+    ? (ESTADO_LABEL[label] ?? label.replace(/_/g, ' '))
+    : undefined;
   return (
-    <div className="modal-base px-3 py-2 rounded-sm text-xs shadow-lg">
-      {label && (
-        <p className="txt-secondary font-semibold mb-1 capitalize">
-          {label.replace(/_/g, ' ')}
+    <div
+      style={{
+        background: 'var(--surface-elevated)',
+        border: '1px solid var(--border-strong)',
+        borderRadius: 4, padding: '8px 12px',
+        fontSize: 12, boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+      }}
+    >
+      {displayLabel && (
+        <p style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4, textTransform: 'capitalize' }}>
+          {displayLabel}
         </p>
       )}
       {payload.map((p) => (
-        <p key={p.name} className="tabular-nums" style={{ color: p.color }}>
+        <p key={p.name} style={{ color: p.color, fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
           {formatter ? formatter(p.value) : p.value}
         </p>
       ))}
@@ -95,8 +130,8 @@ function EstadosBarChart({ data, dark }: { data: Record<string, number>; dark: b
         <YAxis
           type="category" dataKey="estado"
           tick={{ fontSize: 11, fill: axisColor }}
-          axisLine={false} tickLine={false} width={86}
-          tickFormatter={(v: string) => v.replace(/_/g, ' ')}
+          axisLine={false} tickLine={false} width={96}
+          tickFormatter={(v: string) => ESTADO_LABEL[v] ?? v.replace(/_/g, ' ')}
         />
         <Tooltip
           content={(props) => (
@@ -191,7 +226,7 @@ function ComisionesBarChart({ data, dark }: {
           )}
           cursor={{ fill: cursorFill }}
         />
-        <Bar dataKey="total" fill="#3d6bff" fillOpacity={0.85} radius={[3, 3, 0, 0]} maxBarSize={44} />
+        <Bar dataKey="total" fill="var(--accent-primary)" fillOpacity={0.9} radius={[3, 3, 0, 0]} maxBarSize={44} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -203,34 +238,64 @@ function Section({ title, badge, defaultOpen = false, children }: {
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="surface rounded-sm mb-3 overflow-hidden">
+    <div
+      style={{
+        background: 'var(--surface-panel)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: 4,
+        marginBottom: 10,
+        overflow: 'hidden',
+      }}
+    >
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-6 py-4 text-left group"
+        aria-expanded={open}
+        style={{
+          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '12px 20px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
+        }}
       >
-        <span className="flex items-center gap-3">
-          <span className="text-sm font-semibold txt-secondary">{title}</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{title}</span>
           {badge !== undefined && (
-            <span className={cn(cls.badge, cls.badgeGray, 'tabular-nums')}>{badge}</span>
+            <span className={cn(cls.badge, cls.badgeGray)} style={{ fontFamily: 'var(--font-mono)' }}>{badge}</span>
           )}
         </span>
-        {/* chevron */}
         <svg
-          width="14" height="14" viewBox="0 0 14 14" fill="none"
-          className={cn('transition-transform duration-200 txt-faint', open && 'rotate-180')}
+          width="13" height="13" viewBox="0 0 14 14" fill="none"
+          style={{
+            transition: 'transform 0.18s ease',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+            color: 'var(--text-faint)',
+          }}
         >
           <path d="M2 5l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
-      {open && <div className="panel-sep" />}
-      {open && <div className="px-6 py-5">{children}</div>}
+      {open && <div style={{ borderTop: '1px solid var(--border-subtle)' }} />}
+      {open && <div style={{ padding: '16px 20px' }}>{children}</div>}
     </div>
   );
 }
 
 /* ── Fila de carga ───────────────────────────────────────── */
 function Loading() {
-  return <p className="text-sm txt-faint text-center py-8">Cargando...</p>;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '12px 0' }}>
+      {[1, 2, 3].map(i => (
+        <div key={i} className="skeleton" style={{ height: 14, borderRadius: 3, animationDelay: `${i * 0.06}s` }} />
+      ))}
+    </div>
+  );
+}
+
+/* ── Estado vacío de gráfico ─────────────────────────────── */
+function EmptyChart({ msg }: { msg: string }) {
+  return (
+    <div style={{ height: 160, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <p style={{ fontSize: 13, color: 'var(--text-faint)' }}>{msg}</p>
+    </div>
+  );
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -270,13 +335,17 @@ export default function ReportesPage() {
 
   return (
     <div>
-      <h1 className={cn(cls.pageTitle, 'mb-1')}>Reportes</h1>
-      <p className="txt-faint text-sm mb-7">Resumen operativo de la cartera</p>
+      <div style={{ marginBottom: 20 }}>
+        <h1 className={cls.pageTitle}>Reportes</h1>
+        <p style={{ fontSize: 12, color: 'var(--text-faint)', marginTop: 2 }}>
+          Indicadores operativos de la cartera
+        </p>
+      </div>
 
       {/* ════════════════════════════════════════════════════
-          KPIs — fila superior
+          KPIs — fila superior con jerarquía visual
       ════════════════════════════════════════════════════ */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <KpiCard
           label="Asegurados"
           value={cartera.data?.total ?? '—'}
@@ -288,9 +357,10 @@ export default function ReportesPage() {
           color="green"
         />
         <KpiCard
-          label="Vencen en 30 d"
+          label="Vencen en 30 días"
           value={venc30.data?.total ?? '—'}
           color="amber"
+          footnote="Próximas a vencer"
         />
         <KpiCard
           label="Siniestros abiertos"
@@ -306,54 +376,100 @@ export default function ReportesPage() {
           label="Datos incompletos"
           value={incompletos.data?.total ?? '—'}
           color={incompletos.data?.total ? 'amber' : 'green'}
-          footnote={incompletos.data?.total === 0 ? 'Todo completo' : undefined}
+          footnote={incompletos.data?.total === 0 ? '✓ Todo completo' : 'Requieren atención'}
         />
       </div>
 
       {/* ════════════════════════════════════════════════════
-          Gráficos — grilla 2 + 1
+          Gráficos — grilla semántica
       ════════════════════════════════════════════════════ */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
 
-        {/* Siniestros por estado */}
-        <div className="surface rounded-sm p-6">
-          <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
+        {/* Siniestros por estado — responde: ¿en qué estado está la cartera? */}
+        <div
+          style={{
+            background: 'var(--surface-panel)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 4,
+            padding: '16px 20px',
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
             Siniestros por estado
           </p>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
+            ¿En qué estado está la cartera de siniestros?
+          </p>
           {siniestros.isLoading ? <Loading /> :
-           siniestros.data ? <EstadosBarChart data={siniestros.data.porEstado} dark={dark} /> : null}
+           siniestros.data && Object.keys(siniestros.data.porEstado).length
+             ? <EstadosBarChart data={siniestros.data.porEstado} dark={dark} />
+             : <EmptyChart msg="Sin datos de siniestros" />}
         </div>
 
         {/* Reclamos por estado */}
-        <div className="surface rounded-sm p-6">
-          <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
+        <div
+          style={{
+            background: 'var(--surface-panel)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 4,
+            padding: '16px 20px',
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
             Reclamos por estado
           </p>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
+            ¿Cuántos reclamos están activos o resueltos?
+          </p>
           {reclamos.isLoading ? <Loading /> :
-           reclamos.data ? <EstadosBarChart data={reclamos.data.porEstado} dark={dark} /> : null}
+           reclamos.data && Object.keys(reclamos.data.porEstado).length
+             ? <EstadosBarChart data={reclamos.data.porEstado} dark={dark} />
+             : <EmptyChart msg="Sin datos de reclamos" />}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
 
         {/* Pólizas — donut */}
-        <div className="surface rounded-sm p-6">
-          <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
+        <div
+          style={{
+            background: 'var(--surface-panel)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 4,
+            padding: '16px 20px',
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
             Distribución de pólizas
           </p>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
+            ¿Cómo está distribuida la cartera de pólizas?
+          </p>
           {polizas.isLoading ? <Loading /> :
-           polizas.data ? <EstadosPieChart data={polizas.data.porEstado} dark={dark} /> : null}
+           polizas.data && Object.keys(polizas.data.porEstado).length
+             ? <EstadosPieChart data={polizas.data.porEstado} dark={dark} />
+             : <EmptyChart msg="Sin datos de pólizas" />}
         </div>
 
         {/* Comisiones estimadas */}
-        <div className="surface rounded-sm p-6">
-          <p className="text-xs font-semibold txt-faint uppercase tracking-widest mb-4">
+        <div
+          style={{
+            background: 'var(--surface-panel)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 4,
+            padding: '16px 20px',
+          }}
+        >
+          <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
             Comisiones estimadas por productor
+          </p>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 14 }}>
+            Total de cuotas activas por productor este mes
           </p>
           {comisiones.isLoading ? <Loading /> :
            comisiones.data?.productores.length
              ? <ComisionesBarChart data={comisiones.data.productores} dark={dark} />
-             : <p className="text-sm txt-faint text-center py-8">Sin datos.</p>}
+             : <EmptyChart msg="Sin datos de comisiones" />}
         </div>
       </div>
 
