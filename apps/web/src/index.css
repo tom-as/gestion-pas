@@ -1,5 +1,4 @@
-/* ── Fuentes ─────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+/* ── Fuentes — cargadas en main.tsx via @fontsource ─────── */
 @import "tailwindcss";
 
 /* ── Dark mode variant (class-based) ───────────────────── */
@@ -99,8 +98,8 @@
   --color-doc-expired-border:rgba(200, 50, 50, 0.25);
 
   /* Fuentes */
-  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "Cascadia Code", monospace;
 }
 
 /* ══════════════════════════════════════════════════════════
