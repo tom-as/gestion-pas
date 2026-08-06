@@ -528,6 +528,7 @@ html.dark .page-canvas {
 .txt-primary   { color: var(--text-primary); }
 .txt-secondary { color: var(--text-secondary); }
 .txt-tertiary  { color: var(--text-muted); }
+.txt-muted     { color: var(--text-muted); }
 .txt-faint     { color: var(--text-faint); }
 
 /* ── Table cells ─────────────────────────────────────────── */
