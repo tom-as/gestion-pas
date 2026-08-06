@@ -1,20 +1,58 @@
+/**
+ * CompaniasPage.tsx — Vista operativa de compañías aseguradoras
+ *
+ * Filas expandibles (acordeón) con información operativa completa.
+ * Sin modificar el modelo de datos ni las APIs existentes.
+ */
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '@/lib/api';
 import { PeriodicidadRefacturacion } from '@gestion-pas/types';
 import { useAuth } from '@/context/AuthContext';
 import { cn, cls } from '@/lib/cn';
+import {
+  IconCompania, IconClose, IconPlus, IconChevronRight,
+  IconVencimiento, IconPoliza,
+} from '@/components/ui/icons';
 
-/* ── Tipos ──────────────────────────────────────────────── */
+/* ── Types ───────────────────────────────────────────────── */
 interface Compania {
   id: string; nombre: string;
   periodoDGraciaDias: number | null;
   periodicidadRefacturacion: PeriodicidadRefacturacion | null;
   mecanismoNotificacion: string | null;
+}
+
+/* ── Helpers ─────────────────────────────────────────────── */
+const PERIOD_LABEL: Record<PeriodicidadRefacturacion, string> = {
+  [PeriodicidadRefacturacion.MENSUAL]:    'Mensual',
+  [PeriodicidadRefacturacion.TRIMESTRAL]: 'Trimestral',
+  [PeriodicidadRefacturacion.SEMESTRAL]:  'Semestral',
+  [PeriodicidadRefacturacion.ANUAL]:      'Anual',
+};
+
+const PERIOD_ICON: Record<PeriodicidadRefacturacion, string> = {
+  [PeriodicidadRefacturacion.MENSUAL]:    '1M',
+  [PeriodicidadRefacturacion.TRIMESTRAL]: '3M',
+  [PeriodicidadRefacturacion.SEMESTRAL]:  '6M',
+  [PeriodicidadRefacturacion.ANUAL]:      '1A',
+};
+
+/** Nivel de urgencia de días de gracia */
+function graceStyle(dias: number | null): { bg: string; text: string; border: string } {
+  if (dias === null) return {
+    bg: 'var(--badge-gray-bg)', text: 'var(--badge-gray-text)', border: 'var(--badge-gray-ring)',
+  };
+  if (dias <= 5) return {
+    bg: 'var(--sla-warning-bg)', text: 'var(--sla-warning-text)', border: 'var(--sla-warning-border)',
+  };
+  return {
+    bg: 'var(--policy-active-bg)', text: 'var(--policy-active-text)', border: 'var(--policy-active-border)',
+  };
 }
 
 /* ── Schema ──────────────────────────────────────────────── */
@@ -26,18 +64,10 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
-const PERIOD_LABEL: Record<PeriodicidadRefacturacion, string> = {
-  [PeriodicidadRefacturacion.MENSUAL]:    'Mensual',
-  [PeriodicidadRefacturacion.TRIMESTRAL]: 'Trimestral',
-  [PeriodicidadRefacturacion.SEMESTRAL]:  'Semestral',
-  [PeriodicidadRefacturacion.ANUAL]:      'Anual',
-};
-
-/* ── Formulario modal ────────────────────────────────────── */
+/* ── Form modal ──────────────────────────────────────────── */
 function CompaniaForm({ onClose }: { onClose: () => void }) {
   const qc = useQueryClient();
   const [serverError, setServerError] = useState<string | null>(null);
-
   const { register, handleSubmit, formState: { errors, isSubmitting } } =
     useForm<FormValues>({ resolver: zodResolver(schema) });
 
@@ -57,11 +87,15 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalMd, '!rounded-md')}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <h2 className="text-base font-semibold txt-primary">Nueva compañía aseguradora</h2>
-          <button onClick={onClose} className="txt-faint hover:txt-primary transition-colors">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div className={cn(cls.modal, cls.modalMd)}>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border-subtle)]">
+          <h2 className="text-sm font-bold txt-primary">Nueva compañía aseguradora</h2>
+          <button
+            onClick={onClose}
+            aria-label="Cerrar formulario"
+            className="txt-faint hover:txt-primary transition-colors"
+          >
+            <IconClose size={14} />
           </button>
         </div>
         <div className="px-6 py-5">
@@ -69,16 +103,16 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2 space-y-1">
                 <label className={cls.label}>Nombre *</label>
-                <input className={cn(cls.input, '!rounded-sm', errors.nombre && cls.inputError)} {...register('nombre')} />
-                {errors.nombre && <p className="text-xs text-red-500">{errors.nombre.message}</p>}
+                <input className={cn(cls.input, errors.nombre && cls.inputError)} {...register('nombre')} />
+                {errors.nombre && <p className="text-xs text-[var(--policy-cancelled-text)]">{errors.nombre.message}</p>}
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Días de gracia</label>
-                <input type="number" min="0" className={cn(cls.input, '!rounded-sm')} placeholder="5" {...register('periodoDGraciaDias')} />
+                <input type="number" min="0" className={cls.input} placeholder="5" {...register('periodoDGraciaDias')} />
               </div>
               <div className="space-y-1">
                 <label className={cls.label}>Periodicidad refacturación</label>
-                <select className={cn(cls.select, '!rounded-sm')} {...register('periodicidadRefacturacion')}>
+                <select className={cls.select} {...register('periodicidadRefacturacion')}>
                   <option value="">Sin definir</option>
                   {Object.entries(PERIOD_LABEL).map(([v, l]) => (
                     <option key={v} value={v}>{l}</option>
@@ -87,16 +121,23 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
               </div>
               <div className="col-span-2 space-y-1">
                 <label className={cls.label}>Mecanismo de notificación</label>
-                <input className={cn(cls.input, '!rounded-sm')} placeholder="portal / email / ninguno" {...register('mecanismoNotificacion')} />
+                <input className={cls.input} placeholder="portal / email / ninguno" {...register('mecanismoNotificacion')} />
               </div>
             </div>
             {serverError && (
-              <div className="flex items-start gap-2 mt-3 p-3 rounded bg-red-500/8 border border-red-500/20 text-sm text-red-400">
-                <svg className="w-4 h-4 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div
+                className="flex items-start gap-2 mt-3 p-3 text-sm"
+                style={{
+                  borderRadius: 4,
+                  background: 'var(--policy-cancelled-bg)',
+                  border: '1px solid var(--policy-cancelled-border)',
+                  color: 'var(--policy-cancelled-text)',
+                }}
+              >
                 {serverError}
               </div>
             )}
-            <div className="flex justify-end gap-2 pt-4 mt-4 border-t border-white/6">
+            <div className="flex justify-end gap-2 pt-4 mt-4 border-t border-[var(--border-subtle)]">
               <button type="button" onClick={onClose} className={cn(cls.btn, cls.btnMd, cls.btnSecond)}>Cancelar</button>
               <button type="submit" disabled={isSubmitting} className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}>
                 {isSubmitting ? 'Guardando…' : 'Guardar'}
@@ -109,7 +150,243 @@ function CompaniaForm({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ── Página ──────────────────────────────────────────────── */
+/* ── Fila expandible ─────────────────────────────────────── */
+function CompaniaRow({ c, defaultOpen = false }: { c: Compania; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const gs = graceStyle(c.periodoDGraciaDias);
+
+  return (
+    <div
+      style={{
+        borderBottom: '1px solid var(--border-subtle)',
+        transition: 'background 0.1s ease',
+      }}
+    >
+      {/* Row header */}
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-controls={`compania-detail-${c.id}`}
+        style={{
+          width: '100%',
+          display: 'flex', alignItems: 'center', gap: 14,
+          padding: '14px 20px',
+          background: 'none', border: 'none', cursor: 'pointer',
+          textAlign: 'left',
+        }}
+      >
+        {/* Ícono compañía */}
+        <div
+          aria-hidden="true"
+          style={{
+            width: 36, height: 36, borderRadius: 4, flexShrink: 0,
+            background: 'var(--surface-elevated)',
+            border: '1px solid var(--border-subtle)',
+            color: 'var(--text-muted)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <IconCompania size={16} />
+        </div>
+
+        {/* Nombre */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
+            {c.nombre}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
+            {/* Días de gracia */}
+            <span
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                padding: '1px 7px', borderRadius: 3,
+                background: gs.bg, color: gs.text, border: `1px solid ${gs.border}`,
+                fontSize: 11, fontWeight: 600,
+              }}
+            >
+              <IconVencimiento size={10} aria-hidden />
+              {c.periodoDGraciaDias != null ? `${c.periodoDGraciaDias}d gracia` : 'Sin gracia'}
+            </span>
+
+            {/* Periodicidad */}
+            {c.periodicidadRefacturacion && (
+              <span
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 4,
+                  padding: '1px 7px', borderRadius: 3,
+                  background: 'var(--badge-gray-bg)',
+                  color: 'var(--badge-gray-text)',
+                  border: '1px solid var(--badge-gray-ring)',
+                  fontSize: 11, fontWeight: 600,
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
+                {PERIOD_ICON[c.periodicidadRefacturacion]}
+              </span>
+            )}
+
+            {/* Canal de notificación */}
+            {c.mecanismoNotificacion && (
+              <span style={{ fontSize: 11, color: 'var(--text-faint)', textTransform: 'capitalize' }}>
+                {c.mecanismoNotificacion}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Chevron */}
+        <span
+          aria-hidden="true"
+          style={{
+            color: 'var(--text-faint)',
+            transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
+            transition: 'transform 0.18s ease',
+            display: 'flex',
+          }}
+        >
+          <IconChevronRight size={14} />
+        </span>
+      </button>
+
+      {/* Expanded detail */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={`compania-detail-${c.id}`}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div
+              style={{
+                padding: '0 20px 18px 70px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                gap: 12,
+              }}
+            >
+              {/* Días de gracia — detalle */}
+              <InfoBlock
+                label="Período de gracia"
+                value={c.periodoDGraciaDias != null ? `${c.periodoDGraciaDias} días` : '—'}
+                note="Días hábiles tras vencimiento"
+              />
+
+              {/* Periodicidad — detalle */}
+              <InfoBlock
+                label="Periodicidad de refacturación"
+                value={c.periodicidadRefacturacion ? PERIOD_LABEL[c.periodicidadRefacturacion] : '—'}
+              />
+
+              {/* Canal de notificación */}
+              <InfoBlock
+                label="Canal de notificación"
+                value={c.mecanismoNotificacion
+                  ? c.mecanismoNotificacion.charAt(0).toUpperCase() + c.mecanismoNotificacion.slice(1)
+                  : '—'}
+              />
+
+              {/* Ramos — placeholder informativo */}
+              <InfoBlock
+                label="Ramos habilitados"
+                value="Automotor · Hogar · Vida"
+                muted
+              />
+
+              {/* Reglas de documentación — placeholder */}
+              <InfoBlock
+                label="Documentación requerida"
+                value="DNI + Póliza + Comprobante"
+                muted
+              />
+
+              {/* Última actualización */}
+              <InfoBlock
+                label="Última actualización"
+                value="—"
+                muted
+              />
+            </div>
+
+            {/* Acciones */}
+            <div
+              style={{
+                padding: '10px 20px 14px 70px',
+                display: 'flex', gap: 8,
+                borderTop: '1px solid var(--border-subtle)',
+              }}
+            >
+              <button
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  padding: '5px 12px', borderRadius: 3,
+                  background: 'var(--surface-elevated)',
+                  border: '1px solid var(--border-subtle)',
+                  fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)',
+                  cursor: 'pointer',
+                }}
+              >
+                <IconPoliza size={12} />
+                Ver pólizas
+              </button>
+              <button
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  padding: '5px 12px', borderRadius: 3,
+                  background: 'none',
+                  border: '1px solid var(--border-subtle)',
+                  fontSize: 12, fontWeight: 600, color: 'var(--text-faint)',
+                  cursor: 'pointer',
+                }}
+              >
+                Editar
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function InfoBlock({ label, value, note, muted = false }: {
+  label: string; value: string; note?: string; muted?: boolean;
+}) {
+  return (
+    <div>
+      <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>
+        {label}
+      </p>
+      <p style={{ fontSize: 13, fontWeight: muted ? 400 : 600, color: muted ? 'var(--text-faint)' : 'var(--text-primary)' }}>
+        {value}
+      </p>
+      {note && <p style={{ fontSize: 11, color: 'var(--text-faint)', marginTop: 1 }}>{note}</p>}
+    </div>
+  );
+}
+
+/* ── Skeleton ────────────────────────────────────────────── */
+function CompaniaSkeleton() {
+  return (
+    <>
+      {[1, 2, 3].map(i => (
+        <div key={i} style={{ padding: '14px 20px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div className="skeleton" style={{ width: 36, height: 36, borderRadius: 4, flexShrink: 0, animationDelay: `${i * 0.08}s` }} />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <div className="skeleton" style={{ width: 180, height: 14, borderRadius: 3, animationDelay: `${i * 0.08}s` }} />
+            <div className="skeleton" style={{ width: 120, height: 11, borderRadius: 3, animationDelay: `${i * 0.1}s` }} />
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════
+   CompaniasPage
+════════════════════════════════════════════════════════════ */
 export default function CompaniasPage() {
   const { isOrganizador } = useAuth();
   const [showForm, setShowForm] = useState(false);
@@ -120,69 +397,57 @@ export default function CompaniasPage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+
       {/* Header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h1 className={cls.pageTitle}>Compañías Aseguradoras</h1>
+        <div>
+          <h1 className={cls.pageTitle}>Compañías Aseguradoras</h1>
+          {!isLoading && (
+            <p style={{ fontSize: 12, color: 'var(--text-faint)', marginTop: 2 }}>
+              {companias.length} compañía{companias.length !== 1 ? 's' : ''} registrada{companias.length !== 1 ? 's' : ''}
+            </p>
+          )}
+        </div>
         {isOrganizador && (
-          <button onClick={() => setShowForm(true)} className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <button
+            onClick={() => setShowForm(true)}
+            className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}
+            aria-label="Agregar nueva compañía"
+          >
+            <IconPlus size={13} />
             Nueva compañía
           </button>
         )}
       </div>
 
-      {/* Table */}
+      {/* Panel de compañías */}
       <motion.div
         className="surface rounded-sm overflow-hidden"
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        role="list"
+        aria-label="Listado de compañías aseguradoras"
       >
-        <table className={cls.table}>
-          <thead>
-            <tr>
-              <th className={cls.th}>Nombre</th>
-              <th className={cls.th}>Días de gracia</th>
-              <th className={cls.th}>Periodicidad refacturación</th>
-              <th className={cls.th}>Notificación</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading && (
-              <tr><td colSpan={4} className="px-4 py-12 text-center txt-tertiary text-sm">
-                <div className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-4 w-4 text-brand-500" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-                  </svg>
-                  Cargando compañías…
-                </div>
-              </td></tr>
-            )}
-            {!isLoading && companias.length === 0 && (
-              <tr><td colSpan={4} className="px-4 py-12 text-center txt-tertiary text-sm">
+        {isLoading && <CompaniaSkeleton />}
+
+        {!isLoading && companias.length === 0 && (
+          <div style={{ padding: '40px 20px', textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <IconCompania size={28} aria-hidden />
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-muted)' }}>
                 No hay compañías registradas
-              </td></tr>
-            )}
-            {companias.map((c) => (
-              <tr key={c.id} className={cls.trHover}>
-                <td className={cn(cls.td, 'font-semibold txt-primary')}>{c.nombre}</td>
-                <td className={cls.td}>
-                  {c.periodoDGraciaDias != null
-                    ? <span className={cn(cls.badge, cls.badgeBlue)}>{c.periodoDGraciaDias} días</span>
-                    : <span className="txt-tertiary">—</span>}
-                </td>
-                <td className={cls.td}>
-                  {c.periodicidadRefacturacion
-                    ? <span className={cn(cls.badge, cls.badgeGray)}>{PERIOD_LABEL[c.periodicidadRefacturacion]}</span>
-                    : <span className="txt-tertiary">—</span>}
-                </td>
-                <td className={cn(cls.td, 'txt-faint capitalize')}>{c.mecanismoNotificacion ?? '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </p>
+            </div>
+          </div>
+        )}
+
+        {companias.map((c, i) => (
+          <div key={c.id} role="listitem">
+            <CompaniaRow c={c} defaultOpen={i === 0 && companias.length === 1} />
+          </div>
+        ))}
       </motion.div>
 
       {showForm && <CompaniaForm onClose={() => setShowForm(false)} />}
