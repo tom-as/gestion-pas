@@ -44,28 +44,29 @@ export default function LoginPage() {
     /* Fondo exterior muy oscuro */
     <div
       className="min-h-screen flex items-center justify-center p-4"
-      style={{ background: 'radial-gradient(ellipse 80% 70% at 50% -5%, rgba(61,107,255,0.12) 0%, transparent 60%), #070b14' }}
+      style={{ background: 'var(--surface-app)' }}
     >
       {/* Card principal — split 2 columnas */}
       <div
-        className="w-full max-w-[860px] min-h-[520px] rounded-2xl overflow-hidden flex animate-fade-in-up"
+        className="w-full max-w-[860px] min-h-[520px] overflow-hidden flex animate-fade-in-up"
         style={{
-          boxShadow: '0 0 0 1px rgba(255,255,255,0.06), 0 32px 80px rgba(0,0,0,0.7)',
+          borderRadius: 16,
+          boxShadow: '0 0 0 1px rgba(0,212,255,0.08), 0 32px 80px rgba(0,0,0,0.7)',
         }}
       >
         {/* ── Panel izquierdo — branding ────────────────── */}
         <div
           className="hidden md:flex w-[42%] flex-shrink-0 flex-col justify-between p-10 relative overflow-hidden"
           style={{
-            background: 'linear-gradient(155deg, #161d2f 0%, #1a2035 60%, #131929 100%)',
-            borderRight: '1px solid rgba(255,255,255,0.06)',
+            background: 'linear-gradient(155deg, #060d1f 0%, #0b1530 60%, #040a18 100%)',
+            borderRight: '1px solid rgba(0,212,255,0.08)',
           }}
         >
-          {/* Subtle glow blob */}
+          {/* Subtle cyan glow blob */}
           <div
             className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(61,107,255,0.12) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%)',
               transform: 'translate(30%, -30%)',
             }}
           />
@@ -73,63 +74,65 @@ export default function LoginPage() {
           {/* Logo */}
           <div>
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-accent-400 mb-8"
+              className="w-14 h-14 flex items-center justify-center mb-8"
               style={{
-                background: 'rgba(61,107,255,0.12)',
-                border: '1px solid rgba(61,107,255,0.25)',
+                borderRadius: 12,
+                background: 'linear-gradient(135deg, rgba(0,212,255,0.18), rgba(74,140,255,0.14))',
+                border: '1px solid rgba(0,212,255,0.30)',
+                color: '#00d4ff',
               }}
             >
               <ShieldIcon />
             </div>
 
-            <h1 className="text-[26px] font-bold text-white leading-tight mb-3 tracking-tight">
+            <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 12 }}>
               Gestión PAS
             </h1>
-            <p className="text-slate-400 text-[15px] leading-relaxed">
+            <p style={{ color: 'var(--text-muted)', fontSize: 15, lineHeight: 1.6 }}>
               Administración de asegurados, pólizas y siniestros para productores.
             </p>
           </div>
 
           {/* Features list */}
-          <div className="space-y-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {[
               'Gestión de cartera unificada',
               'Control de siniestros y reclamos',
               'Reportes en tiempo real',
             ].map((feat) => (
-              <div key={feat} className="flex items-center gap-2.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-accent-500 flex-shrink-0" />
-                <span className="text-slate-500 text-sm">{feat}</span>
+              <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#00d4ff', flexShrink: 0, boxShadow: '0 0 8px rgba(0,212,255,0.6)' }} />
+                <span style={{ color: 'var(--text-faint)', fontSize: 14 }}>{feat}</span>
               </div>
             ))}
           </div>
 
           {/* Footer */}
           <div>
-            <p className="text-slate-600 text-xs">© 2026 Gestión PAS</p>
+            <p style={{ color: 'var(--text-faint)', fontSize: 12 }}>© 2026 Gestión PAS</p>
           </div>
         </div>
 
         {/* ── Panel derecho — formulario ─────────────────── */}
         <div
           className="flex-1 flex flex-col justify-center px-10 py-12"
-          style={{ background: '#0f1623' }}
+          style={{ background: 'var(--surface-panel)' }}
         >
           {/* Mobile logo (solo en < md) */}
           <div className="flex items-center gap-3 mb-8 md:hidden">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-accent-400"
-              style={{ background: 'rgba(61,107,255,0.12)', border: '1px solid rgba(61,107,255,0.2)' }}
+              className="w-10 h-10 flex items-center justify-center"
+              style={{ borderRadius: 10, background: 'linear-gradient(135deg, rgba(0,212,255,0.18), rgba(74,140,255,0.14))', border: '1px solid rgba(0,212,255,0.25)', color: '#00d4ff' }}
             >
               <ShieldIcon />
             </div>
-            <span className="font-bold text-white text-base">Gestión PAS</span>
+            <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: 15 }}>Gestión PAS</span>
           </div>
 
-          <h2 className="text-[22px] font-bold text-white tracking-tight mb-1">
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 4 }}>
             Iniciar sesión
           </h2>
-          <p className="text-slate-500 text-sm mb-8">
+          <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 32 }}>
             Ingresá con tu cuenta de productor
           </p>
 
@@ -137,35 +140,28 @@ export default function LoginPage() {
 
             {/* Email */}
             <div className="space-y-1.5">
-              <label className="block text-sm text-slate-400">
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--text-muted)', marginBottom: 6 }}>
                 Email
               </label>
               <input
                 type="email"
                 autoComplete="email"
                 placeholder="usuario@gestionpas.com.ar"
-                className={`w-full px-4 py-3 text-sm rounded-xl outline-none transition-all duration-200
-                  text-slate-200 placeholder:text-slate-600
-                  ${errors.identificadorAcceso
-                    ? 'ring-1 ring-red-500/50 bg-red-500/5'
-                    : 'focus:ring-1 focus:ring-accent-500/50'
-                  }`}
+                className="input-base w-full px-4 py-3 text-sm outline-none transition-all border"
                 style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: errors.identificadorAcceso
-                    ? '1px solid rgba(239,68,68,0.4)'
-                    : '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: 10,
+                  borderColor: errors.identificadorAcceso ? 'rgba(224,80,80,0.5)' : 'var(--input-border)',
                 }}
                 {...register('identificadorAcceso')}
               />
               {errors.identificadorAcceso && (
-                <p className="text-xs text-red-400">{errors.identificadorAcceso.message}</p>
+                <p style={{ fontSize: 12, color: 'var(--policy-cancelled-text)' }}>{errors.identificadorAcceso.message}</p>
               )}
             </div>
 
             {/* Contraseña */}
             <div className="space-y-1.5">
-              <label className="block text-sm text-slate-400">
+              <label style={{ display: 'block', fontSize: 13, color: 'var(--text-muted)', marginBottom: 6 }}>
                 Contraseña
               </label>
               <div className="relative">
@@ -173,25 +169,18 @@ export default function LoginPage() {
                   type={showPass ? 'text' : 'password'}
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className={`w-full px-4 py-3 text-sm rounded-xl outline-none transition-all duration-200
-                    text-slate-200 placeholder:text-slate-600 pr-11
-                    ${errors.password
-                      ? 'ring-1 ring-red-500/50 bg-red-500/5'
-                      : 'focus:ring-1 focus:ring-accent-500/50'
-                    }`}
+                  className="input-base w-full px-4 py-3 text-sm pr-11 outline-none transition-all border"
                   style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: errors.password
-                      ? '1px solid rgba(239,68,68,0.4)'
-                      : '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: 10,
+                    borderColor: errors.password ? 'rgba(224,80,80,0.5)' : 'var(--input-border)',
                   }}
                   {...register('password')}
                 />
-                {/* Toggle visibilidad */}
                 <button
                   type="button"
                   onClick={() => setShowPass((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+                  style={{ color: 'var(--text-faint)' }}
                   tabIndex={-1}
                 >
                   {showPass ? (
@@ -202,15 +191,20 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-red-400">{errors.password.message}</p>
+                <p style={{ fontSize: 12, color: 'var(--policy-cancelled-text)' }}>{errors.password.message}</p>
               )}
             </div>
 
             {/* Error de servidor */}
             {serverError && (
               <div
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-400"
-                style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
+                className="flex items-center gap-3 px-4 py-3 text-sm"
+                style={{
+                  borderRadius: 8,
+                  background: 'var(--policy-cancelled-bg)',
+                  border: '1px solid var(--policy-cancelled-border)',
+                  color: 'var(--policy-cancelled-text)',
+                }}
               >
                 <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 {serverError}
@@ -221,14 +215,8 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 disabled:opacity-40 active:scale-[0.98]"
-              style={{
-                background: isSubmitting
-                  ? 'rgba(61,107,255,0.5)'
-                  : 'rgba(61,107,255,1)',
-                border: '1px solid rgba(61,107,255,0.6)',
-                boxShadow: isSubmitting ? 'none' : '0 0 0 1px rgba(61,107,255,0.3), 0 4px 20px rgba(61,107,255,0.25)',
-              }}
+              className="btn-cyan w-full py-3 font-bold text-sm active:scale-[0.98] inline-flex items-center justify-center"
+              style={{ borderRadius: 10 }}
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
@@ -246,9 +234,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="text-sm transition-colors"
-                style={{ color: 'rgba(61,107,255,0.8)' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(61,107,255,1)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(61,107,255,0.8)')}
+                style={{ color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 ¿Olvidaste tu contraseña?
               </button>

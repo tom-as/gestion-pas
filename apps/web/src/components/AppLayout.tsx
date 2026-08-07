@@ -51,9 +51,9 @@ const ROLE_LABEL: Record<UserRole, string> = {
   [UserRole.ASEGURADO]:   'Asegurado',
 };
 const ROLE_COLOR: Record<UserRole, { bg: string; text: string }> = {
-  [UserRole.ORGANIZADOR]: { bg: 'rgba(128,80,200,0.16)', text: '#a78bfa' },
-  [UserRole.PRODUCTOR]:   { bg: 'rgba(16,163,108,0.16)', text: '#34d399' },
-  [UserRole.ASEGURADO]:   { bg: 'rgba(214,154,12,0.16)', text: '#fbbf24' },
+  [UserRole.ORGANIZADOR]: { bg: 'rgba(0,212,255,0.14)', text: '#00d4ff' },
+  [UserRole.PRODUCTOR]:   { bg: 'rgba(16,201,122,0.14)', text: '#10c97a' },
+  [UserRole.ASEGURADO]:   { bg: 'rgba(240,160,32,0.14)', text: '#f0a020' },
 };
 
 /* ════════════════════════════════════════════════════════════
@@ -89,8 +89,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="group flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-30 overflow-hidden"
         style={{
           width: 52,
-          background: 'var(--surface-panel)',
-          borderRight: '1px solid var(--border-subtle)',
+          background: '#040a18',
+          borderRight: '1px solid rgba(0,212,255,0.08)',
           transition: 'width 200ms cubic-bezier(0.16,1,0.3,1)',
         }}
         onMouseEnter={(e) => (e.currentTarget.style.width = '220px')}
@@ -103,15 +103,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             paddingLeft: 12,
             paddingRight: 12,
             gap: 10,
-            borderBottom: '1px solid var(--border-subtle)',
+            borderBottom: '1px solid rgba(0,212,255,0.08)',
           }}
         >
-          {/* Logo — escudo de póliza */}
+          {/* Logo — escudo con acento cian */}
           <div
             className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0"
             style={{
-              background: 'var(--accent-primary)',
-              color: '#fff',
+              background: 'linear-gradient(135deg, rgba(0,212,255,0.20), rgba(74,140,255,0.15))',
+              border: '1px solid rgba(0,212,255,0.35)',
+              color: '#00d4ff',
             }}
           >
             <NavIcon.polizas size={14} />
@@ -154,16 +155,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 className={({ isActive }) =>
                   `flex items-center gap-3 py-2 rounded text-sm font-medium transition-colors duration-100 select-none overflow-hidden whitespace-nowrap ${
                     isActive
-                      ? 'text-[var(--text-primary)]'
-                      : 'text-[var(--text-faint)] hover:text-[var(--text-muted)] hover:bg-[var(--surface-record)]'
+                      ? ''
+                      : 'hover:bg-[rgba(0,212,255,0.05)]'
                   }`
                 }
                 style={({ isActive }) => ({
                   paddingLeft: 10,
                   paddingRight: 10,
+                  color: isActive ? '#00d4ff' : '#435070',
                   ...(isActive ? {
-                    background: 'var(--surface-record)',
-                    borderLeft: '2px solid var(--accent-primary)',
+                    background: 'linear-gradient(90deg, rgba(0,212,255,0.10), rgba(74,140,255,0.06))',
+                    borderLeft: '2px solid #00d4ff',
                     paddingLeft: 8,
                   } : {}),
                 })}
@@ -203,7 +205,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Bottom: role label */}
         <div
           className="flex-shrink-0 overflow-hidden"
-          style={{ borderTop: '1px solid var(--border-subtle)', padding: '12px 10px' }}
+          style={{ borderTop: '1px solid rgba(0,212,255,0.08)', padding: '12px 10px' }}
         >
           <span
             className="text-[10px] font-semibold tracking-widest uppercase whitespace-nowrap"
@@ -235,10 +237,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <header
           className="sticky top-0 z-20 flex-shrink-0 flex items-center justify-between px-6 h-14"
           style={{
-            background: 'var(--topbar-bg)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            borderBottom: '1px solid var(--topbar-border)',
+            background: 'rgba(4,10,24,0.88)',
+            backdropFilter: 'blur(16px) saturate(1.4)',
+            WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
+            borderBottom: '1px solid rgba(0,212,255,0.09)',
           }}
         >
           {/* Search bar */}

@@ -1,4 +1,3 @@
-import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { EstadoPoliza, EstadoSiniestro } from '@gestion-pas/types';
 import { useQuery } from '@tanstack/react-query';
@@ -9,6 +8,7 @@ import { cn, cls } from '@/lib/cn';
 import OperationalAlert from '@/components/ui/OperationalAlert';
 import ExpirationIndicator from '@/components/ui/ExpirationIndicator';
 import RecordCode from '@/components/ui/RecordCode';
+import { useAuth } from '@/context/AuthContext';
 import {
   IconSiniestro, IconPoliza, IconVencimiento, IconReclamo,
   IconAsegurado, IconTrendUp, IconArrowRight,
@@ -44,72 +44,147 @@ function Sk({ w, h = 20 }: { w: number | string; h?: number }) {
   );
 }
 
-/* ── KPI principal ───────────────────────────────────────── */
-interface KpiPrimaryProps {
+/* ── Area chart SVG sparkline ────────────────────────────── */
+function AreaChart({ color, points }: { color: string; points: string }) {
+  const gradId = `ag-${color.replace('#', '')}`;
+  const fill = points + ` L200,52 L0,52 Z`;
+  return (
+    <svg viewBox="0 0 200 52" preserveAspectRatio="none" style={{ width: '100%', height: 52, overflow: 'visible' }}>
+      <defs>
+        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.30" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={fill} fill={`url(#${gradId})`} />
+      <path d={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/* ── KPI card with area chart ────────────────────────────── */
+interface KpiCardProps {
   label: string;
   value: number | string;
   trend?: string;
+  trendUp?: boolean;
   sub?: string;
   icon: React.ReactNode;
+  iconColor: string;
+  chartColor: string;
+  chartPoints: string;
   loading?: boolean;
 }
-function KpiPrimary({ label, value, trend, sub, icon, loading }: KpiPrimaryProps) {
+function KpiCard({ label, value, trend, trendUp = true, sub, icon, iconColor, chartColor, chartPoints, loading }: KpiCardProps) {
   return (
-    <div
-      style={{
-        background: 'var(--surface-record)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 6,
-        padding: '18px 20px',
-      }}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div style={{ color: 'var(--text-faint)' }}>{icon}</div>
+    <div className="kpi-card">
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
+        <div
+          style={{
+            width: 30, height: 30, borderRadius: 7,
+            background: `color-mix(in srgb, ${iconColor} 14%, transparent)`,
+            border: `1px solid color-mix(in srgb, ${iconColor} 24%, transparent)`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: iconColor, flexShrink: 0,
+          }}
+        >
+          {icon}
+        </div>
         {trend && (
-          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--sla-safe-text)', display: 'flex', alignItems: 'center', gap: 3 }}>
-            <IconTrendUp size={11} />
-            {trend}
+          <span style={{
+            fontSize: 12, fontWeight: 600,
+            color: trendUp ? 'var(--sla-safe-text)' : 'var(--sla-breached-text)',
+            display: 'flex', alignItems: 'center', gap: 3,
+          }}>
+            {trendUp ? '↑' : '↓'} {trend}
           </span>
         )}
       </div>
-      <div style={{ marginTop: 12 }}>
-        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
-          {label}
-        </p>
-        {loading
-          ? <Sk w={48} h={32} />
-          : (
-            <p style={{ fontSize: 30, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
-              {value}
-            </p>
-          )
-        }
-        {sub && !loading && (
-          <p style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-muted)', marginTop: 4 }}>{sub}</p>
-        )}
+
+      <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
+        {label}
+      </p>
+      {loading
+        ? <Sk w={48} h={32} />
+        : (
+          <p style={{ fontSize: 30, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em' }}>
+            {value}
+          </p>
+        )
+      }
+      {sub && !loading && (
+        <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{sub}</p>
+      )}
+
+      {/* Area chart */}
+      <div style={{ marginTop: 14, height: 52 }}>
+        <AreaChart color={chartColor} points={chartPoints} />
       </div>
     </div>
   );
 }
 
-/* ── KPI secundaria ──────────────────────────────────────── */
-function KpiSecondary({ label, value, loading }: { label: string; value: number | string; loading?: boolean }) {
+/* ── Ops bar ─────────────────────────────────────────────── */
+function OpsBar({ tareas, vencimientos, siniestros, docs }: {
+  tareas: number; vencimientos: number; siniestros: number; docs: number;
+}) {
+  if (tareas === 0) return null;
   return (
-    <div
-      style={{
-        background: 'var(--surface-panel)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 4,
-        padding: '12px 14px',
-      }}
-    >
-      <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>
-        {label}
-      </p>
-      {loading
-        ? <Sk w={36} h={22} />
-        : <p style={{ fontSize: 22, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{value}</p>
-      }
+    <div style={{
+      background: 'linear-gradient(90deg, rgba(0,212,255,0.06), rgba(74,140,255,0.04))',
+      border: '1px solid rgba(0,212,255,0.13)',
+      borderRadius: 8, padding: '11px 18px',
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      marginBottom: 22, flexWrap: 'wrap', gap: 10,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </span>
+        <div>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+            {tareas} tarea{tareas !== 1 ? 's' : ''} requieren atención
+          </p>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 1 }}>
+            Revisión requerida antes del cierre del día
+          </p>
+        </div>
+      </div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {vencimientos > 0 && (
+          <span style={{
+            fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 5,
+            display: 'flex', alignItems: 'center', gap: 5,
+            background: 'var(--sla-warning-bg)', color: 'var(--sla-warning-text)',
+            border: '1px solid rgba(240,160,32,0.22)',
+          }}>
+            {vencimientos} vencimiento{vencimientos !== 1 ? 's' : ''} crítico{vencimientos !== 1 ? 's' : ''}
+          </span>
+        )}
+        {siniestros > 0 && (
+          <span style={{
+            fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 5,
+            display: 'flex', alignItems: 'center', gap: 5,
+            background: 'var(--sla-breached-bg)', color: 'var(--sla-breached-text)',
+            border: '1px solid rgba(224,80,80,0.22)',
+          }}>
+            {siniestros} siniestro{siniestros !== 1 ? 's' : ''} abierto{siniestros !== 1 ? 's' : ''}
+          </span>
+        )}
+        {docs > 0 && (
+          <span style={{
+            fontSize: 11, fontWeight: 600, padding: '3px 9px', borderRadius: 5,
+            display: 'flex', alignItems: 'center', gap: 5,
+            background: 'var(--claim-reported-bg)', color: 'var(--claim-reported-text)',
+            border: '1px solid rgba(74,140,255,0.22)',
+          }}>
+            {docs} documentos pendientes
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -134,16 +209,11 @@ function VencimientosSection() {
 
   if (!data || data.total === 0) {
     return (
-      <div
-        style={{
-          marginTop: 12,
-          padding: '20px 16px',
-          borderRadius: 4,
-          background: 'var(--surface-record)',
-          border: '1px solid var(--border-subtle)',
-          textAlign: 'center',
-        }}
-      >
+      <div style={{
+        marginTop: 12, padding: '20px 16px', borderRadius: 6,
+        background: 'var(--surface-record)', border: '1px solid var(--border-subtle)',
+        textAlign: 'center',
+      }}>
         <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Sin vencimientos en los próximos 7 días</p>
       </div>
     );
@@ -153,6 +223,7 @@ function VencimientosSection() {
     <div style={{ marginTop: 10 }}>
       {data.cuotas.map((c) => {
         const dias = diffDays(c.fechaVencimiento);
+        const urgentColor = dias <= 3 ? 'var(--sla-breached-text)' : dias <= 7 ? 'var(--sla-warning-text)' : 'var(--text-muted)';
         return (
           <button
             key={c.id}
@@ -160,32 +231,27 @@ function VencimientosSection() {
             className="w-full text-left"
             aria-label={`Ver póliza ${c.poliza.numeroPoliza} — vence en ${dias} días`}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              padding: '10px 12px',
-              borderRadius: 4,
-              marginBottom: 4,
-              background: 'var(--surface-record)',
-              border: '1px solid var(--border-subtle)',
-              cursor: 'pointer',
-              transition: 'background 0.1s ease',
-              width: '100%',
+              display: 'flex', alignItems: 'center', gap: 12,
+              padding: '10px 14px', borderRadius: 6, marginBottom: 4,
+              background: 'var(--surface-record)', border: '1px solid var(--border-subtle)',
+              cursor: 'pointer', transition: 'all 0.12s ease', width: '100%',
             }}
-            onMouseEnter={e => (e.currentTarget.style.background = 'var(--tr-hover-bg)')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'var(--surface-record)')}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(0,212,255,0.05)';
+              e.currentTarget.style.borderColor = 'rgba(0,212,255,0.18)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--surface-record)';
+              e.currentTarget.style.borderColor = 'var(--border-subtle)';
+            }}
           >
             {/* Avatar */}
-            <div
-              aria-hidden="true"
-              style={{
-                width: 32, height: 32, borderRadius: 4,
-                background: 'var(--claim-docs-bg)',
-                color: 'var(--claim-docs-text)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 11, fontWeight: 700, flexShrink: 0,
-              }}
-            >
+            <div aria-hidden="true" style={{
+              width: 32, height: 32, borderRadius: 6, flexShrink: 0,
+              background: 'rgba(0,212,255,0.09)', color: 'var(--accent-primary)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 11, fontWeight: 700,
+            }}>
               {(c.poliza.asegurado ?? '?').slice(0, 2).toUpperCase()}
             </div>
 
@@ -200,12 +266,14 @@ function VencimientosSection() {
               </div>
             </div>
 
-            {/* Right: fecha + importe */}
+            {/* Right */}
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                 {formatMoney(c.importe)}
               </p>
-              <ExpirationIndicator diasRestantes={dias} fechaLabel={formatDate(c.fechaVencimiento)} />
+              <p style={{ fontSize: 12, fontWeight: 600, color: urgentColor, marginTop: 1, fontVariantNumeric: 'tabular-nums' }}>
+                {formatDate(c.fechaVencimiento)} · {dias}d
+              </p>
             </div>
           </button>
         );
@@ -218,58 +286,41 @@ function VencimientosSection() {
 interface ActivityItem { icon: React.ReactNode; title: string; sub: string; time: string }
 
 const ACTIVITY_ITEMS: ActivityItem[] = [
-  { icon: <IconSiniestro size={14} />, title: 'Siniestro Reportado',  sub: 'Exp. #4402',          time: '2h' },
-  { icon: <IconPoliza    size={14} />, title: 'Póliza Renovada',      sub: 'J. Domínguez',         time: 'Ayer' },
-  { icon: <IconReclamo   size={14} />, title: 'Reclamo Actualizado',   sub: 'RCL-0089 · En gestión',time: '2d' },
+  { icon: <IconSiniestro size={14} />, title: 'Siniestro Reportado',  sub: 'Exp. #4402',           time: '2h' },
+  { icon: <IconPoliza    size={14} />, title: 'Póliza Renovada',      sub: 'J. Domínguez',          time: 'Ayer' },
+  { icon: <IconReclamo   size={14} />, title: 'Reclamo Actualizado',  sub: 'RCL-0089 · En gestión', time: '2d' },
 ];
 
 function ActivityFeed() {
   return (
-    <div
-      style={{
-        background: 'var(--surface-record)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 6,
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '10px 14px',
-          borderBottom: '1px solid var(--border-subtle)',
-        }}
-      >
+    <div style={{
+      background: 'var(--surface-record)',
+      border: '1px solid var(--border-subtle)',
+      borderRadius: 8, overflow: 'hidden',
+    }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '10px 14px', borderBottom: '1px solid var(--border-subtle)',
+      }}>
         <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Actividad reciente
         </p>
-        <span
-          className="animate-pulse-dot"
-          style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--sla-warning-text)', display: 'inline-block' }}
-          aria-hidden="true"
-        />
+        <span className="animate-pulse-dot" style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--sla-warning-text)', display: 'inline-block' }} aria-hidden="true" />
       </div>
 
       <div>
         {ACTIVITY_ITEMS.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex', alignItems: 'flex-start', gap: 10,
-              padding: '10px 14px',
-              borderBottom: i < ACTIVITY_ITEMS.length - 1 ? '1px solid var(--border-subtle)' : 'none',
-            }}
-          >
-            <div
-              aria-hidden="true"
-              style={{
-                width: 28, height: 28, borderRadius: 4, flexShrink: 0, marginTop: 1,
-                background: 'var(--surface-elevated)',
-                border: '1px solid var(--border-subtle)',
-                color: 'var(--text-muted)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
+          <div key={i} style={{
+            display: 'flex', alignItems: 'flex-start', gap: 10,
+            padding: '10px 14px',
+            borderBottom: i < ACTIVITY_ITEMS.length - 1 ? '1px solid var(--border-subtle)' : 'none',
+          }}>
+            <div aria-hidden="true" style={{
+              width: 28, height: 28, borderRadius: 6, flexShrink: 0, marginTop: 1,
+              background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.15)',
+              color: 'var(--accent-primary)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
               {item.icon}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -282,13 +333,10 @@ function ActivityFeed() {
       </div>
 
       <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border-subtle)' }}>
-        <button
-          style={{
-            width: '100%', textAlign: 'center', fontSize: 12, fontWeight: 600,
-            color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0',
-          }}
-          aria-label="Ver historial completo de actividad"
-        >
+        <button style={{
+          width: '100%', textAlign: 'center', fontSize: 12, fontWeight: 600,
+          color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0',
+        }} aria-label="Ver historial completo de actividad">
           Ver historial completo
         </button>
       </div>
@@ -300,21 +348,17 @@ function ActivityFeed() {
 function QuickActions() {
   const navigate = useNavigate();
   const items = [
-    { label: 'Nuevo asegurado', icon: <IconAsegurado size={18} />, to: '/asegurados' },
-    { label: 'Nueva póliza',    icon: <IconPoliza    size={18} />, to: '/polizas'    },
+    { label: 'Nuevo asegurado',    icon: <IconAsegurado size={18} />, to: '/asegurados' },
+    { label: 'Nueva póliza',       icon: <IconPoliza    size={18} />, to: '/polizas'    },
     { label: 'Reportar siniestro', icon: <IconSiniestro size={18} />, to: '/siniestros' },
-    { label: 'Nuevo reclamo',   icon: <IconReclamo   size={18} />, to: '/reclamos'   },
+    { label: 'Nuevo reclamo',      icon: <IconReclamo   size={18} />, to: '/reclamos'   },
   ];
 
   return (
-    <div
-      style={{
-        background: 'var(--surface-record)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 6,
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{
+      background: 'var(--surface-record)', border: '1px solid var(--border-subtle)',
+      borderRadius: 8, overflow: 'hidden',
+    }}>
       <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border-subtle)' }}>
         <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           Accesos rápidos
@@ -327,15 +371,18 @@ function QuickActions() {
             onClick={() => navigate(item.to)}
             style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              gap: 8, padding: '14px 8px',
-              borderRadius: 4,
-              background: 'var(--surface-panel)',
-              border: '1px solid var(--border-subtle)',
-              cursor: 'pointer', transition: 'background 0.1s ease',
-              color: 'var(--text-muted)',
+              gap: 8, padding: '14px 8px', borderRadius: 6,
+              background: 'var(--surface-panel)', border: '1px solid var(--border-subtle)',
+              cursor: 'pointer', transition: 'all 0.12s ease', color: 'var(--text-muted)',
             }}
-            onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-elevated)')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'var(--surface-panel)')}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(0,212,255,0.06)';
+              e.currentTarget.style.borderColor = 'rgba(0,212,255,0.20)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'var(--surface-panel)';
+              e.currentTarget.style.borderColor = 'var(--border-subtle)';
+            }}
             aria-label={item.label}
           >
             <span style={{ color: 'var(--accent-primary)' }}>{item.icon}</span>
@@ -353,7 +400,7 @@ function QuickActions() {
    Dashboard Page — Resumen operativo
 ════════════════════════════════════════════════════════════ */
 export default function DashboardPage() {
-  const { user, isOrganizador } = useAuth();
+  const { isOrganizador } = useAuth();
   const navigate = useNavigate();
 
   const cartera = useQuery<CarteraResponse>({
@@ -376,7 +423,6 @@ export default function DashboardPage() {
 
   const isLoadingStats = cartera.isLoading || siniestros.isLoading;
 
-  /* Alertas calculadas desde datos reales */
   const siniestrosAbiertos  = siniestros.data?.porEstado[EstadoSiniestro.ABIERTO]    ?? 0;
   const siniestrosEnGestion = siniestros.data?.porEstado[EstadoSiniestro.EN_GESTION] ?? 0;
   const polizasActivas      = polizas.data?.porEstado[EstadoPoliza.ACTIVA]           ?? 0;
@@ -392,44 +438,32 @@ export default function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
       >
-        {/* Indicador de fecha — pequeño y discreto */}
-        <p
-          style={{
-            fontSize: 11, fontWeight: 600,
-            color: 'var(--text-faint)',
-            textTransform: 'uppercase', letterSpacing: '0.06em',
-            marginBottom: 6,
-          }}
-        >
+        <p style={{
+          fontSize: 11, fontWeight: 600, color: 'var(--text-faint)',
+          textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6,
+        }}>
           {new Date().toLocaleDateString('es-AR', {
             weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
           }).toUpperCase()}
         </p>
 
-        {/* Título operativo */}
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-          <h1 style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.2 }}>
-            Resumen operativo
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+            Panel operativo
           </h1>
           {!isLoadingStats && totalTareas > 0 && (
-            <span
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 5,
-                padding: '3px 10px', borderRadius: 3,
-                background: 'var(--sla-warning-bg)',
-                color: 'var(--sla-warning-text)',
-                border: '1px solid var(--sla-warning-border)',
-                fontSize: 12, fontWeight: 700,
-              }}
-              role="status"
-              aria-label={`${totalTareas} tareas requieren atención`}
-            >
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '3px 10px', borderRadius: 5,
+              background: 'var(--sla-warning-bg)', color: 'var(--sla-warning-text)',
+              border: '1px solid rgba(240,160,32,0.28)',
+              fontSize: 12, fontWeight: 700,
+            }} role="status" aria-label={`${totalTareas} tareas requieren atención`}>
               {totalTareas} tareas requieren atención
             </span>
           )}
         </div>
 
-        {/* Subtítulo con desglose */}
         {!isLoadingStats && (
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4, lineHeight: 1.5 }}>
             {vencimientosCriticos > 0 && (
@@ -441,10 +475,8 @@ export default function DashboardPage() {
               </span>
             )}
             {siniestrosAbiertos > 0 && (
-              <span>
-                <span style={{ color: 'var(--sla-warning-text)', fontWeight: 600 }}>
-                  {siniestrosAbiertos} siniestro{siniestrosAbiertos !== 1 ? 's' : ''} abierto{siniestrosAbiertos !== 1 ? 's' : ''}
-                </span>
+              <span style={{ color: 'var(--sla-warning-text)', fontWeight: 600 }}>
+                {siniestrosAbiertos} siniestro{siniestrosAbiertos !== 1 ? 's' : ''} abierto{siniestrosAbiertos !== 1 ? 's' : ''}
               </span>
             )}
             {totalTareas === 0 && (
@@ -456,13 +488,29 @@ export default function DashboardPage() {
         )}
       </motion.div>
 
-      {/* ── Alertas de atención requerida ──────────────────── */}
+      {/* ── Ops bar ────────────────────────────────────────── */}
+      {!isLoadingStats && (
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25, delay: 0.04, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <OpsBar
+            tareas={totalTareas}
+            vencimientos={vencimientosCriticos}
+            siniestros={siniestrosAbiertos}
+            docs={0}
+          />
+        </motion.div>
+      )}
+
+      {/* ── Alertas ────────────────────────────────────────── */}
       {!isLoadingStats && (siniestrosAbiertos > 0 || siniestrosEnGestion > 0 || vencimientosCriticos > 0) && (
         <motion.section
           aria-labelledby="sec-atencion"
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.25, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
         >
           <h2 id="sec-atencion" style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
             Atención requerida
@@ -502,7 +550,7 @@ export default function DashboardPage() {
         </motion.section>
       )}
 
-      {/* ── KPIs ───────────────────────────────────────────── */}
+      {/* ── KPI grid con area charts ────────────────────────── */}
       <motion.section
         aria-labelledby="sec-indicadores"
         initial={{ opacity: 0, y: 6 }}
@@ -513,35 +561,53 @@ export default function DashboardPage() {
           Indicadores generales
         </h2>
 
-        {/* KPI principal + secundarias */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10 }}>
-          {/* Principal: cartera */}
-          <KpiPrimary
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+          <KpiCard
             label="Cartera asegurados"
             value={cartera.data?.total ?? 0}
             trend="+2 este mes"
+            trendUp={true}
             sub="Total activos"
-            icon={<IconAsegurado size={18} />}
+            icon={<IconAsegurado size={14} />}
+            iconColor="#00d4ff"
+            chartColor="#00d4ff"
+            chartPoints="M0,42 L25,38 L50,35 L75,30 L100,28 L125,22 L150,18 L175,12 L200,8"
             loading={isLoadingStats}
           />
-          {/* Secundarias */}
-          <KpiSecondary
+          <KpiCard
+            label="Pólizas activas"
+            value={isOrganizador ? polizasActivas : '—'}
+            trend="94.2% en vigor"
+            trendUp={true}
+            icon={<IconPoliza size={14} />}
+            iconColor="#10c97a"
+            chartColor="#10c97a"
+            chartPoints="M0,38 L25,35 L50,32 L75,34 L100,25 L125,20 L150,16 L175,14 L200,10"
+            loading={polizas.isLoading && isOrganizador}
+          />
+          <KpiCard
             label="Siniestros abiertos"
-            value={siniestros.data?.porEstado[EstadoSiniestro.ABIERTO] ?? 0}
+            value={siniestrosAbiertos}
+            trend={siniestrosAbiertos > 0 ? `${siniestrosEnGestion} en gestión` : 'Sin pendientes'}
+            trendUp={false}
+            sub={siniestrosAbiertos > 0 ? 'Requieren atención' : undefined}
+            icon={<IconSiniestro size={14} />}
+            iconColor="#f0a020"
+            chartColor="#f0a020"
+            chartPoints="M0,20 L25,28 L50,18 L75,32 L100,24 L125,30 L150,20 L175,28 L200,22"
             loading={siniestros.isLoading}
           />
-          <KpiSecondary
-            label="En gestión"
-            value={siniestros.data?.porEstado[EstadoSiniestro.EN_GESTION] ?? 0}
-            loading={siniestros.isLoading}
+          <KpiCard
+            label="Vencimientos 7 días"
+            value={vencimientosCriticos}
+            trend={vencimientosCriticos > 0 ? 'Revisar urgente' : 'Sin vencimientos'}
+            trendUp={false}
+            icon={<IconVencimiento size={14} />}
+            iconColor="#e05050"
+            chartColor="#e05050"
+            chartPoints="M0,10 L25,15 L50,12 L75,20 L100,28 L125,24 L150,32 L175,38 L200,44"
+            loading={vencimientos.isLoading}
           />
-          {isOrganizador && (
-            <KpiSecondary
-              label="Pólizas activas"
-              value={polizasActivas}
-              loading={polizas.isLoading}
-            />
-          )}
         </div>
       </motion.section>
 

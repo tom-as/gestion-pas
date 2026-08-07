@@ -15,8 +15,8 @@ export const cls = {
   btnMd:      'px-4 py-2 text-[14px]',
   btnLg:      'px-5 py-2.5 text-[14px]',
 
-  /* Primary */
-  btnPrimary: 'bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-white shadow-sm font-medium',
+  /* Primary — cian gradient (btn-cyan defined in index.css) */
+  btnPrimary: 'btn-cyan font-bold',
 
   /* Secondary */
   btnSecond:  'bg-[var(--btn-second-bg)] hover:opacity-80 text-[var(--btn-second-text)] border border-[var(--btn-second-border)]',

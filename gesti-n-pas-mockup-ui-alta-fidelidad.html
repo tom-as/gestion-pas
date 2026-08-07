@@ -1,0 +1,1063 @@
+
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Gestión PAS — UI Mockup</title>
+
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy-950:#040a18;
+  --navy-900:#060d1f;
+  --navy-850:#081028;
+  --navy-800:#0b1530;
+  --navy-750:#0e1c3e;
+  --navy-700:#122248;
+  --navy-600:#1a2f5e;
+  --navy-500:#243a72;
+  --navy-400:#2f4885;
+  --navy-300:#4a6aaa;
+  --navy-200:#7090c8;
+  --navy-100:#a0b4d8;
+  --cyan-500:#00d4ff;
+  --cyan-400:#20dcff;
+  --cyan-300:#60e8ff;
+  --cyan-200:#a0f0ff;
+  --cyan-glow:rgba(0,212,255,0.18);
+  --cyan-glow-sm:rgba(0,212,255,0.10);
+  --cobalt-500:#2563eb;
+  --cobalt-400:#3b82f6;
+  --surface-card:rgba(14,24,52,0.85);
+  --surface-elevated:rgba(18,30,64,0.90);
+  --surface-row:rgba(11,21,48,0.60);
+  --border-card:rgba(0,212,255,0.10);
+  --border-strong:rgba(0,212,255,0.22);
+  --text-primary:#e8eef8;
+  --text-secondary:#a0b4d8;
+  --text-muted:#6b82aa;
+  --text-faint:#435070;
+  --green:#10c97a;
+  --green-bg:rgba(16,201,122,0.10);
+  --amber:#f0a020;
+  --amber-bg:rgba(240,160,32,0.10);
+  --red:#e05050;
+  --red-bg:rgba(224,80,80,0.10);
+  --blue:#4a8cff;
+  --blue-bg:rgba(74,140,255,0.10);
+}
+body{
+  font-family:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;
+  background:var(--navy-900);
+  color:var(--text-primary);
+  font-size:14px;
+  line-height:1.5;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── Layout ── */
+.layout{display:flex;min-height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:220px;
+  flex-shrink:0;
+  background:var(--navy-950);
+  border-right:1px solid rgba(0,212,255,0.07);
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  position:fixed;
+  top:0;left:0;bottom:0;
+  z-index:10;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:20px 20px 16px;
+  border-bottom:1px solid rgba(0,212,255,0.07);
+}
+.logo-icon{
+  width:34px;height:34px;border-radius:7px;
+  background:linear-gradient(135deg,rgba(0,212,255,0.18),rgba(74,140,255,0.15));
+  border:1px solid rgba(0,212,255,0.30);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-icon svg{width:17px;height:17px;color:var(--cyan-400)}
+.logo-text{font-size:14px;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em}
+.logo-sub{font-size:10px;color:var(--text-muted);font-weight:400}
+.sidebar-nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.nav-section{font-size:10px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.08em;padding:10px 8px 5px}
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:6px;
+  font-size:13px;font-weight:500;color:var(--text-muted);
+  cursor:pointer;transition:all 0.15s;
+  border:1px solid transparent;
+}
+.nav-item:hover{background:rgba(0,212,255,0.05);color:var(--text-secondary)}
+.nav-item.active{
+  background:linear-gradient(90deg,rgba(0,212,255,0.10),rgba(74,140,255,0.07));
+  color:var(--cyan-400);
+  border-color:rgba(0,212,255,0.15);
+}
+.nav-item svg{width:15px;height:15px;flex-shrink:0}
+.sidebar-footer{
+  padding:12px 16px;
+  border-top:1px solid rgba(0,212,255,0.07);
+  font-size:12px;color:var(--text-faint);
+}
+
+/* ── Topbar ── */
+.topbar{
+  position:fixed;top:0;left:220px;right:0;height:54px;z-index:9;
+  background:rgba(6,13,31,0.85);
+  backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid rgba(0,212,255,0.09);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:7px;padding:6px 12px;
+  min-width:220px;
+}
+.topbar-search input{
+  background:none;border:none;outline:none;
+  font-size:13px;color:var(--text-secondary);
+  font-family:inherit;width:100%;
+}
+.topbar-search input::placeholder{color:var(--text-faint)}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.topbar-badge{
+  display:flex;align-items:center;gap:5px;
+  background:var(--amber-bg);
+  border:1px solid rgba(240,160,32,0.22);
+  border-radius:6px;padding:4px 10px;
+  font-size:12px;color:var(--amber);font-weight:500;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0}
+.avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,212,255,0.25),rgba(74,140,255,0.20));
+  border:1px solid rgba(0,212,255,0.28);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;color:var(--cyan-400);cursor:pointer;
+}
+
+/* ── Main content ── */
+.main{margin-left:220px;padding-top:54px;min-height:100vh}
+.page{padding:28px}
+
+/* ── Page header ── */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em}
+.page-sub{font-size:13px;color:var(--text-muted);margin-top:3px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,var(--cyan-500),#00b8e0);
+  color:#040a18;
+  font-size:13px;font-weight:700;
+  padding:9px 18px;border-radius:8px;border:none;cursor:pointer;
+  box-shadow:0 0 18px rgba(0,212,255,0.30),0 2px 8px rgba(0,0,0,0.3);
+  transition:all 0.18s;
+  font-family:inherit;
+}
+.btn-primary:hover{
+  background:linear-gradient(135deg,var(--cyan-400),var(--cyan-500));
+  box-shadow:0 0 28px rgba(0,212,255,0.45),0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* ── Operational summary bar ── */
+.ops-bar{
+  background:linear-gradient(90deg,rgba(0,212,255,0.06),rgba(74,140,255,0.04));
+  border:1px solid rgba(0,212,255,0.13);
+  border-radius:8px;padding:11px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;
+  flex-wrap:wrap;gap:10px;
+}
+.ops-main{display:flex;align-items:center;gap:10px}
+.ops-icon{color:var(--cyan-400);display:flex;align-items:center}
+.ops-title{font-size:14px;font-weight:600;color:var(--text-primary)}
+.ops-sub{font-size:12px;color:var(--text-muted);margin-top:1px}
+.ops-tags{display:flex;gap:8px;flex-wrap:wrap}
+.ops-tag{
+  font-size:11px;font-weight:600;padding:3px 9px;border-radius:5px;
+  display:flex;align-items:center;gap:5px;
+}
+.ops-tag.amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(240,160,32,0.20)}
+.ops-tag.red{background:var(--red-bg);color:var(--red);border:1px solid rgba(224,80,80,0.20)}
+.ops-tag.blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(74,140,255,0.20)}
+
+/* ── KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi-card{
+  background:var(--surface-card);
+  border:1px solid var(--border-card);
+  border-radius:10px;padding:18px;
+  position:relative;overflow:hidden;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.kpi-card:hover{
+  border-color:rgba(0,212,255,0.22);
+  box-shadow:0 0 20px rgba(0,212,255,0.07);
+}
+.kpi-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,212,255,0.03),transparent 60%);
+  pointer-events:none;
+}
+.kpi-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.kpi-label{font-size:11px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.05em}
+.kpi-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.kpi-icon.cyan{background:rgba(0,212,255,0.10);color:var(--cyan-400)}
+.kpi-icon.green{background:rgba(16,201,122,0.10);color:var(--green)}
+.kpi-icon.amber{background:rgba(240,160,32,0.10);color:var(--amber)}
+.kpi-icon.red{background:rgba(224,80,80,0.10);color:var(--red)}
+.kpi-icon svg{width:14px;height:14px}
+.kpi-value{font-size:30px;font-weight:700;color:var(--text-primary);line-height:1;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.kpi-trend{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:12px}
+.kpi-trend.up{color:var(--green)}
+.kpi-trend.down{color:var(--red)}
+.kpi-trend.warn{color:var(--amber)}
+.kpi-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+
+/* ── Area chart ── */
+.area-chart-wrap{margin-top:14px;height:52px;position:relative}
+svg.area-chart{width:100%;height:52px;overflow:visible}
+
+/* ── Middle row ── */
+.mid-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
+
+/* ── Alert card ── */
+.alert-card{
+  background:var(--surface-card);
+  border:1px solid var(--border-card);
+  border-radius:10px;overflow:hidden;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.alert-card:hover{border-color:rgba(0,212,255,0.18);box-shadow:0 0 16px rgba(0,212,255,0.06)}
+.alert-card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 10px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.alert-card-title{font-size:13px;font-weight:600;color:var(--text-primary)}
+.badge-count{
+  font-size:11px;font-weight:700;
+  padding:2px 8px;border-radius:5px;
+}
+.badge-count.amber{background:var(--amber-bg);color:var(--amber)}
+.badge-count.red{background:var(--red-bg);color:var(--red)}
+.badge-count.blue{background:var(--blue-bg);color:var(--blue)}
+.alert-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  transition:background 0.15s;
+  cursor:pointer;
+}
+.alert-item:last-child{border-bottom:none}
+.alert-item:hover{background:rgba(0,212,255,0.04)}
+.alert-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.alert-dot.amber{background:var(--amber);box-shadow:0 0 6px rgba(240,160,32,0.5)}
+.alert-dot.red{background:var(--red);box-shadow:0 0 6px rgba(224,80,80,0.5)}
+.alert-dot.blue{background:var(--blue);box-shadow:0 0 6px rgba(74,140,255,0.5)}
+.alert-text{font-size:12.5px;color:var(--text-secondary);line-height:1.4}
+.alert-meta{font-size:11px;color:var(--text-faint);margin-top:2px}
+.alert-action{
+  font-size:11px;font-weight:600;
+  color:var(--cyan-400);
+  margin-left:auto;flex-shrink:0;
+  display:flex;align-items:center;gap:3px;
+  padding:2px 6px;border-radius:4px;
+  border:1px solid rgba(0,212,255,0.18);
+  background:rgba(0,212,255,0.05);
+  white-space:nowrap;align-self:center;
+}
+
+/* ── Table section ── */
+.table-section{
+  background:var(--surface-card);
+  border:1px solid var(--border-card);
+  border-radius:10px;overflow:hidden;
+  margin-bottom:24px;
+}
+.table-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  flex-wrap:wrap;gap:10px;
+}
+.table-toolbar-left{display:flex;align-items:center;gap:10px}
+.table-title{font-size:14px;font-weight:700;color:var(--text-primary)}
+.table-count{
+  font-size:11px;font-weight:600;
+  background:rgba(0,212,255,0.08);
+  color:var(--cyan-400);
+  border:1px solid rgba(0,212,255,0.16);
+  padding:2px 8px;border-radius:5px;
+}
+.search-field{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:7px;padding:5px 11px;
+  font-size:12.5px;color:var(--text-muted);
+  min-width:180px;
+}
+.filter-btn{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:7px;padding:5px 12px;
+  font-size:12.5px;color:var(--text-secondary);
+  cursor:pointer;font-family:inherit;
+  transition:border-color 0.15s;
+}
+.filter-btn:hover{border-color:rgba(0,212,255,0.20)}
+table{width:100%;border-collapse:collapse}
+thead tr{background:rgba(255,255,255,0.025)}
+th{
+  padding:10px 16px;
+  text-align:left;
+  font-size:10.5px;font-weight:600;
+  color:var(--text-faint);
+  text-transform:uppercase;letter-spacing:0.07em;
+  white-space:nowrap;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+td{
+  padding:13px 16px;
+  font-size:13px;color:var(--text-secondary);
+  border-bottom:1px solid rgba(255,255,255,0.035);
+  vertical-align:middle;
+}
+tbody tr{transition:background 0.12s,box-shadow 0.12s;cursor:pointer}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{
+  background:linear-gradient(90deg,rgba(0,212,255,0.05),rgba(74,140,255,0.03));
+  box-shadow:inset 2px 0 0 var(--cyan-500);
+}
+tbody tr:hover td{color:var(--text-primary)}
+.cell-name{font-weight:600;color:var(--text-primary);font-size:13.5px}
+.cell-id{
+  font-family:'Courier New',ui-monospace,monospace;
+  font-size:12px;color:var(--text-muted);
+  background:rgba(255,255,255,0.04);
+  padding:2px 7px;border-radius:4px;
+  display:inline-block;
+}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:5px;font-size:11.5px;font-weight:600}
+.badge.green{background:var(--green-bg);color:var(--green);border:1px solid rgba(16,201,122,0.22)}
+.badge.amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(240,160,32,0.22)}
+.badge.red{background:var(--red-bg);color:var(--red);border:1px solid rgba(224,80,80,0.22)}
+.badge.blue{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(74,140,255,0.22)}
+.badge.gray{background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid rgba(255,255,255,0.10)}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* ── Producer badge ── */
+.prod-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(90deg,rgba(74,140,255,0.10),rgba(0,212,255,0.06));
+  border:1px solid rgba(74,140,255,0.20);
+  border-radius:6px;padding:3px 9px;
+  font-size:12px;font-weight:500;color:#7aadff;
+}
+.prod-avatar{
+  width:18px;height:18px;border-radius:4px;
+  background:rgba(74,140,255,0.22);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;color:#7aadff;
+}
+
+/* ── Sparkline ── */
+.sparkline-wrap{display:flex;align-items:center;gap:8px}
+svg.spark{overflow:visible;width:72px;height:26px}
+
+/* ── Expiry indicator ── */
+.expiry{display:flex;align-items:center;gap:6px;font-size:12px}
+.expiry-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.expiry.ok .expiry-dot{background:var(--green);box-shadow:0 0 6px rgba(16,201,122,0.5)}
+.expiry.warn .expiry-dot{background:var(--amber);box-shadow:0 0 6px rgba(240,160,32,0.5)}
+.expiry.critical .expiry-dot{background:var(--red);box-shadow:0 0 6px rgba(224,80,80,0.5)}
+.expiry.ok{color:var(--green)}
+.expiry.warn{color:var(--amber)}
+.expiry.critical{color:var(--red)}
+
+/* ── Policies count ── */
+.pol-count{
+  display:flex;align-items:center;gap:5px;
+  font-size:13px;font-variant-numeric:tabular-nums;
+}
+.pol-count span{font-weight:600;color:var(--cyan-400)}
+
+/* ── Vencimientos list ── */
+.venc-list{padding:0}
+.venc-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  transition:background 0.12s;cursor:pointer;
+}
+.venc-item:hover{background:rgba(0,212,255,0.04)}
+.venc-poliza{
+  font-family:'Courier New',ui-monospace,monospace;
+  font-size:12px;font-weight:600;color:var(--cyan-400);
+}
+.venc-asegurado{font-size:12.5px;color:var(--text-secondary);margin-top:1px}
+.venc-right{text-align:right}
+.venc-fecha{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.venc-dias{font-size:11px;margin-top:2px}
+
+/* ── Footer ── */
+.footer{padding:16px 28px;border-top:1px solid rgba(255,255,255,0.04);text-align:center;font-size:12px;color:var(--text-faint)}
+
+/* SVG icon helpers */
+svg.icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg class="icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    </div>
+    <div>
+      <div class="logo-text">Gestión PAS</div>
+      <div class="logo-sub">Productora de Seguros</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Principal</div>
+    <div class="nav-item active">
+      <svg class="icon"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+      Dashboard
+    </div>
+    <div class="nav-item">
+      <svg class="icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      Asegurados
+    </div>
+    <div class="nav-item">
+      <svg class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+      Pólizas
+    </div>
+    <div class="nav-section">Gestión</div>
+    <div class="nav-item">
+      <svg class="icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      Siniestros
+    </div>
+    <div class="nav-item">
+      <svg class="icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      Reclamos
+    </div>
+    <div class="nav-item">
+      <svg class="icon"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      Vencimientos
+    </div>
+    <div class="nav-section">Configuración</div>
+    <div class="nav-item">
+      <svg class="icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      Compañías
+    </div>
+    <div class="nav-item">
+      <svg class="icon"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+      Reportes
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">v2.4.1 · Jul 2025</div>
+</aside>
+
+
+<header class="topbar">
+  <div class="topbar-search">
+    <svg class="icon" width="14" height="14" style="color:var(--text-faint);flex-shrink:0"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input />
+    <span style="font-size:11px;color:var(--text-faint);background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.08)">⌘K</span>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-badge"><div class="dot"></div>12 tareas pendientes</div>
+    <svg class="icon" width="17" height="17" style="color:var(--text-muted);cursor:pointer"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+    <div class="avatar">MR</div>
+  </div>
+</header>
+
+
+<main class="main">
+<div class="page">
+
+  
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Panel operativo</h1>
+      <p class="page-sub">Martes, 15 de julio de 2025 · Cartera activa</p>
+    </div>
+    <button class="btn-primary">
+      <svg class="icon" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Nuevo Asegurado
+    </button>
+  </div>
+
+  
+  <div class="ops-bar">
+    <div class="ops-main">
+      <div class="ops-icon">
+        <svg class="icon" width="18" height="18"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      </div>
+      <div>
+        <div class="ops-title">12 tareas requieren atención</div>
+        <div class="ops-sub">Revisión requerida antes del cierre del día</div>
+      </div>
+    </div>
+    <div class="ops-tags">
+      <div class="ops-tag amber">
+        <svg class="icon" width="11" height="11"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        3 vencimientos críticos
+      </div>
+      <div class="ops-tag red">
+        <svg class="icon" width="11" height="11"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        4 reclamos fuera de SLA
+      </div>
+      <div class="ops-tag blue">
+        <svg class="icon" width="11" height="11"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        5 documentos pendientes
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="kpi-grid">
+
+    
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-label">Total asegurados</div>
+        <div class="kpi-icon cyan"><svg class="icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+      </div>
+      <div class="kpi-value">248</div>
+      <div class="kpi-trend up">
+        <svg class="icon" width="11" height="11"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+        +8 este mes
+      </div>
+      <div class="area-chart-wrap">
+        <svg class="area-chart">
+          <defs>
+            
+              <stop offset="0%"></stop>
+              <stop offset="100%"></stop>
+            
+          </defs>
+          <path d="M0,42 L25,38 L50,35 L75,30 L100,28 L125,22 L150,18 L175,12 L200,8 L200,52 L0,52 Z" fill="url(#g1)"></path>
+          <path d="M0,42 L25,38 L50,35 L75,30 L100,28 L125,22 L150,18 L175,12 L200,8" fill="none" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </div>
+
+    
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-label">Pólizas activas</div>
+        <div class="kpi-icon green"><svg class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+      </div>
+      <div class="kpi-value">312</div>
+      <div class="kpi-trend up">
+        <svg class="icon" width="11" height="11"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+        94.2% en vigor
+      </div>
+      <div class="area-chart-wrap">
+        <svg class="area-chart">
+          <defs>
+            
+              <stop offset="0%"></stop>
+              <stop offset="100%"></stop>
+            
+          </defs>
+          <path d="M0,38 L25,35 L50,32 L75,34 L100,25 L125,20 L150,16 L175,14 L200,10 L200,52 L0,52 Z" fill="url(#g2)"></path>
+          <path d="M0,38 L25,35 L50,32 L75,34 L100,25 L125,20 L150,16 L175,14 L200,10" fill="none" stroke="#10c97a" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </div>
+
+    
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-label">Siniestros abiertos</div>
+        <div class="kpi-icon amber"><svg class="icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+      </div>
+      <div class="kpi-value">17</div>
+      <div class="kpi-trend warn">
+        <svg class="icon" width="11" height="11"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+        4 fuera de SLA
+      </div>
+      <div class="area-chart-wrap">
+        <svg class="area-chart">
+          <defs>
+            
+              <stop offset="0%"></stop>
+              <stop offset="100%"></stop>
+            
+          </defs>
+          <path d="M0,20 L25,28 L50,18 L75,32 L100,24 L125,30 L150,20 L175,28 L200,22 L200,52 L0,52 Z" fill="url(#g3)"></path>
+          <path d="M0,20 L25,28 L50,18 L75,32 L100,24 L125,30 L150,20 L175,28 L200,22" fill="none" stroke="#f0a020" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </div>
+
+    
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <div class="kpi-label">Vencimientos 30 días</div>
+        <div class="kpi-icon red"><svg class="icon"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+      </div>
+      <div class="kpi-value">23</div>
+      <div class="kpi-trend down" style="color:var(--red)">
+        <svg class="icon" width="11" height="11"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line></svg>
+        3 críticos esta semana
+      </div>
+      <div class="area-chart-wrap">
+        <svg class="area-chart">
+          <defs>
+            
+              <stop offset="0%"></stop>
+              <stop offset="100%"></stop>
+            
+          </defs>
+          <path d="M0,10 L25,15 L50,12 L75,20 L100,28 L125,24 L150,32 L175,38 L200,44 L200,52 L0,52 Z" fill="url(#g4)"></path>
+          <path d="M0,10 L25,15 L50,12 L75,20 L100,28 L125,24 L150,32 L175,38 L200,44" fill="none" stroke="#e05050" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="mid-row">
+
+    
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-title">Próximos vencimientos</span>
+        <span class="badge-count amber">3 críticos</span>
+      </div>
+      <div class="venc-list">
+        <div class="venc-item">
+          <div style="flex:1">
+            <div class="venc-poliza">POL-2024-00842</div>
+            <div class="venc-asegurado">García, Roberto A.</div>
+          </div>
+          <div class="venc-right">
+            <div class="venc-fecha" style="color:var(--red)">18 Jul 2025</div>
+            <div class="venc-dias" style="color:var(--red)">3 días</div>
+          </div>
+        </div>
+        <div class="venc-item">
+          <div style="flex:1">
+            <div class="venc-poliza">POL-2024-00761</div>
+            <div class="venc-asegurado">Martínez, Claudia B.</div>
+          </div>
+          <div class="venc-right">
+            <div class="venc-fecha" style="color:var(--amber)">22 Jul 2025</div>
+            <div class="venc-dias" style="color:var(--amber)">7 días</div>
+          </div>
+        </div>
+        <div class="venc-item">
+          <div style="flex:1">
+            <div class="venc-poliza">POL-2023-01204</div>
+            <div class="venc-asegurado">López, Fernando D.</div>
+          </div>
+          <div class="venc-right">
+            <div class="venc-fecha" style="color:var(--amber)">28 Jul 2025</div>
+            <div class="venc-dias" style="color:var(--amber)">13 días</div>
+          </div>
+        </div>
+        <div class="venc-item">
+          <div style="flex:1">
+            <div class="venc-poliza">POL-2024-00990</div>
+            <div class="venc-asegurado">Rodríguez, Ana M.</div>
+          </div>
+          <div class="venc-right">
+            <div class="venc-fecha" style="color:var(--text-muted)">04 Ago 2025</div>
+            <div class="venc-dias" style="color:var(--text-faint)">20 días</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-title">Siniestros — atención</span>
+        <span class="badge-count red">4 fuera de SLA</span>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot red"></div>
+        <div style="flex:1">
+          <div class="alert-text">Colisión — García, Roberto A.</div>
+          <div class="alert-meta">Abierto hace 18 días · SLA: 15 días</div>
+        </div>
+        <div class="alert-action">
+          <svg class="icon" width="10" height="10"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          Ver
+        </div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot red"></div>
+        <div style="flex:1">
+          <div class="alert-text">Robo total — Vidal, Jorge E.</div>
+          <div class="alert-meta">Abierto hace 22 días · Docs. pendientes</div>
+        </div>
+        <div class="alert-action">
+          <svg class="icon" width="10" height="10"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          Ver
+        </div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot amber"></div>
+        <div style="flex:1">
+          <div class="alert-text">Hogar — Fernández, Paola G.</div>
+          <div class="alert-meta">En gestión · Vence SLA en 2 días</div>
+        </div>
+        <div class="alert-action">
+          <svg class="icon" width="10" height="10"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          Ver
+        </div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot amber"></div>
+        <div style="flex:1">
+          <div class="alert-text">Colisión — Torres, Marcos L.</div>
+          <div class="alert-meta">Pendiente compañía · 14 días abierto</div>
+        </div>
+        <div class="alert-action">
+          <svg class="icon" width="10" height="10"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          Ver
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="alert-card">
+      <div class="alert-card-header">
+        <span class="alert-card-title">Documentación pendiente</span>
+        <span class="badge-count blue">5 items</span>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot blue"></div>
+        <div style="flex:1">
+          <div class="alert-text">Póliza N° POL-2024-00842</div>
+          <div class="alert-meta">Cédula verde · García, R.</div>
+        </div>
+        <div class="alert-action">Completar</div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot blue"></div>
+        <div style="flex:1">
+          <div class="alert-text">Siniestro — Robo Vidal</div>
+          <div class="alert-meta">Denuncia policial · Urgente</div>
+        </div>
+        <div class="alert-action">Completar</div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot amber"></div>
+        <div style="flex:1">
+          <div class="alert-text">Endoso POL-2023-01204</div>
+          <div class="alert-meta">Firma del asegurado</div>
+        </div>
+        <div class="alert-action">Completar</div>
+      </div>
+      <div class="alert-item">
+        <div class="alert-dot blue"></div>
+        <div style="flex:1">
+          <div class="alert-text">Alta asegurado — Romero, C.</div>
+          <div class="alert-meta">DNI y comprobante domicilio</div>
+        </div>
+        <div class="alert-action">Completar</div>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <div class="table-section">
+    <div class="table-toolbar">
+      <div class="table-toolbar-left">
+        <span class="table-title">Asegurados</span>
+        <span class="table-count">248 registros</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="search-field">
+          <svg class="icon" width="13" height="13" style="flex-shrink:0;color:var(--text-faint)"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Buscar asegurado o DNI…
+        </div>
+        <button class="filter-btn">
+          <svg class="icon" width="13" height="13"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Filtros
+        </button>
+        <button class="filter-btn">
+          <svg class="icon" width="13" height="13"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          Columnas
+        </button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Asegurado</th>
+          <th>DNI / CUIL</th>
+          <th>Productor</th>
+          <th>Pólizas</th>
+          <th>Estado cartera</th>
+          <th>Próx. vencimiento</th>
+          <th>Rendimiento</th>
+          <th>Siniestros</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(0,212,255,0.16),rgba(74,140,255,0.12));border:1px solid rgba(0,212,255,0.22);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan-400);flex-shrink:0">RG</div>
+              <div>
+                <div class="cell-name">García, Roberto A.</div>
+                <div style="font-size:11px;color:var(--text-faint)">Incorporado 03/2022</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="cell-id">20-31456789-4</span></td>
+          <td>
+            <div class="prod-badge">
+              <div class="prod-avatar">LC</div>
+              López Correa, M.
+            </div>
+          </td>
+          <td><div class="pol-count"><span>3</span> pólizas activas</div></td>
+          <td><span class="badge green">Activo</span></td>
+          <td><div class="expiry critical"><div class="expiry-dot"></div>18 Jul · 3d</div></td>
+          <td>
+            <div class="sparkline-wrap">
+              <svg class="spark">
+                <defs><stop offset="0%"></stop><stop offset="100%"></stop></defs>
+                <path d="M0,20 L12,16 L24,18 L36,10 L48,8 L60,6 L72,4 L72,26 L0,26 Z" fill="url(#sg1)"></path>
+                <path d="M0,20 L12,16 L24,18 L36,10 L48,8 L60,6 L72,4" fill="none" stroke="var(--cyan-500)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <span style="font-size:11px;color:var(--green);font-weight:600">↑4%</span>
+            </div>
+          </td>
+          <td><span class="badge red">1 abierto</span></td>
+        </tr>
+
+        
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(16,201,122,0.14),rgba(0,160,90,0.10));border:1px solid rgba(16,201,122,0.20);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green);flex-shrink:0">CM</div>
+              <div>
+                <div class="cell-name">Martínez, Claudia B.</div>
+                <div style="font-size:11px;color:var(--text-faint)">Incorporada 11/2021</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="cell-id">27-28901234-5</span></td>
+          <td>
+            <div class="prod-badge">
+              <div class="prod-avatar">SR</div>
+              Suárez Reyes, P.
+            </div>
+          </td>
+          <td><div class="pol-count"><span>5</span> pólizas activas</div></td>
+          <td><span class="badge green">Activo</span></td>
+          <td><div class="expiry warn"><div class="expiry-dot"></div>22 Jul · 7d</div></td>
+          <td>
+            <div class="sparkline-wrap">
+              <svg class="spark">
+                <defs><stop offset="0%"></stop><stop offset="100%"></stop></defs>
+                <path d="M0,16 L12,14 L24,12 L36,14 L48,10 L60,8 L72,6 L72,26 L0,26 Z" fill="url(#sg2)"></path>
+                <path d="M0,16 L12,14 L24,12 L36,14 L48,10 L60,8 L72,6" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <span style="font-size:11px;color:var(--green);font-weight:600">↑7%</span>
+            </div>
+          </td>
+          <td><span class="badge gray">0 abiertos</span></td>
+        </tr>
+
+        
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(240,160,32,0.14),rgba(200,120,0,0.10));border:1px solid rgba(240,160,32,0.20);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--amber);flex-shrink:0">JV</div>
+              <div>
+                <div class="cell-name">Vidal, Jorge E.</div>
+                <div style="font-size:11px;color:var(--text-faint)">Incorporado 07/2020</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="cell-id">20-22345678-9</span></td>
+          <td>
+            <div class="prod-badge">
+              <div class="prod-avatar">LC</div>
+              López Correa, M.
+            </div>
+          </td>
+          <td><div class="pol-count"><span>2</span> pólizas activas</div></td>
+          <td><span class="badge amber">Período de gracia</span></td>
+          <td><div class="expiry warn"><div class="expiry-dot"></div>28 Jul · 13d</div></td>
+          <td>
+            <div class="sparkline-wrap">
+              <svg class="spark">
+                <defs><stop offset="0%"></stop><stop offset="100%"></stop></defs>
+                <path d="M0,8 L12,12 L24,10 L36,16 L48,14 L60,18 L72,20 L72,26 L0,26 Z" fill="url(#sg3)"></path>
+                <path d="M0,8 L12,12 L24,10 L36,16 L48,14 L60,18 L72,20" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <span style="font-size:11px;color:var(--red);font-weight:600">↓3%</span>
+            </div>
+          </td>
+          <td><span class="badge red">1 abierto</span></td>
+        </tr>
+
+        
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(74,140,255,0.14),rgba(37,99,235,0.10));border:1px solid rgba(74,140,255,0.20);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--blue);flex-shrink:0">PF</div>
+              <div>
+                <div class="cell-name">Fernández, Paola G.</div>
+                <div style="font-size:11px;color:var(--text-faint)">Incorporada 05/2023</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="cell-id">27-34567890-1</span></td>
+          <td>
+            <div class="prod-badge">
+              <div class="prod-avatar">SR</div>
+              Suárez Reyes, P.
+            </div>
+          </td>
+          <td><div class="pol-count"><span>4</span> pólizas activas</div></td>
+          <td><span class="badge green">Activo</span></td>
+          <td><div class="expiry ok"><div class="expiry-dot"></div>04 Ago · 20d</div></td>
+          <td>
+            <div class="sparkline-wrap">
+              <svg class="spark">
+                <defs><stop offset="0%"></stop><stop offset="100%"></stop></defs>
+                <path d="M0,18 L12,14 L24,16 L36,10 L48,12 L60,8 L72,6 L72,26 L0,26 Z" fill="url(#sg4)"></path>
+                <path d="M0,18 L12,14 L24,16 L36,10 L48,12 L60,8 L72,6" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <span style="font-size:11px;color:var(--green);font-weight:600">↑5%</span>
+            </div>
+          </td>
+          <td><span class="badge amber">1 en gestión</span></td>
+        </tr>
+
+        
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(0,212,255,0.14),rgba(0,160,200,0.10));border:1px solid rgba(0,212,255,0.18);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--cyan-400);flex-shrink:0">ML</div>
+              <div>
+                <div class="cell-name">Torres, Marcos L.</div>
+                <div style="font-size:11px;color:var(--text-faint)">Incorporado 01/2024</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="cell-id">20-40123456-7</span></td>
+          <td>
+            <div class="prod-badge">
+              <div class="prod-avatar">AM</div>
+              Acosta Méndez, R.
+            </div>
+          </td>
+          <td><div class="pol-count"><span>1</span> póliza activa</div></td>
+          <td><span class="badge green">Activo</span></td>
+          <td><div class="expiry ok"><div class="expiry-dot"></div>12 Ago · 28d</div></td>
+          <td>
+            <div class="sparkline-wrap">
+              <svg class="spark">
+                <defs><stop offset="0%"></stop><stop offset="100%"></stop></defs>
+                <path d="M0,22 L12,20 L24,18 L36,16 L48,14 L60,12 L72,10 L72,26 L0,26 Z" fill="url(#sg5)"></path>
+                <path d="M0,22 L12,20 L24,18 L36,16 L48,14 L60,12 L72,10" fill="none" stroke="var(--cyan-500)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <span style="font-size:11px;color:var(--green);font-weight:600">↑11%</span>
+            </div>
+          </td>
+          <td><span class="badge red">1 abierto</span></td>
+        </tr>
+
+        
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0">AR</div>
+              <div>
+                <div class="cell-name">Rodríguez, Ana M.</div>
+                <div style="font-size:11px;color:var(--text-faint)">Incorporada 08/2019</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="cell-id">27-18765432-0</span></td>
+          <td>
+            <div class="prod-badge">
+              <div class="prod-avatar">LC</div>
+              López Correa, M.
+            </div>
+          </td>
+          <td><div class="pol-count"><span>6</span> pólizas activas</div></td>
+          <td><span class="badge red">Suspendida</span></td>
+          <td><div class="expiry critical"><div class="expiry-dot"></div>04 Ago · 20d</div></td>
+          <td>
+            <div class="sparkline-wrap">
+              <svg class="spark">
+                <defs><stop offset="0%"></stop><stop offset="100%"></stop></defs>
+                <path d="M0,6 L12,8 L24,10 L36,14 L48,18 L60,20 L72,24 L72,26 L0,26 Z" fill="url(#sg6)"></path>
+                <path d="M0,6 L12,8 L24,10 L36,14 L48,18 L60,20 L72,24" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+              <span style="font-size:11px;color:var(--red);font-weight:600">↓8%</span>
+            </div>
+          </td>
+          <td><span class="badge gray">0 abiertos</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-top:1px solid rgba(255,255,255,0.04)">
+      <span style="font-size:12px;color:var(--text-faint)">Mostrando 1–6 de 248 asegurados</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="filter-btn" style="padding:4px 10px">
+          <svg class="icon" width="12" height="12"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <span style="font-size:12px;font-weight:600;color:var(--cyan-400);background:rgba(0,212,255,0.08);padding:3px 10px;border-radius:5px;border:1px solid rgba(0,212,255,0.16)">1</span>
+        <span style="font-size:12px;color:var(--text-faint);padding:3px 8px">2</span>
+        <span style="font-size:12px;color:var(--text-faint);padding:3px 8px">3</span>
+        <span style="font-size:12px;color:var(--text-faint);padding:3px 8px">…</span>
+        <span style="font-size:12px;color:var(--text-faint);padding:3px 8px">42</span>
+        <button class="filter-btn" style="padding:4px 10px">
+          <svg class="icon" width="12" height="12"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Made with IBM Bob  ·  Gestión PAS — Mockup UI  ·  Alta Fidelidad v1.0
+</div>
+</main>
+</div>
+
+</body>
+</html>

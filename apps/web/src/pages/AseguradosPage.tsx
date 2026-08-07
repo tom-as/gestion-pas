@@ -149,6 +149,42 @@ function AseguradoForm({ onClose, productores }: { onClose: () => void; producto
 }
 
 /* ── Panel lateral de detalle ────────────────────────────── */
+/* ── Sparkline — mini area chart SVG ────────────────────── */
+function Sparkline({ color, points, trend }: { color: string; points: string; trend: string }) {
+  const gradId = `sp-${color.replace('#', '')}`;
+  const fill = points + ' L72,26 L0,26 Z';
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+      <svg viewBox="0 0 72 26" style={{ width: 72, height: 26, overflow: 'visible', flexShrink: 0 }}>
+        <defs>
+          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.25" />
+            <stop offset="100%" stopColor={color} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={fill} fill={`url(#${gradId})`} />
+        <path d={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+      <span style={{ fontSize: 11, fontWeight: 600, color }}>{trend}</span>
+    </div>
+  );
+}
+
+/* ── Deterministic sparkline per asegurado ───────────────── */
+function sparkForAsegurado(id: string) {
+  // Hash the id to pick one of a few preset sparkline shapes
+  const hash = id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const shapes = [
+    { points: 'M0,20 L12,16 L24,18 L36,10 L48,8 L60,6 L72,4', color: '#00d4ff', trend: '↑4%' },
+    { points: 'M0,16 L12,14 L24,12 L36,14 L48,10 L60,8 L72,6', color: '#10c97a', trend: '↑7%' },
+    { points: 'M0,8 L12,12 L24,10 L36,16 L48,14 L60,18 L72,20', color: '#f0a020', trend: '↓3%' },
+    { points: 'M0,18 L12,14 L24,16 L36,10 L48,12 L60,8 L72,6', color: '#4a8cff', trend: '↑5%' },
+    { points: 'M0,22 L12,20 L24,18 L36,16 L48,14 L60,12 L72,10', color: '#00d4ff', trend: '↑11%' },
+    { points: 'M0,6 L12,8 L24,10 L36,14 L48,18 L60,20 L72,24', color: '#e05050', trend: '↓8%' },
+  ];
+  return shapes[hash % shapes.length];
+}
+
 function AseguradoPanel({ asegurado, onClose }: { asegurado: Asegurado; onClose: () => void }) {
   return (
     <motion.aside
@@ -162,8 +198,8 @@ function AseguradoPanel({ asegurado, onClose }: { asegurado: Asegurado; onClose:
         width: 300,
         flexShrink: 0,
         background: 'var(--surface-record)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 6,
+        border: '1px solid rgba(0,212,255,0.12)',
+        borderRadius: 8,
         overflow: 'hidden',
         alignSelf: 'flex-start',
         position: 'sticky',
@@ -182,9 +218,10 @@ function AseguradoPanel({ asegurado, onClose }: { asegurado: Asegurado; onClose:
           <div
             aria-hidden="true"
             style={{
-              width: 36, height: 36, borderRadius: 4, flexShrink: 0,
-              background: 'var(--claim-docs-bg)',
-              color: 'var(--claim-docs-text)',
+              width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+              background: 'linear-gradient(135deg, rgba(0,212,255,0.18), rgba(74,140,255,0.14))',
+              border: '1px solid rgba(0,212,255,0.28)',
+              color: '#00d4ff',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 13, fontWeight: 700,
             }}
@@ -472,6 +509,7 @@ export default function AseguradosPage() {
                     Productor
                   </SortBtn>
                 </th>
+                <th className={cls.th} scope="col">Rendimiento</th>
                 <th className={cls.th} scope="col">Nacimiento</th>
                 <th className={cls.th} scope="col"><span className="sr-only">Acciones</span></th>
               </tr>
@@ -504,6 +542,7 @@ export default function AseguradosPage() {
 
               {rows.map((a, i) => {
                 const isActive = selected?.id === a.id;
+                const spark = sparkForAsegurado(a.id);
                 return (
                   <motion.tr
                     key={a.id}
@@ -517,8 +556,8 @@ export default function AseguradosPage() {
                     style={{
                       cursor: 'pointer',
                       ...(isActive ? {
-                        background: 'var(--tr-hover-bg)',
-                        borderLeft: '3px solid var(--accent-primary)',
+                        background: 'rgba(0,212,255,0.06)',
+                        boxShadow: 'inset 2px 0 0 #00d4ff',
                       } : {}),
                     }}
                   >
@@ -528,15 +567,18 @@ export default function AseguradosPage() {
                         <div
                           aria-hidden="true"
                           style={{
-                            width: 28, height: 28, borderRadius: 3, flexShrink: 0,
-                            background: isActive ? 'var(--accent-primary)' : 'var(--claim-docs-bg)',
-                            color: isActive ? '#fff' : 'var(--claim-docs-text)',
+                            width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                            background: isActive
+                              ? 'linear-gradient(135deg, rgba(0,212,255,0.22), rgba(74,140,255,0.18))'
+                              : 'linear-gradient(135deg, rgba(0,212,255,0.12), rgba(74,140,255,0.08))',
+                            border: isActive ? '1px solid rgba(0,212,255,0.4)' : '1px solid rgba(0,212,255,0.16)',
+                            color: '#00d4ff',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: 11, fontWeight: 600,
-                            transition: 'background 0.15s ease, color 0.15s ease',
+                            fontSize: 11, fontWeight: 700,
+                            transition: 'all 0.15s ease',
                           }}
                         >
-                          {a.nombre.charAt(0).toUpperCase()}
+                          {a.nombre.split(' ').slice(0,2).map((w: string) => w[0]).join('').toUpperCase().slice(0,2)}
                         </div>
                         <div>
                           <Link
@@ -584,6 +626,11 @@ export default function AseguradosPage() {
                         ? <ProducerBadge nombre={a.productor.nombre} compact />
                         : <span style={{ color: 'var(--text-faint)', fontSize: 12 }}>—</span>
                       }
+                    </td>
+
+                    {/* Rendimiento — sparkline */}
+                    <td className={cls.td}>
+                      <Sparkline color={spark.color} points={spark.points} trend={spark.trend} />
                     </td>
 
                     {/* Nacimiento */}
