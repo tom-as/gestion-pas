@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { EstadoPoliza, EstadoSiniestro } from '@gestion-pas/types';
+import { EstadoPoliza, EstadoReclamo, EstadoSiniestro } from '@gestion-pas/types';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import api from '@/lib/api';
@@ -20,7 +20,7 @@ interface VencimientosResponse {
   total: number;
   cuotas: {
     id: string; numeroCuota: number; importe: number; fechaVencimiento: string;
-    poliza: { numeroPoliza: string; asegurado?: string | null; compania?: string | null }
+    poliza: { id: string; numeroPoliza: string; asegurado?: string | null; compania?: string | null }
   }[];
 }
 interface SiniestrosResponse { total: number; porEstado: Record<string, number> }
@@ -227,7 +227,7 @@ function VencimientosSection() {
         return (
           <button
             key={c.id}
-            onClick={() => navigate('/polizas')}
+            onClick={() => navigate(`/polizas/${c.poliza.id}`)}
             className="w-full text-left"
             aria-label={`Ver póliza ${c.poliza.numeroPoliza} — vence en ${dias} días`}
             style={{
@@ -292,6 +292,7 @@ const ACTIVITY_ITEMS: ActivityItem[] = [
 ];
 
 function ActivityFeed() {
+  const navigate = useNavigate();
   return (
     <div style={{
       background: 'var(--surface-record)',
@@ -333,10 +334,14 @@ function ActivityFeed() {
       </div>
 
       <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border-subtle)' }}>
-        <button style={{
-          width: '100%', textAlign: 'center', fontSize: 12, fontWeight: 600,
-          color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0',
-        }} aria-label="Ver historial completo de actividad">
+        <button
+          onClick={() => navigate('/siniestros')}
+          style={{
+            width: '100%', textAlign: 'center', fontSize: 12, fontWeight: 600,
+            color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0',
+          }}
+          aria-label="Ver historial completo de actividad"
+        >
           Ver historial completo
         </button>
       </div>
@@ -397,10 +402,254 @@ function QuickActions() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   Dashboard Page — Resumen operativo
+   Dashboard Asegurado — Vista personal del asegurado
+════════════════════════════════════════════════════════════ */
+
+interface PolizaAseg { id: string; numeroPoliza: string; estado: EstadoPoliza; compania: { nombre: string } | null }
+interface SiniestroAseg { id: string; tipo: string; estado: EstadoSiniestro; fechaOcurrencia: string }
+interface ReclamoAseg { id: string; tipo: string; estado: EstadoReclamo; fechaApertura: string }
+
+function DashboardAsegurado() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const primerNombre = user?.nombre?.split(' ')[0] ?? '';
+
+  const polizas = useQuery<PolizaAseg[]>({
+    queryKey: ['mis-polizas'],
+    queryFn: () => api.get('/polizas').then((r) => r.data),
+  });
+  const siniestros = useQuery<SiniestroAseg[]>({
+    queryKey: ['mis-siniestros'],
+    queryFn: () => api.get('/siniestros').then((r) => r.data),
+  });
+  const reclamos = useQuery<ReclamoAseg[]>({
+    queryKey: ['mis-reclamos'],
+    queryFn: () => api.get('/reclamos').then((r) => r.data),
+  });
+
+  const polizasActivas   = polizas.data?.filter(p => p.estado === EstadoPoliza.ACTIVA).length ?? 0;
+  const sinAbiertos      = siniestros.data?.filter(s => s.estado === EstadoSiniestro.ABIERTO || s.estado === EstadoSiniestro.EN_GESTION).length ?? 0;
+  const recAbiertos      = reclamos.data?.filter(r => r.estado === EstadoReclamo.ABIERTO || r.estado === EstadoReclamo.EN_GESTION).length ?? 0;
+  const isLoading        = polizas.isLoading || siniestros.isLoading || reclamos.isLoading;
+
+  const kpis = [
+    {
+      label: 'Pólizas activas',
+      value: polizas.isLoading ? null : polizasActivas,
+      icon: <IconPoliza size={16} />,
+      iconColor: '#10c97a',
+      to: '/polizas',
+    },
+    {
+      label: 'Siniestros abiertos',
+      value: siniestros.isLoading ? null : sinAbiertos,
+      icon: <IconSiniestro size={16} />,
+      iconColor: '#f0a020',
+      to: '/siniestros',
+    },
+    {
+      label: 'Reclamos activos',
+      value: reclamos.isLoading ? null : recAbiertos,
+      icon: <IconReclamo size={16} />,
+      iconColor: '#e05050',
+      to: '/reclamos',
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+
+      {/* Cabecera */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+          {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()}
+        </p>
+        <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+          Bienvenido/a, {primerNombre}
+        </h1>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>
+          Este es el resumen de tu cobertura y trámites activos.
+        </p>
+      </motion.div>
+
+      {/* KPIs */}
+      <motion.div
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, delay: 0.04, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {kpis.map((k) => (
+          <button
+            key={k.to}
+            onClick={() => navigate(k.to)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 14,
+              padding: '18px 20px', borderRadius: 8, textAlign: 'left', cursor: 'pointer',
+              background: 'var(--surface-record)', border: '1px solid var(--border-subtle)',
+              transition: 'border-color 0.15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = k.iconColor + '55')}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border-subtle)')}
+          >
+            <div style={{
+              width: 40, height: 40, borderRadius: 8, flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: k.iconColor + '18', color: k.iconColor,
+              border: `1px solid ${k.iconColor}30`,
+            }}>
+              {k.icon}
+            </div>
+            <div>
+              <p style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>
+                {k.value === null ? <Sk w={32} h={24} /> : k.value}
+              </p>
+              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 3 }}>{k.label}</p>
+            </div>
+          </button>
+        ))}
+      </motion.div>
+
+      {/* Alertas de trámites activos */}
+      {!isLoading && (sinAbiertos > 0 || recAbiertos > 0) && (
+        <motion.div
+          className="space-y-2"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h2 style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+            Trámites en curso
+          </h2>
+          {sinAbiertos > 0 && (
+            <OperationalAlert
+              severity="warning"
+              title={`${sinAbiertos} siniestro${sinAbiertos !== 1 ? 's' : ''} en curso`}
+              description="Podés ver el estado y agregar comentarios"
+              actionLabel="Ver siniestros"
+              onAction={() => navigate('/siniestros')}
+              count={sinAbiertos}
+            />
+          )}
+          {recAbiertos > 0 && (
+            <OperationalAlert
+              severity="info"
+              title={`${recAbiertos} reclamo${recAbiertos !== 1 ? 's' : ''} activo${recAbiertos !== 1 ? 's' : ''}`}
+              description="Tu productor está gestionando tu reclamo"
+              actionLabel="Ver reclamos"
+              onAction={() => navigate('/reclamos')}
+              count={recAbiertos}
+            />
+          )}
+        </motion.div>
+      )}
+
+      {/* Últimas pólizas */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-primary)' }}>Mis pólizas</h2>
+          <button
+            onClick={() => navigate('/polizas')}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            Ver todo <IconArrowRight size={12} />
+          </button>
+        </div>
+        <div style={{ background: 'var(--surface-record)', border: '1px solid var(--border-subtle)', borderRadius: 8, overflow: 'hidden' }}>
+          {polizas.isLoading && (
+            <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[1, 2, 3].map(i => <Sk key={i} w="100%" h={20} />)}
+            </div>
+          )}
+          {!polizas.isLoading && (!polizas.data || polizas.data.length === 0) && (
+            <p style={{ padding: '24px 20px', fontSize: 14, color: 'var(--text-faint)', textAlign: 'center' }}>Sin pólizas registradas.</p>
+          )}
+          {(polizas.data ?? []).slice(0, 5).map((p, i) => (
+            <div
+              key={p.id}
+              onClick={() => navigate('/polizas')}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '12px 20px', cursor: 'pointer',
+                borderTop: i > 0 ? '1px solid var(--border-subtle)' : undefined,
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-panel)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ color: '#10c97a' }}><IconPoliza size={14} /></span>
+                <div>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{p.numeroPoliza}</p>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 1 }}>{p.compania?.nombre ?? '—'}</p>
+                </div>
+              </div>
+              <span className={cn(cls.badge, p.estado === EstadoPoliza.ACTIVA ? cls.badgeGreen : p.estado === EstadoPoliza.SUSPENDIDA ? cls.badgeAmber : cls.badgeRed)}>
+                {p.estado}
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Accesos rápidos */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <h2 style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+          Accesos rápidos
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+          {[
+            { label: 'Reportar siniestro', icon: <IconSiniestro size={18} />, to: '/siniestros', color: '#f0a020' },
+            { label: 'Hacer un reclamo',   icon: <IconReclamo   size={18} />, to: '/reclamos',   color: '#e05050' },
+            { label: 'Ver mis bienes',     icon: <IconPoliza    size={18} />, to: '/bienes',     color: '#00d4ff' },
+          ].map(item => (
+            <button
+              key={item.to}
+              onClick={() => navigate(item.to)}
+              style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                gap: 8, padding: '18px 12px', borderRadius: 8, cursor: 'pointer',
+                background: 'var(--surface-record)', border: '1px solid var(--border-subtle)',
+                transition: 'all 0.12s ease', color: 'var(--text-muted)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = item.color + '10';
+                e.currentTarget.style.borderColor = item.color + '40';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'var(--surface-record)';
+                e.currentTarget.style.borderColor = 'var(--border-subtle)';
+              }}
+            >
+              <span style={{ color: item.color }}>{item.icon}</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center' }}>{item.label}</span>
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════════
+   Dashboard Page — Resumen operativo (org / productor)
 ════════════════════════════════════════════════════════════ */
 export default function DashboardPage() {
-  const { isOrganizador } = useAuth();
+  const { isOrganizador, isAsegurado, user } = useAuth();
+  // Primer nombre solamente para el saludo
+  const primerNombre = user?.nombre?.split(' ')[0] ?? '';
   const navigate = useNavigate();
 
   const cartera = useQuery<CarteraResponse>({
@@ -429,6 +678,8 @@ export default function DashboardPage() {
   const vencimientosCriticos = vencimientos.data?.total                              ?? 0;
   const totalTareas = siniestrosAbiertos + vencimientosCriticos;
 
+  if (isAsegurado) return <DashboardAsegurado />;
+
   return (
     <div className="space-y-6">
 
@@ -449,7 +700,7 @@ export default function DashboardPage() {
 
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-            Panel operativo
+            Bienvenido/a, {primerNombre}
           </h1>
           {!isLoadingStats && totalTareas > 0 && (
             <span style={{

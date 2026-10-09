@@ -10,6 +10,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SiniestrosService } from './siniestros.service';
 import { CreateSiniestroDto, UpdateSiniestroEstadoDto } from './dto/siniestro.dto';
+import { CreateComentarioDto } from '../notificaciones/dto/notificacion.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UserRole } from '@gestion-pas/types';
@@ -40,7 +41,7 @@ export class SiniestrosController {
   }
 
   @Post()
-  @Roles(UserRole.ORGANIZADOR, UserRole.PRODUCTOR)
+  @Roles(UserRole.ORGANIZADOR, UserRole.PRODUCTOR, UserRole.ASEGURADO)
   @ApiOperation({ summary: 'Registrar nuevo siniestro' })
   @ApiResponse({ status: 201, description: 'Siniestro creado' })
   @ApiResponse({ status: 400, description: 'DTO inválido' })
@@ -65,5 +66,34 @@ export class SiniestrosController {
     @CurrentUser() usuario: Usuario,
   ) {
     return this.service.updateEstado(id, dto, usuario);
+  }
+
+  /* ── Comentarios ─────────────────────────────────────────── */
+
+  @Get(':id/comentarios')
+  @ApiOperation({ summary: 'Listar comentarios de un siniestro' })
+  @ApiResponse({ status: 200, description: 'Lista de comentarios' })
+  @ApiResponse({ status: 403, description: 'No pertenece a tu cartera' })
+  @ApiResponse({ status: 404, description: 'Siniestro no encontrado' })
+  findComentarios(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() usuario: Usuario,
+  ) {
+    return this.service.findComentarios(id, usuario);
+  }
+
+  @Post(':id/comentarios')
+  @Roles(UserRole.ORGANIZADOR, UserRole.PRODUCTOR, UserRole.ASEGURADO)
+  @ApiOperation({ summary: 'Agregar comentario a un siniestro' })
+  @ApiResponse({ status: 201, description: 'Comentario creado' })
+  @ApiResponse({ status: 400, description: 'DTO inválido' })
+  @ApiResponse({ status: 403, description: 'No pertenece a tu cartera' })
+  @ApiResponse({ status: 404, description: 'Siniestro no encontrado' })
+  addComentario(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: CreateComentarioDto,
+    @CurrentUser() usuario: Usuario,
+  ) {
+    return this.service.addComentario(id, dto, usuario);
   }
 }

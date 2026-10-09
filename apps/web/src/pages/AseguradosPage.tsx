@@ -13,16 +13,18 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '@/lib/api';
 import { formatDate } from '@/lib/format';
 import { cls, cn } from '@/lib/cn';
+import { useAuth } from '@/context/AuthContext';
+import { UserRole } from '@gestion-pas/types';
 import RecordCode from '@/components/ui/RecordCode';
 import ProducerBadge from '@/components/ui/ProducerBadge';
 import {
   IconAsegurado, IconClose, IconSearch, IconFilter,
-  IconPoliza, IconSiniestro, IconDocumento, IconChevronRight,
+  IconPoliza, IconSiniestro, IconDocumento, IconReclamo, IconChevronRight,
   IconPlus, IconArrowRight,
 } from '@/components/ui/icons';
 
@@ -150,39 +152,45 @@ function AseguradoForm({ onClose, productores }: { onClose: () => void; producto
 
 /* ── Panel lateral de detalle ────────────────────────────── */
 /* ── Sparkline — mini area chart SVG ────────────────────── */
-function Sparkline({ color, points, trend }: { color: string; points: string; trend: string }) {
-  const gradId = `sp-${color.replace('#', '')}`;
-  const fill = points + ' L72,26 L0,26 Z';
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-      <svg viewBox="0 0 72 26" style={{ width: 72, height: 26, overflow: 'visible', flexShrink: 0 }}>
-        <defs>
-          <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity="0.25" />
-            <stop offset="100%" stopColor={color} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <path d={fill} fill={`url(#${gradId})`} />
-        <path d={points} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-      <span style={{ fontSize: 11, fontWeight: 600, color }}>{trend}</span>
-    </div>
-  );
+/* ── Badge de rendimiento real (cuotas pagas) ────────────── */
+interface AseguradoStats {
+  polizasActivas: number;
+  cuotasTotal: number;
+  cuotasPagas: number;
+  pctCuotasPagas: number | null;
 }
 
-/* ── Deterministic sparkline per asegurado ───────────────── */
-function sparkForAsegurado(id: string) {
-  // Hash the id to pick one of a few preset sparkline shapes
-  const hash = id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const shapes = [
-    { points: 'M0,20 L12,16 L24,18 L36,10 L48,8 L60,6 L72,4', color: '#00d4ff', trend: '↑4%' },
-    { points: 'M0,16 L12,14 L24,12 L36,14 L48,10 L60,8 L72,6', color: '#10c97a', trend: '↑7%' },
-    { points: 'M0,8 L12,12 L24,10 L36,16 L48,14 L60,18 L72,20', color: '#f0a020', trend: '↓3%' },
-    { points: 'M0,18 L12,14 L24,16 L36,10 L48,12 L60,8 L72,6', color: '#4a8cff', trend: '↑5%' },
-    { points: 'M0,22 L12,20 L24,18 L36,16 L48,14 L60,12 L72,10', color: '#00d4ff', trend: '↑11%' },
-    { points: 'M0,6 L12,8 L24,10 L36,14 L48,18 L60,20 L72,24', color: '#e05050', trend: '↓8%' },
-  ];
-  return shapes[hash % shapes.length];
+function RendimientoBadge({ aseguradoId }: { aseguradoId: string }) {
+  const { data, isLoading } = useQuery<AseguradoStats>({
+    queryKey: ['asegurado-stats', aseguradoId],
+    queryFn: () => api.get(`/asegurados/${aseguradoId}/stats`).then(r => r.data),
+    staleTime: 60_000,
+  });
+
+  if (isLoading) {
+    return (
+      <div style={{ width: 56, height: 18, borderRadius: 3, background: 'var(--surface-panel)', opacity: 0.5 }} />
+    );
+  }
+
+  const pct = data?.pctCuotasPagas;
+
+  if (pct === null || pct === undefined || data?.cuotasTotal === 0) {
+    return <span style={{ fontSize: 12, color: 'var(--text-faint)' }}>—</span>;
+  }
+
+  const color = pct >= 80 ? '#10c97a' : pct >= 50 ? '#f0a020' : '#e05050';
+  const label = `${pct}%`;
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      {/* Barra de progreso */}
+      <div style={{ width: 52, height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.08)', flexShrink: 0 }}>
+        <div style={{ width: `${pct}%`, height: '100%', borderRadius: 3, background: color, transition: 'width 0.4s ease' }} />
+      </div>
+      <span style={{ fontSize: 11, fontWeight: 700, color, minWidth: 28 }}>{label}</span>
+    </div>
+  );
 }
 
 function AseguradoPanel({ asegurado, onClose }: { asegurado: Asegurado; onClose: () => void }) {
@@ -285,8 +293,9 @@ function AseguradoPanel({ asegurado, onClose }: { asegurado: Asegurado; onClose:
           <div style={{ display: 'grid', gap: 5 }}>
             {[
               { label: 'Ver pólizas',    icon: <IconPoliza     size={13} />, href: `/polizas?asegurado=${asegurado.id}` },
-              { label: 'Siniestros',     icon: <IconSiniestro  size={13} />, href: `/siniestros` },
-              { label: 'Documentos',     icon: <IconDocumento  size={13} />, href: `/documentos` },
+              { label: 'Siniestros',     icon: <IconSiniestro  size={13} />, href: `/siniestros?asegurado=${asegurado.id}` },
+              { label: 'Reclamos',       icon: <IconReclamo    size={13} />, href: `/reclamos?asegurado=${asegurado.id}` },
+              { label: 'Documentos',     icon: <IconDocumento  size={13} />, href: `/documentos?asegurado=${asegurado.id}` },
               { label: 'Ficha completa', icon: <IconAsegurado  size={13} />, href: `/asegurados/${asegurado.id}` },
             ].map((a) => (
               <Link
@@ -367,12 +376,15 @@ function SortBtn({
    AseguradosPage
 ════════════════════════════════════════════════════════════ */
 export default function AseguradosPage() {
+  const { user } = useAuth();
   const [search,          setSearch]          = useState('');
   const [productorFilter, setProductorFilter] = useState('');
   const [showForm,        setShowForm]        = useState(false);
   const [selected,        setSelected]        = useState<Asegurado | null>(null);
   const [sortField,       setSortField]       = useState<SortField>('nombre');
   const [sortDir,         setSortDir]         = useState<SortDir>('asc');
+
+  const canManage = user?.perfil === UserRole.ORGANIZADOR || user?.perfil === UserRole.PRODUCTOR;
 
   const { data: asegurados = [], isLoading } = useQuery<Asegurado[]>({
     queryKey: ['asegurados', search],
@@ -381,6 +393,8 @@ export default function AseguradosPage() {
   const { data: productores = [] } = useQuery<Productor[]>({
     queryKey: ['productores'],
     queryFn: () => api.get('/productores').then((r) => r.data),
+    // Solo ORGANIZADOR puede listar todos los productores para el filtro
+    enabled: user?.perfil === UserRole.ORGANIZADOR,
   });
 
   /* Sort + filter local */
@@ -410,6 +424,12 @@ export default function AseguradosPage() {
 
   function handleRowClick(a: Asegurado) {
     setSelected(prev => prev?.id === a.id ? null : a);
+  }
+
+  // ASEGURADO: redirigir directamente a su perfil propio en lugar del listado
+  // (puesto después de todos los hooks para respetar las reglas de React)
+  if (user?.perfil === UserRole.ASEGURADO && user.aseguradoId) {
+    return <Navigate to={`/asegurados/${user.aseguradoId}`} replace />;
   }
 
   return (
@@ -468,14 +488,16 @@ export default function AseguradosPage() {
             </select>
           </div>
 
-          <button
-            onClick={() => setShowForm(true)}
-            className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}
-            aria-label="Agregar nuevo asegurado"
-          >
-            <IconPlus size={13} />
-            Nuevo asegurado
-          </button>
+          {canManage && (
+            <button
+              onClick={() => setShowForm(true)}
+              className={cn(cls.btn, cls.btnMd, cls.btnPrimary)}
+              aria-label="Agregar nuevo asegurado"
+            >
+              <IconPlus size={13} />
+              Nuevo asegurado
+            </button>
+          )}
         </div>
       </div>
 
@@ -519,7 +541,7 @@ export default function AseguradosPage() {
 
               {!isLoading && rows.length === 0 && (
                 <tr>
-                  <td colSpan={6} style={{ padding: '40px 20px', textAlign: 'center' }}>
+                  <td colSpan={7} style={{ padding: '40px 20px', textAlign: 'center' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                       <IconAsegurado size={28} aria-hidden />
                       <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-muted)' }}>
@@ -542,7 +564,6 @@ export default function AseguradosPage() {
 
               {rows.map((a, i) => {
                 const isActive = selected?.id === a.id;
-                const spark = sparkForAsegurado(a.id);
                 return (
                   <motion.tr
                     key={a.id}
@@ -628,9 +649,9 @@ export default function AseguradosPage() {
                       }
                     </td>
 
-                    {/* Rendimiento — sparkline */}
+                    {/* Rendimiento — cuotas pagas */}
                     <td className={cls.td}>
-                      <Sparkline color={spark.color} points={spark.points} trend={spark.trend} />
+                      <RendimientoBadge aseguradoId={a.id} />
                     </td>
 
                     {/* Nacimiento */}

@@ -16,8 +16,10 @@ interface LoginResponse {
   accessToken: string;
   perfil: UserRole;
   id: string;
+  nombre: string;
   aseguradoId: string | null;
   organizadorId: string | null;
+  productorId: string | null;
 }
 
 interface AuthContextValue {
@@ -41,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       identificadorAcceso,
       password,
     });
-    const user: AuthUser = { id: data.id, perfil: data.perfil, aseguradoId: data.aseguradoId, organizadorId: data.organizadorId };
+    const user: AuthUser = { id: data.id, perfil: data.perfil, nombre: data.nombre, aseguradoId: data.aseguradoId, organizadorId: data.organizadorId, productorId: data.productorId };
     saveAuthState(data.accessToken, user);
     setState({ token: data.accessToken, user });
 

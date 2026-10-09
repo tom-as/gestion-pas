@@ -262,7 +262,17 @@ export default function AseguradoDetailPage() {
           <div className="surface rounded-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3.5 panel-sep">
               <p className="text-[11px] font-semibold uppercase tracking-widest txt-faint">Bienes asegurados</p>
-              <span className={cn(cls.badge, cls.badgeGray)}>{asegurado.bienes.length}</span>
+              <div className="flex items-center gap-2">
+                <span className={cn(cls.badge, cls.badgeGray)}>{asegurado.bienes.length}</span>
+                {asegurado.bienes.length > 0 && (
+                  <Link
+                    to={`/bienes/asegurado/${asegurado.id}`}
+                    className="text-xs text-accent-400 hover:underline"
+                  >
+                    Ver todos
+                  </Link>
+                )}
+              </div>
             </div>
             {asegurado.bienes.length === 0 ? (
               <p className="px-5 py-6 text-sm txt-faint">Sin bienes registrados.</p>
@@ -295,14 +305,7 @@ export default function AseguradoDetailPage() {
                       <td className={cn(cls.td, 'text-right tabular-nums font-semibold')}>
                         {formatMoney(b.sumaAsegurada)}
                       </td>
-                      <td className={cls.td}>
-                        <Link
-                          to={`/bienes/asegurado/${asegurado.id}`}
-                          className="text-xs text-accent-400 hover:underline"
-                        >
-                          Ver bienes
-                        </Link>
-                      </td>
+                      <td className={cls.td} />
                     </tr>
                   ))}
                 </tbody>

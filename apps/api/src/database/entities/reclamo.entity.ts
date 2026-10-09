@@ -3,12 +3,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { EstadoReclamo, TipoReclamo } from '@gestion-pas/types';
 import { Asegurado } from './asegurado.entity';
 import { Productor } from './productor.entity';
 import { CompaniaAseguradora } from './compania-aseguradora.entity';
+import { ComentarioReclamo } from './comentario-reclamo.entity';
 
 @Entity('reclamos')
 export class Reclamo {
@@ -42,4 +44,7 @@ export class Reclamo {
   @ManyToOne(() => CompaniaAseguradora, (c) => c.reclamos, { nullable: true })
   @JoinColumn({ name: 'compania_id' })
   compania: CompaniaAseguradora | null;
+
+  @OneToMany(() => ComentarioReclamo, (c) => c.reclamo)
+  comentarios: ComentarioReclamo[];
 }

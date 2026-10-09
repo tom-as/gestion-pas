@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '@/context/AuthContext';
+import LogoG from '@/components/ui/LogoG';
 
 const schema = z.object({
   identificadorAcceso: z.string().email('Email inválido'),
@@ -10,20 +11,20 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
-/* ── Ícono de escudo SVG ── */
-function ShieldIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-    </svg>
-  );
-}
-
 export default function LoginPage() {
   const { login } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
   const [showPass, setShowPass] = useState(false);
+
+  // El LoginPage vive fuera del AppLayout (que es quien normalmente aplica
+  // la clase `dark`). Lo aplicamos aquí directamente, respetando la
+  // preferencia guardada en localStorage (mismo key que useDarkMode).
+  useEffect(() => {
+    const stored = localStorage.getItem('gestion-pas-dark');
+    // Default dark-first (igual que useDarkMode)
+    const isDark = stored !== null ? stored === 'true' : true;
+    document.documentElement.classList.toggle('dark', isDark);
+  }, []);
 
   const {
     register,
@@ -73,16 +74,8 @@ export default function LoginPage() {
 
           {/* Logo */}
           <div>
-            <div
-              className="w-14 h-14 flex items-center justify-center mb-8"
-              style={{
-                borderRadius: 12,
-                background: 'linear-gradient(135deg, rgba(0,212,255,0.18), rgba(74,140,255,0.14))',
-                border: '1px solid rgba(0,212,255,0.30)',
-                color: '#00d4ff',
-              }}
-            >
-              <ShieldIcon />
+            <div className="mb-8">
+              <LogoG size={56} />
             </div>
 
             <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 12 }}>
@@ -120,12 +113,7 @@ export default function LoginPage() {
         >
           {/* Mobile logo (solo en < md) */}
           <div className="flex items-center gap-3 mb-8 md:hidden">
-            <div
-              className="w-10 h-10 flex items-center justify-center"
-              style={{ borderRadius: 10, background: 'linear-gradient(135deg, rgba(0,212,255,0.18), rgba(74,140,255,0.14))', border: '1px solid rgba(0,212,255,0.25)', color: '#00d4ff' }}
-            >
-              <ShieldIcon />
-            </div>
+            <LogoG size={40} />
             <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: 15 }}>Gestión PAS</span>
           </div>
 

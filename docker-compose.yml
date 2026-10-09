@@ -1,4 +1,6 @@
 services:
+
+  # ── Base de datos ──────────────────────────────────────────
   postgres:
     image: docker.io/postgres:16-alpine
     container_name: gestion_pas_db
@@ -16,6 +18,42 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # ── API NestJS ─────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: gestion_pas_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: gestion_pas
+      DB_PASSWORD: gestion_pas_dev
+      DB_NAME: gestion_pas
+      JWT_SECRET: cambiar_por_secreto_seguro_en_produccion
+      JWT_EXPIRES_IN: 8h
+      FRONTEND_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ── Frontend React (nginx en puerto 8080 — sin root) ───────
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: gestion_pas_web
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
 
 volumes:
   postgres-data:

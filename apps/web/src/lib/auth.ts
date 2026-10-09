@@ -3,10 +3,13 @@ import { UserRole } from '@gestion-pas/types';
 export interface AuthUser {
   id: string;
   perfil: UserRole;
+  nombre: string;
   /** Solo poblado cuando perfil === ASEGURADO */
   aseguradoId: string | null;
   /** Solo poblado cuando perfil === ORGANIZADOR */
   organizadorId: string | null;
+  /** Solo poblado cuando perfil === PRODUCTOR */
+  productorId: string | null;
 }
 
 export interface AuthState {

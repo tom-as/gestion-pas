@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -140,10 +141,21 @@ function DocumentoForm({ onClose, defaultEntidad, defaultEntidadId }: {
    PAGINA PRINCIPAL
 ══════════════════════════════════════════════════════════ */
 export default function DocumentosPage() {
+  const [searchParams] = useSearchParams();
   const [showForm, setShowForm] = useState(false);
-  const [filtroEntidad, setFiltroEntidad] = useState<EntidadDocumento>(EntidadDocumento.POLIZA);
+  const [filtroEntidad, setFiltroEntidad] = useState<EntidadDocumento>(EntidadDocumento.ASEGURADO);
   const [filtroId, setFiltroId] = useState('');
   const [buscando, setBuscando] = useState(false);
+
+  // Pre-popular el filtro cuando se navega desde el panel de un asegurado
+  useEffect(() => {
+    const aseguradoId = searchParams.get('asegurado');
+    if (aseguradoId) {
+      setFiltroEntidad(EntidadDocumento.ASEGURADO);
+      setFiltroId(aseguradoId);
+      setBuscando(true);
+    }
+  }, [searchParams]);
 
   const { data: documentos = [], isLoading, refetch } = useQuery<Documento[]>({
     queryKey: ['documentos', filtroEntidad, filtroId],

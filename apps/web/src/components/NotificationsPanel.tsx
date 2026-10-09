@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNotificaciones, type NotifItem, type NotifSeverity } from '@/lib/useNotificaciones';
 
 /* ── Severity icon ──────────────────────────────────────── */
@@ -31,10 +31,16 @@ const SEV_OPACITY: Record<NotifSeverity, string> = {
 };
 
 /* ── Single notification row ────────────────────────────── */
-function NotifRow({ item, onNavigate }: { item: NotifItem; onNavigate: (href: string) => void }) {
+function NotifRow({
+  item,
+  onNavigate,
+}: {
+  item: NotifItem;
+  onNavigate: (href: string, id: string) => void;
+}) {
   return (
     <button
-      onClick={() => onNavigate(item.href)}
+      onClick={() => onNavigate(item.href, item.id)}
       className="w-full flex items-start gap-3 px-4 py-3 text-left transition-colors"
       style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
       onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(61,107,255,0.06)')}
@@ -54,6 +60,13 @@ function NotifRow({ item, onNavigate }: { item: NotifItem; onNavigate: (href: st
         <p className="text-sm font-semibold text-white leading-tight truncate">{item.title}</p>
         <p className="text-xs mt-0.5 truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>{item.sub}</p>
       </div>
+      {/* Dot for unread ticket notifications */}
+      {item.leida === false && (
+        <span
+          className="w-2 h-2 rounded-full flex-shrink-0 mt-2"
+          style={{ background: 'rgba(61,107,255,0.9)' }}
+        />
+      )}
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-1.5" style={{ color: 'rgba(255,255,255,0.2)' }}>
         <polyline points="9 18 15 12 9 6"/>
       </svg>
@@ -67,7 +80,13 @@ interface Props { onClose: () => void }
 export default function NotificationsPanel({ onClose }: Props) {
   const navigate   = useNavigate();
   const panelRef   = useRef<HTMLDivElement>(null);
-  const { items, isLoading } = useNotificaciones();
+  const { items, isLoading, markAsRead, markOneAsRead } = useNotificaciones();
+
+  /* Mark all DB notifications as read when panel opens */
+  useEffect(() => {
+    markAsRead();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* Close on Esc */
   useEffect(() => {
@@ -76,7 +95,11 @@ export default function NotificationsPanel({ onClose }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  function handleNavigate(href: string) {
+  function handleNavigate(href: string, id: string) {
+    // Mark individual ticket notification as read (no-op for static items like 'vencimientos')
+    if (!['vencimientos', 'incompletos'].includes(id)) {
+      markOneAsRead(id);
+    }
     navigate(href);
     onClose();
   }
@@ -152,7 +175,7 @@ export default function NotificationsPanel({ onClose }: Props) {
         {!isLoading && items.length > 0 && (
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
             <button
-              onClick={() => handleNavigate('/reportes')}
+              onClick={() => handleNavigate('/reportes', 'static')}
               className="w-full text-center text-xs font-semibold py-3 transition-colors hover:opacity-80"
               style={{ color: 'rgba(255,255,255,0.35)' }}
             >

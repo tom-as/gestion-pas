@@ -15,6 +15,7 @@ import DocumentosPage from '@/pages/DocumentosPage';
 import ReportesPage from '@/pages/ReportesPage';
 import ProductoresPage from '@/pages/ProductoresPage';
 import CompaniasPage from '@/pages/CompaniasPage';
+import ExportarPage from '@/pages/ExportarPage';
 import { UserRole } from '@gestion-pas/types';
 
 const queryClient = new QueryClient({
@@ -86,7 +87,7 @@ function AppRoutes() {
           path="/documentos"
           element={<AppLayout><DocumentosPage /></AppLayout>}
         />
-        {/* Productores y Compañías: solo organizador */}
+        {/* Productores, Compañías y Exportar: solo organizador */}
         <Route element={<ProtectedRoute allowedRoles={[UserRole.ORGANIZADOR]} />}>
           <Route
             path="/productores"
@@ -95,6 +96,10 @@ function AppRoutes() {
           <Route
             path="/companias"
             element={<AppLayout><CompaniasPage /></AppLayout>}
+          />
+          <Route
+            path="/exportar"
+            element={<AppLayout><ExportarPage /></AppLayout>}
           />
         </Route>
         {/* Reportes: solo organizador y productor */}

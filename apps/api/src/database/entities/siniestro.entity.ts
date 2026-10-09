@@ -12,6 +12,7 @@ import { BienAsegurado } from './bien-asegurado.entity';
 import { Productor } from './productor.entity';
 import { CompaniaAseguradora } from './compania-aseguradora.entity';
 import { Documento } from './documento.entity';
+import { ComentarioSiniestro } from './comentario-siniestro.entity';
 
 @Entity('siniestros')
 export class Siniestro {
@@ -65,4 +66,7 @@ export class Siniestro {
 
   @OneToMany(() => Documento, (d) => d.siniestro)
   documentos: Documento[];
+
+  @OneToMany(() => ComentarioSiniestro, (c) => c.siniestro)
+  comentarios: ComentarioSiniestro[];
 }

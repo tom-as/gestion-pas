@@ -22,10 +22,13 @@ export interface TokenResponse {
   accessToken: string;
   perfil: string;
   id: string;
+  nombre: string;
   /** Poblado solo cuando perfil === ASEGURADO */
   aseguradoId: string | null;
   /** Poblado solo cuando perfil === ORGANIZADOR */
   organizadorId: string | null;
+  /** Poblado solo cuando perfil === PRODUCTOR */
+  productorId: string | null;
 }
 
 @Injectable()
@@ -46,7 +49,7 @@ export class AuthService {
     // Carga todas las relaciones necesarias en una única query
     const user = await this.usuarioRepo.findOne({
       where: { identificadorAcceso: dto.identificadorAcceso },
-      relations: ['asegurado', 'organizador'],
+      relations: ['asegurado', 'organizador', 'productor'],
     });
 
     if (!user) throw new UnauthorizedException('Credenciales inválidas');
@@ -61,12 +64,20 @@ export class AuthService {
     void this.usuarioRepo.update(user.id, { ultimaSesion: new Date() });
 
     const payload: JwtPayload = { sub: user.id, role: user.perfil };
+    const nombre =
+      user.asegurado?.nombre ??
+      user.organizador?.nombre ??
+      user.productor?.nombre ??
+      user.identificadorAcceso;
+
     return {
       accessToken: this.jwtService.sign(payload),
       perfil: user.perfil,
       id: user.id,
+      nombre,
       aseguradoId: user.asegurado?.id ?? null,
       organizadorId: user.organizador?.id ?? null,
+      productorId: user.productor?.id ?? null,
     };
   }
 

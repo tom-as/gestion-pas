@@ -42,6 +42,9 @@ export class PolizasService {
     if (usuario.perfil === UserRole.PRODUCTOR) {
       return polizas.filter((p) => p.productor?.id === usuario.productor?.id);
     }
+    if (usuario.perfil === UserRole.ASEGURADO) {
+      return polizas.filter((p) => p.asegurado?.id === usuario.asegurado?.id);
+    }
     return polizas;
   }
 

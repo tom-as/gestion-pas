@@ -21,6 +21,23 @@ export class BienesService {
     private readonly aseguradoRepo: Repository<Asegurado>,
   ) {}
 
+  async findAll(usuario: Usuario): Promise<BienAsegurado[]> {
+    const bienes = await this.bienRepo.find({
+      relations: ['asegurado', 'asegurado.productor'],
+      order: { tipo: 'ASC' },
+    });
+
+    if (usuario.perfil === UserRole.PRODUCTOR) {
+      return bienes.filter(
+        (b) => b.asegurado?.productor?.id === usuario.productor?.id,
+      );
+    }
+    if (usuario.perfil === UserRole.ASEGURADO) {
+      return bienes.filter((b) => b.asegurado?.id === usuario.asegurado?.id);
+    }
+    return bienes;
+  }
+
   async findByAsegurado(aseguradoId: string, usuario: Usuario): Promise<BienAsegurado[]> {
     const asegurado = await this.aseguradoRepo.findOne({
       where: { id: aseguradoId },

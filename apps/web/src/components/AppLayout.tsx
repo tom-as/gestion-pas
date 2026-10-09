@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlobalSearch from './GlobalSearch';
 import NotificationsPanel from './NotificationsPanel';
 import { useNotificaciones } from '@/lib/useNotificaciones';
+import LogoG from './ui/LogoG';
 import {
   NavIcon,
   IconSun, IconMoon, IconBell, IconLogOut,
@@ -31,14 +32,16 @@ function navItemsByRole(role: UserRole): NavItem[] {
       { to: '/productores', label: 'Productores', IconComponent: NavIcon.productores },
       { to: '/companias',   label: 'Compañías',   IconComponent: NavIcon.companias   },
       { to: '/reportes',    label: 'Reportes',    IconComponent: NavIcon.reportes    },
+      { to: '/exportar',    label: 'Exportar / Importar',    IconComponent: NavIcon.exportar    },
     ];
   }
   if (role === UserRole.ASEGURADO) {
     return [
-      { to: '/dashboard',  label: 'Inicio',        IconComponent: NavIcon.dashboard  },
-      { to: '/polizas',    label: 'Mis pólizas',   IconComponent: NavIcon.polizas    },
-      { to: '/siniestros', label: 'Mis siniestros', IconComponent: NavIcon.siniestros },
-      { to: '/reclamos',   label: 'Mis reclamos',   IconComponent: NavIcon.reclamos   },
+      { to: '/dashboard',  label: 'Inicio',         IconComponent: NavIcon.dashboard  },
+      { to: '/bienes',     label: 'Mis bienes',      IconComponent: NavIcon.bienes     },
+      { to: '/polizas',    label: 'Mis pólizas',     IconComponent: NavIcon.polizas    },
+      { to: '/siniestros', label: 'Mis siniestros',  IconComponent: NavIcon.siniestros },
+      { to: '/reclamos',   label: 'Mis reclamos',    IconComponent: NavIcon.reclamos   },
     ];
   }
   return shared;
@@ -89,8 +92,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         className="group flex-shrink-0 flex flex-col min-h-screen sticky top-0 z-30 overflow-hidden"
         style={{
           width: 52,
-          background: '#040a18',
-          borderRight: '1px solid rgba(0,212,255,0.08)',
+          background: 'var(--sidebar-bg)',
+          borderRight: '1px solid var(--sidebar-border)',
           transition: 'width 200ms cubic-bezier(0.16,1,0.3,1)',
         }}
         onMouseEnter={(e) => (e.currentTarget.style.width = '220px')}
@@ -103,20 +106,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             paddingLeft: 12,
             paddingRight: 12,
             gap: 10,
-            borderBottom: '1px solid rgba(0,212,255,0.08)',
+            borderBottom: '1px solid var(--sidebar-border)',
           }}
         >
-          {/* Logo — escudo con acento cian */}
-          <div
-            className="w-7 h-7 rounded flex items-center justify-center flex-shrink-0"
-            style={{
-              background: 'linear-gradient(135deg, rgba(0,212,255,0.20), rgba(74,140,255,0.15))',
-              border: '1px solid rgba(0,212,255,0.35)',
-              color: '#00d4ff',
-            }}
-          >
-            <NavIcon.polizas size={14} />
-          </div>
+          {/* Logo G */}
+          <LogoG size={28} className="flex-shrink-0 rounded" />
           <span
             className="whitespace-nowrap"
             style={{
@@ -162,7 +156,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 style={({ isActive }) => ({
                   paddingLeft: 10,
                   paddingRight: 10,
-                  color: isActive ? '#00d4ff' : '#435070',
+                  color: isActive ? '#00d4ff' : 'rgba(160,180,216,0.55)',
                   ...(isActive ? {
                     background: 'linear-gradient(90deg, rgba(0,212,255,0.10), rgba(74,140,255,0.06))',
                     borderLeft: '2px solid #00d4ff',
@@ -205,7 +199,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Bottom: role label */}
         <div
           className="flex-shrink-0 overflow-hidden"
-          style={{ borderTop: '1px solid rgba(0,212,255,0.08)', padding: '12px 10px' }}
+          style={{ borderTop: '1px solid var(--sidebar-border)', padding: '12px 10px' }}
         >
           <span
             className="text-[10px] font-semibold tracking-widest uppercase whitespace-nowrap"
@@ -237,10 +231,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <header
           className="sticky top-0 z-20 flex-shrink-0 flex items-center justify-between px-6 h-14"
           style={{
-            background: 'rgba(4,10,24,0.88)',
+            background: 'var(--topbar-bg)',
             backdropFilter: 'blur(16px) saturate(1.4)',
             WebkitBackdropFilter: 'blur(16px) saturate(1.4)',
-            borderBottom: '1px solid rgba(0,212,255,0.09)',
+            borderBottom: '1px solid var(--topbar-border)',
           }}
         >
           {/* Search bar */}

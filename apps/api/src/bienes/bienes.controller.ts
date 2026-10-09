@@ -22,6 +22,14 @@ import { Usuario } from '../database/entities/usuario.entity';
 export class BienesController {
   constructor(private readonly service: BienesService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Listar todos los bienes (filtrado por cartera según rol)' })
+  @ApiResponse({ status: 200, description: 'Lista de bienes' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  findAll(@CurrentUser() usuario: Usuario) {
+    return this.service.findAll(usuario);
+  }
+
   @Get('asegurado/:aseguradoId')
   @ApiOperation({ summary: 'Listar bienes de un asegurado' })
   @ApiResponse({ status: 200, description: 'Lista de bienes' })

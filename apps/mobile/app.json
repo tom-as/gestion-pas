@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Gestión PAS",
+    "slug": "gestion-pas-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "scheme": "gestion-pas",
+    "userInterfaceStyle": "dark",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#040a18"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gestionpas.mobile"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#040a18"
+      },
+      "package": "com.gestionpas.mobile"
+    },
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-secure-store"
+    ]
+  }
+}

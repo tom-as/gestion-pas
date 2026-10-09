@@ -107,153 +107,157 @@
 }
 
 /* ══════════════════════════════════════════════════════════
-   CSS CUSTOM PROPERTIES — tema navy oscuro permanente
-   La aplicación vive en modo oscuro (navy) por defecto.
-   html.dark preserva los mismos valores (mismo tema).
+   CSS CUSTOM PROPERTIES
+   :root        = modo claro (light)
+   html.dark    = modo oscuro (navy)
 ══════════════════════════════════════════════════════════ */
 
-/* ── Función base: dark navy ─── */
+/* ── Modo claro — base ─── */
 :root {
   /* ── Superficies ─── */
-  --surface-app:      #040a18;
-  --surface-panel:    #0b1530;
-  --surface-record:   #0e1c3e;
-  --surface-elevated: #122248;
+  --surface-app:      #f0f4f8;
+  --surface-panel:    #ffffff;
+  --surface-record:   #f5f7fa;
+  --surface-elevated: #eef1f6;
 
   /* ── Bordes ─── */
-  --border-subtle:    rgba(0, 212, 255, 0.07);
-  --border-strong:    rgba(0, 212, 255, 0.16);
+  --border-subtle:    rgba(0, 0, 0, 0.08);
+  --border-strong:    rgba(0, 0, 0, 0.16);
 
   /* ── Textos ─── */
-  --text-primary:   #e8eef8;
-  --text-secondary: #a0b4d8;
-  --text-muted:     #6b82aa;
-  --text-faint:     #435070;
+  --text-primary:   #0f1724;
+  --text-secondary: #374151;
+  --text-muted:     #6b7280;
+  --text-faint:     #9ca3af;
 
-  /* ── Acento principal — cian ─── */
-  --accent-primary:       #00d4ff;
-  --accent-primary-hover: #20dcff;
+  /* ── Acento principal — azul ─── */
+  --accent-primary:       #0284c7;
+  --accent-primary-hover: #0369a1;
 
   /* ── Estados de póliza ─── */
-  --policy-active-bg:     rgba(16, 201, 122, 0.12);
-  --policy-active-text:   #10c97a;
-  --policy-active-border: rgba(16, 201, 122, 0.28);
+  --policy-active-bg:     rgba(16, 185, 129, 0.10);
+  --policy-active-text:   #059669;
+  --policy-active-border: rgba(16, 185, 129, 0.30);
 
-  --policy-grace-bg:      rgba(240, 160, 32, 0.12);
-  --policy-grace-text:    #f0a020;
-  --policy-grace-border:  rgba(240, 160, 32, 0.28);
+  --policy-grace-bg:      rgba(217, 119, 6, 0.10);
+  --policy-grace-text:    #d97706;
+  --policy-grace-border:  rgba(217, 119, 6, 0.30);
 
-  --policy-suspended-bg:    rgba(240, 160, 32, 0.12);
-  --policy-suspended-text:  #f0a020;
-  --policy-suspended-border:rgba(240, 160, 32, 0.28);
+  --policy-suspended-bg:    rgba(217, 119, 6, 0.10);
+  --policy-suspended-text:  #d97706;
+  --policy-suspended-border:rgba(217, 119, 6, 0.30);
 
-  --policy-cancelled-bg:    rgba(224, 80, 80, 0.12);
-  --policy-cancelled-text:  #e05050;
-  --policy-cancelled-border:rgba(224, 80, 80, 0.28);
+  --policy-cancelled-bg:    rgba(220, 38, 38, 0.08);
+  --policy-cancelled-text:  #dc2626;
+  --policy-cancelled-border:rgba(220, 38, 38, 0.28);
 
   /* ── Estados de siniestro / reclamo ─── */
-  --claim-reported-bg:    rgba(74, 140, 255, 0.12);
-  --claim-reported-text:  #4a8cff;
-  --claim-reported-border:rgba(74, 140, 255, 0.28);
+  --claim-reported-bg:    rgba(59, 130, 246, 0.10);
+  --claim-reported-text:  #2563eb;
+  --claim-reported-border:rgba(59, 130, 246, 0.28);
 
-  --claim-docs-bg:        rgba(0, 212, 255, 0.10);
-  --claim-docs-text:      #00d4ff;
-  --claim-docs-border:    rgba(0, 212, 255, 0.24);
+  --claim-docs-bg:        rgba(2, 132, 199, 0.10);
+  --claim-docs-text:      #0284c7;
+  --claim-docs-border:    rgba(2, 132, 199, 0.24);
 
-  --claim-review-bg:      rgba(240, 160, 32, 0.12);
-  --claim-review-text:    #f0a020;
-  --claim-review-border:  rgba(240, 160, 32, 0.28);
+  --claim-review-bg:      rgba(217, 119, 6, 0.10);
+  --claim-review-text:    #d97706;
+  --claim-review-border:  rgba(217, 119, 6, 0.28);
 
-  --claim-approved-bg:    rgba(16, 201, 122, 0.12);
-  --claim-approved-text:  #10c97a;
-  --claim-approved-border:rgba(16, 201, 122, 0.28);
+  --claim-approved-bg:    rgba(16, 185, 129, 0.10);
+  --claim-approved-text:  #059669;
+  --claim-approved-border:rgba(16, 185, 129, 0.28);
 
-  --claim-rejected-bg:    rgba(224, 80, 80, 0.12);
-  --claim-rejected-text:  #e05050;
-  --claim-rejected-border:rgba(224, 80, 80, 0.28);
+  --claim-rejected-bg:    rgba(220, 38, 38, 0.08);
+  --claim-rejected-text:  #dc2626;
+  --claim-rejected-border:rgba(220, 38, 38, 0.28);
 
-  --claim-closed-bg:      rgba(100, 120, 160, 0.12);
-  --claim-closed-text:    #7090c8;
-  --claim-closed-border:  rgba(100, 120, 160, 0.28);
+  --claim-closed-bg:      rgba(107, 114, 128, 0.10);
+  --claim-closed-text:    #6b7280;
+  --claim-closed-border:  rgba(107, 114, 128, 0.28);
 
   /* ── SLA ─── */
-  --sla-safe-bg:      rgba(16, 201, 122, 0.12);
-  --sla-safe-text:    #10c97a;
-  --sla-safe-border:  rgba(16, 201, 122, 0.28);
+  --sla-safe-bg:      rgba(16, 185, 129, 0.10);
+  --sla-safe-text:    #059669;
+  --sla-safe-border:  rgba(16, 185, 129, 0.28);
 
-  --sla-warning-bg:     rgba(240, 160, 32, 0.12);
-  --sla-warning-text:   #f0a020;
-  --sla-warning-border: rgba(240, 160, 32, 0.28);
+  --sla-warning-bg:     rgba(217, 119, 6, 0.10);
+  --sla-warning-text:   #d97706;
+  --sla-warning-border: rgba(217, 119, 6, 0.28);
 
-  --sla-breached-bg:    rgba(224, 80, 80, 0.12);
-  --sla-breached-text:  #e05050;
-  --sla-breached-border:rgba(224, 80, 80, 0.28);
+  --sla-breached-bg:    rgba(220, 38, 38, 0.08);
+  --sla-breached-text:  #dc2626;
+  --sla-breached-border:rgba(220, 38, 38, 0.28);
 
   /* ── Documentos ─── */
-  --document-complete-bg:    rgba(16, 201, 122, 0.12);
-  --document-complete-text:  #10c97a;
-  --document-complete-border:rgba(16, 201, 122, 0.28);
+  --document-complete-bg:    rgba(16, 185, 129, 0.10);
+  --document-complete-text:  #059669;
+  --document-complete-border:rgba(16, 185, 129, 0.28);
 
-  --document-missing-bg:    rgba(240, 160, 32, 0.12);
-  --document-missing-text:  #f0a020;
-  --document-missing-border:rgba(240, 160, 32, 0.28);
+  --document-missing-bg:    rgba(217, 119, 6, 0.10);
+  --document-missing-text:  #d97706;
+  --document-missing-border:rgba(217, 119, 6, 0.28);
 
-  --document-expired-bg:    rgba(224, 80, 80, 0.12);
-  --document-expired-text:  #e05050;
-  --document-expired-border:rgba(224, 80, 80, 0.28);
+  --document-expired-bg:    rgba(220, 38, 38, 0.08);
+  --document-expired-text:  #dc2626;
+  --document-expired-border:rgba(220, 38, 38, 0.28);
 
   /* ── Espaciado de tabla ─── */
   --table-cell-px:         20px;
   --table-cell-py:         12px;
   --table-cell-py-compact: 8px;
 
-  /* ── Topbar — glassmorphism navy ─── */
-  --topbar-bg:     rgba(4, 10, 24, 0.88);
-  --topbar-border: rgba(0, 212, 255, 0.09);
+  /* ── Topbar ─── */
+  --topbar-bg:     rgba(255, 255, 255, 0.90);
+  --topbar-border: rgba(0, 0, 0, 0.08);
+
+  /* ── Sidebar ─── */
+  --sidebar-bg:        #1e293b;
+  --sidebar-border:    rgba(255, 255, 255, 0.06);
 
   /* ── Inputs ─── */
-  --input-bg:           rgba(14, 28, 62, 0.8);
-  --input-border:       rgba(0, 212, 255, 0.12);
-  --input-text:         #e8eef8;
-  --input-placeholder:  #435070;
-  --input-hover-border: rgba(0, 212, 255, 0.28);
+  --input-bg:           #ffffff;
+  --input-border:       rgba(0, 0, 0, 0.14);
+  --input-text:         #0f1724;
+  --input-placeholder:  #9ca3af;
+  --input-hover-border: rgba(0, 0, 0, 0.28);
 
   /* ── Modal ─── */
-  --modal-bg:      #0b1530;
-  --modal-border:  rgba(0, 212, 255, 0.10);
-  --modal-divider: rgba(0, 212, 255, 0.07);
-  --modal-overlay: rgba(2, 7, 18, 0.88);
+  --modal-bg:      #ffffff;
+  --modal-border:  rgba(0, 0, 0, 0.10);
+  --modal-divider: rgba(0, 0, 0, 0.07);
+  --modal-overlay: rgba(0, 0, 0, 0.50);
 
   /* ── Botones ─── */
-  --btn-second-bg:     rgba(255, 255, 255, 0.05);
-  --btn-second-border: rgba(0, 212, 255, 0.14);
-  --btn-second-text:   #a0b4d8;
-  --btn-ghost-text:    #7090c8;
+  --btn-second-bg:     rgba(0, 0, 0, 0.04);
+  --btn-second-border: rgba(0, 0, 0, 0.12);
+  --btn-second-text:   #374151;
+  --btn-ghost-text:    #6b7280;
 
   /* ── Badge genérico ─── */
-  --badge-gray-bg:   rgba(255, 255, 255, 0.06);
-  --badge-gray-text: #7090c8;
-  --badge-gray-ring: rgba(255, 255, 255, 0.09);
+  --badge-gray-bg:   rgba(0, 0, 0, 0.05);
+  --badge-gray-text: #6b7280;
+  --badge-gray-ring: rgba(0, 0, 0, 0.08);
 
   /* ── Skeleton ─── */
-  --skeleton-from: rgba(0, 212, 255, 0.03);
-  --skeleton-mid:  rgba(0, 212, 255, 0.08);
+  --skeleton-from: rgba(0, 0, 0, 0.04);
+  --skeleton-mid:  rgba(0, 0, 0, 0.08);
 
   /* ── Table ─── */
-  --th-bg:     rgba(11, 21, 48, 0.90);
-  --th-text:   #435070;
-  --th-border: rgba(0, 212, 255, 0.07);
-  --td-text:   #a0b4d8;
-  --td-border: rgba(0, 212, 255, 0.06);
-  --tr-hover-bg: rgba(0, 212, 255, 0.05);
-  --tr-active-border: #00d4ff;
+  --th-bg:     rgba(240, 244, 248, 0.95);
+  --th-text:   #6b7280;
+  --th-border: rgba(0, 0, 0, 0.08);
+  --td-text:   #374151;
+  --td-border: rgba(0, 0, 0, 0.06);
+  --tr-hover-bg: rgba(2, 132, 199, 0.05);
+  --tr-active-border: #0284c7;
 
   /* ── Card ─── */
-  --card-bg:     rgba(14, 28, 62, 0.85);
-  --card-border: rgba(0, 212, 255, 0.09);
+  --card-bg:     #ffffff;
+  --card-border: rgba(0, 0, 0, 0.08);
 
   /* ── Panel separator ─── */
-  --panel-sep: rgba(0, 212, 255, 0.07);
+  --panel-sep: rgba(0, 0, 0, 0.07);
 
   /* ── Radios ─── */
   --radius-sm:  2px;
@@ -262,7 +266,7 @@
   --radius-xl:  8px;
 }
 
-/* ── Dark class = same navy theme (no change) ─── */
+/* ── Modo oscuro — navy ─── */
 html.dark {
   --surface-app:      #040a18;
   --surface-panel:    #0b1530;
@@ -276,56 +280,59 @@ html.dark {
   --text-faint:     #435070;
   --accent-primary:       #00d4ff;
   --accent-primary-hover: #20dcff;
-  --policy-active-bg:     rgba(16, 201, 122, 0.12);
-  --policy-active-text:   #10c97a;
-  --policy-active-border: rgba(16, 201, 122, 0.28);
-  --policy-grace-bg:      rgba(240, 160, 32, 0.12);
-  --policy-grace-text:    #f0a020;
-  --policy-grace-border:  rgba(240, 160, 32, 0.28);
-  --policy-suspended-bg:    rgba(240, 160, 32, 0.12);
-  --policy-suspended-text:  #f0a020;
-  --policy-suspended-border:rgba(240, 160, 32, 0.28);
-  --policy-cancelled-bg:    rgba(224, 80, 80, 0.12);
-  --policy-cancelled-text:  #e05050;
-  --policy-cancelled-border:rgba(224, 80, 80, 0.28);
-  --claim-reported-bg:    rgba(74, 140, 255, 0.12);
-  --claim-reported-text:  #4a8cff;
-  --claim-reported-border:rgba(74, 140, 255, 0.28);
-  --claim-docs-bg:        rgba(0, 212, 255, 0.10);
-  --claim-docs-text:      #00d4ff;
-  --claim-docs-border:    rgba(0, 212, 255, 0.24);
-  --claim-review-bg:      rgba(240, 160, 32, 0.12);
-  --claim-review-text:    #f0a020;
-  --claim-review-border:  rgba(240, 160, 32, 0.28);
-  --claim-approved-bg:    rgba(16, 201, 122, 0.12);
-  --claim-approved-text:  #10c97a;
-  --claim-approved-border:rgba(16, 201, 122, 0.28);
-  --claim-rejected-bg:    rgba(224, 80, 80, 0.12);
-  --claim-rejected-text:  #e05050;
-  --claim-rejected-border:rgba(224, 80, 80, 0.28);
-  --claim-closed-bg:      rgba(100, 120, 160, 0.12);
-  --claim-closed-text:    #7090c8;
-  --claim-closed-border:  rgba(100, 120, 160, 0.28);
-  --sla-safe-bg:      rgba(16, 201, 122, 0.12);
-  --sla-safe-text:    #10c97a;
-  --sla-safe-border:  rgba(16, 201, 122, 0.28);
-  --sla-warning-bg:     rgba(240, 160, 32, 0.12);
-  --sla-warning-text:   #f0a020;
-  --sla-warning-border: rgba(240, 160, 32, 0.28);
-  --sla-breached-bg:    rgba(224, 80, 80, 0.12);
-  --sla-breached-text:  #e05050;
-  --sla-breached-border:rgba(224, 80, 80, 0.28);
-  --document-complete-bg:    rgba(16, 201, 122, 0.12);
-  --document-complete-text:  #10c97a;
-  --document-complete-border:rgba(16, 201, 122, 0.28);
-  --document-missing-bg:    rgba(240, 160, 32, 0.12);
-  --document-missing-text:  #f0a020;
-  --document-missing-border:rgba(240, 160, 32, 0.28);
-  --document-expired-bg:    rgba(224, 80, 80, 0.12);
-  --document-expired-text:  #e05050;
-  --document-expired-border:rgba(224, 80, 80, 0.28);
+  /* ── Badges de estado — versión neutralizada (menos saturación) */
+  --policy-active-bg:     rgba(58, 138, 98, 0.10);
+  --policy-active-text:   #5aaa84;
+  --policy-active-border: rgba(58, 138, 98, 0.22);
+  --policy-grace-bg:      rgba(160, 120, 48, 0.10);
+  --policy-grace-text:    #c09848;
+  --policy-grace-border:  rgba(160, 120, 48, 0.22);
+  --policy-suspended-bg:    rgba(160, 120, 48, 0.10);
+  --policy-suspended-text:  #c09848;
+  --policy-suspended-border:rgba(160, 120, 48, 0.22);
+  --policy-cancelled-bg:    rgba(143, 64, 64, 0.10);
+  --policy-cancelled-text:  #b06060;
+  --policy-cancelled-border:rgba(143, 64, 64, 0.22);
+  --claim-reported-bg:    rgba(91, 127, 189, 0.10);
+  --claim-reported-text:  #7898c8;
+  --claim-reported-border:rgba(91, 127, 189, 0.22);
+  --claim-docs-bg:        rgba(91, 143, 176, 0.10);
+  --claim-docs-text:      #7aaac8;
+  --claim-docs-border:    rgba(91, 143, 176, 0.22);
+  --claim-review-bg:      rgba(160, 120, 48, 0.10);
+  --claim-review-text:    #c09848;
+  --claim-review-border:  rgba(160, 120, 48, 0.22);
+  --claim-approved-bg:    rgba(58, 138, 98, 0.10);
+  --claim-approved-text:  #5aaa84;
+  --claim-approved-border:rgba(58, 138, 98, 0.22);
+  --claim-rejected-bg:    rgba(143, 64, 64, 0.10);
+  --claim-rejected-text:  #b06060;
+  --claim-rejected-border:rgba(143, 64, 64, 0.22);
+  --claim-closed-bg:      rgba(90, 106, 138, 0.10);
+  --claim-closed-text:    #7888a8;
+  --claim-closed-border:  rgba(90, 106, 138, 0.22);
+  --sla-safe-bg:      rgba(58, 138, 98, 0.10);
+  --sla-safe-text:    #5aaa84;
+  --sla-safe-border:  rgba(58, 138, 98, 0.22);
+  --sla-warning-bg:     rgba(160, 120, 48, 0.10);
+  --sla-warning-text:   #c09848;
+  --sla-warning-border: rgba(160, 120, 48, 0.22);
+  --sla-breached-bg:    rgba(143, 64, 64, 0.10);
+  --sla-breached-text:  #b06060;
+  --sla-breached-border:rgba(143, 64, 64, 0.22);
+  --document-complete-bg:    rgba(58, 138, 98, 0.10);
+  --document-complete-text:  #5aaa84;
+  --document-complete-border:rgba(58, 138, 98, 0.22);
+  --document-missing-bg:    rgba(160, 120, 48, 0.10);
+  --document-missing-text:  #c09848;
+  --document-missing-border:rgba(160, 120, 48, 0.22);
+  --document-expired-bg:    rgba(143, 64, 64, 0.10);
+  --document-expired-text:  #b06060;
+  --document-expired-border:rgba(143, 64, 64, 0.22);
   --topbar-bg:     rgba(4, 10, 24, 0.88);
   --topbar-border: rgba(0, 212, 255, 0.09);
+  --sidebar-bg:        #040a18;
+  --sidebar-border:    rgba(0, 212, 255, 0.08);
   --input-bg:           rgba(14, 28, 62, 0.8);
   --input-border:       rgba(0, 212, 255, 0.12);
   --input-text:         #e8eef8;
@@ -421,6 +428,13 @@ body {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.35; }
 }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
 
 .animate-fade-in-up    { animation: fadeInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .animate-fade-in       { animation: fadeIn 0.2s ease both; }

@@ -320,6 +320,16 @@ export function IconAttachment({ size = 14, className, 'aria-hidden': ariaHidden
   );
 }
 
+export function IconExportar({ size = 16, className, 'aria-hidden': ariaHidden = true }: IconProps) {
+  return (
+    <svg {...base(size)} className={className} aria-hidden={ariaHidden}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
+
 /* ── Mapa de iconos por sección de nav ─────────────────── */
 export const NavIcon = {
   dashboard:  IconDashboard,
@@ -332,4 +342,5 @@ export const NavIcon = {
   productores:IconProductor,
   companias:  IconCompania,
   reportes:   IconReportes,
+  exportar:   IconExportar,
 } as const;

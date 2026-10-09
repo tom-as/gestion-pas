@@ -60,8 +60,11 @@ async function bootstrap() {
   }
 
   const port = process.env.PORT ?? 3000;
-  await app.listen(port);
-  console.log(`API corriendo en http://localhost:${port}/api`);
+  // En desarrollo escucha en 0.0.0.0 para que el dispositivo móvil en la misma
+  // red pueda acceder. En producción usa la variable HOST o 0.0.0.0 también.
+  const host = process.env.HOST ?? '0.0.0.0';
+  await app.listen(port, host);
+  console.log(`API corriendo en http://${host}:${port}/api`);
   if (!isProduction) {
     console.log(`Swagger en http://localhost:${port}/api/docs`);
   }

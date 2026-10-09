@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2024-01-01T00:00:00.000Z" agent="IBM Bob" version="21.0.0">
+  <diagram id="Diagrama_Entidad-Relacion" name="Diagrama Entidad-Relacion">
+    <mxGraphModel dx="4836" dy="1458" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3500" pageHeight="2400" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ==================== ENTIDADES ==================== -->
+        <mxCell id="ent_org" value="ORGANIZADOR" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="230" width="160" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_prod" value="PRODUCTOR" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="600" y="230" width="160" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_aseg" value="ASEGURADO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="230" width="160" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_comp" value="COMPANIA_ASEGURADORA" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1900" y="230" width="220" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_usu" value="USUARIO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="340" y="600" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_bien" value="BIEN_ASEGURADO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1800" y="600" width="190" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_pol" value="POLIZA" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="900" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_end" value="ENDOSO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1800" y="1200" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_cuo" value="CUOTA" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="1200" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_sin" value="SINIESTRO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="600" y="1200" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_rec" value="RECLAMO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1200" width="140" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="ent_doc" value="DOCUMENTO" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="2500" y="900" width="160" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== RELACIONES (rombos) ==================== -->
+
+        <!-- R1: ORGANIZADOR — organiza — PRODUCTOR -->
+        <mxCell id="rel_organiza" value="organiza" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="360" y="226" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R2: PRODUCTOR — gestiona — ASEGURADO -->
+        <mxCell id="rel_gestiona" value="gestiona" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="950" y="226" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R3: ORGANIZADOR — accede via — USUARIO -->
+        <mxCell id="rel_accede_org" value="accede via" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="430" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R4: PRODUCTOR — accede via — USUARIO -->
+        <mxCell id="rel_accede_prod" value="accede via" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="520" y="430" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R5: ASEGURADO — accede via — USUARIO -->
+        <mxCell id="rel_accede_aseg" value="accede via" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="900" y="530" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R6: ASEGURADO — posee — BIEN_ASEGURADO -->
+        <mxCell id="rel_posee" value="posee" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="396" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R7: ASEGURADO — contrata — POLIZA -->
+        <mxCell id="rel_contrata" value="contrata" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="630" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R8: BIEN_ASEGURADO — cubre — POLIZA -->
+        <mxCell id="rel_cubre" value="cubre" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="726" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R9: PRODUCTOR — intermedia — POLIZA -->
+        <mxCell id="rel_intermedia" value="intermedia" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="730" y="630" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R10: COMPANIA — emite — POLIZA -->
+        <mxCell id="rel_emite" value="emite" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1900" y="726" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R11: POLIZA — tiene — ENDOSO -->
+        <mxCell id="rel_tiene" value="tiene" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="1026" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R12: POLIZA — genera — CUOTA -->
+        <mxCell id="rel_genera_cuo" value="genera" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="1066" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R13: ASEGURADO — reporta — SINIESTRO -->
+        <mxCell id="rel_reporta" value="reporta" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="950" y="860" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R14: BIEN_ASEGURADO — involucrado en — SINIESTRO -->
+        <mxCell id="rel_involucrado" value="involucrado en" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="1026" width="170" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R15: PRODUCTOR — gestiona — SINIESTRO -->
+        <mxCell id="rel_gestiona_sin" value="gestiona" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="860" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R16: COMPANIA — atiende — SINIESTRO -->
+        <mxCell id="rel_atiende" value="atiende" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1550" y="1200" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R17: ASEGURADO — presenta — RECLAMO -->
+        <mxCell id="rel_presenta" value="presenta" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="590" y="1060" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R18: PRODUCTOR — tramita — RECLAMO -->
+        <mxCell id="rel_tramita" value="tramita" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="230" y="960" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R19: COMPANIA — recibe — RECLAMO -->
+        <mxCell id="rel_recibe_rec" value="recibe" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1760" y="1360" width="130.56" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R20: DOCUMENTO — vinculado a — ASEGURADO -->
+        <mxCell id="rel_doc_aseg" value="vinculado a" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="296" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R21: DOCUMENTO — vinculado a — BIEN_ASEGURADO -->
+        <mxCell id="rel_doc_bien" value="vinculado a" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="596" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R22: DOCUMENTO — vinculado a — POLIZA -->
+        <mxCell id="rel_doc_pol" value="vinculado a" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="896" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R23: DOCUMENTO — vinculado a — CUOTA -->
+        <mxCell id="rel_doc_cuo" value="vinculado a" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="1096" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R24: DOCUMENTO — vinculado a — SINIESTRO -->
+        <mxCell id="rel_doc_sin" value="vinculado a" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="1196" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- R25: DOCUMENTO — vinculado a — RECLAMO -->
+        <mxCell id="rel_doc_rec" value="vinculado a" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="2200" y="1296" width="140" height="59.72" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ARISTAS ==================== -->
+
+        <!-- R1: ORGANIZADOR — organiza — PRODUCTOR -->
+        <mxCell id="edge_org_organiza" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_org" target="rel_organiza">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_organiza_prod" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_organiza" target="ent_prod">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R2: PRODUCTOR — gestiona — ASEGURADO -->
+        <mxCell id="edge_prod_gestiona" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_prod" target="rel_gestiona">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_gestiona_aseg" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_gestiona" target="ent_aseg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R3: ORGANIZADOR — accede via — USUARIO -->
+        <mxCell id="edge_org_accede" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_org" target="rel_accede_org">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_accede_org_usu" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_accede_org" target="ent_usu">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R4: PRODUCTOR — accede via — USUARIO -->
+        <mxCell id="edge_prod_accede" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_prod" target="rel_accede_prod">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_accede_prod_usu" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_accede_prod" target="ent_usu">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R5: ASEGURADO — accede via — USUARIO -->
+        <mxCell id="edge_aseg_accede" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_aseg" target="rel_accede_aseg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_accede_aseg_usu" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_accede_aseg" target="ent_usu">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R6: ASEGURADO — posee — BIEN_ASEGURADO -->
+        <mxCell id="edge_aseg_posee" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_aseg" target="rel_posee">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_posee_bien" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_posee" target="ent_bien">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R7: ASEGURADO — contrata — POLIZA -->
+        <mxCell id="edge_aseg_contrata" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_aseg" target="rel_contrata">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_contrata_pol" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_contrata" target="ent_pol">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R8: BIEN_ASEGURADO — cubre — POLIZA -->
+        <mxCell id="edge_bien_cubre" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_bien" target="rel_cubre">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_cubre_pol" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_cubre" target="ent_pol">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R9: PRODUCTOR — intermedia — POLIZA -->
+        <mxCell id="edge_prod_intermedia" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_prod" target="rel_intermedia">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_intermedia_pol" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_intermedia" target="ent_pol">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R10: COMPANIA — emite — POLIZA -->
+        <mxCell id="edge_comp_emite" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_comp" target="rel_emite">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_emite_pol" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_emite" target="ent_pol">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R11: POLIZA — tiene — ENDOSO -->
+        <mxCell id="edge_pol_tiene" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_pol" target="rel_tiene">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_tiene_end" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_tiene" target="ent_end">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R12: POLIZA — genera — CUOTA -->
+        <mxCell id="edge_pol_genera" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_pol" target="rel_genera_cuo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_genera_cuo" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_genera_cuo" target="ent_cuo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R13: ASEGURADO — reporta — SINIESTRO -->
+        <mxCell id="edge_aseg_reporta" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_aseg" target="rel_reporta">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_reporta_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_reporta" target="ent_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R14: BIEN_ASEGURADO — involucrado en — SINIESTRO -->
+        <mxCell id="edge_bien_involucrado" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_bien" target="rel_involucrado">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_involucrado_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_involucrado" target="ent_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R15: PRODUCTOR — gestiona — SINIESTRO -->
+        <mxCell id="edge_prod_gestiona_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_prod" target="rel_gestiona_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_gestiona_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_gestiona_sin" target="ent_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R16: COMPANIA — atiende — SINIESTRO -->
+        <mxCell id="edge_comp_atiende" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_comp" target="rel_atiende">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_atiende_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_atiende" target="ent_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R17: ASEGURADO — presenta — RECLAMO -->
+        <mxCell id="edge_aseg_presenta" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_aseg" target="rel_presenta">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_presenta_rec" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_presenta" target="ent_rec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R18: PRODUCTOR — tramita — RECLAMO -->
+        <mxCell id="edge_prod_tramita" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_prod" target="rel_tramita">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_tramita_rec" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_tramita" target="ent_rec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R19: COMPANIA — recibe — RECLAMO -->
+        <mxCell id="edge_comp_recibe" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_comp" target="rel_recibe_rec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_recibe_rec" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_recibe_rec" target="ent_rec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R20: DOCUMENTO — vinculado a — ASEGURADO -->
+        <mxCell id="edge_doc_doc_aseg" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_doc" target="rel_doc_aseg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_doc_aseg_aseg" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_doc_aseg" target="ent_aseg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R21: DOCUMENTO — vinculado a — BIEN_ASEGURADO -->
+        <mxCell id="edge_doc_doc_bien" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_doc" target="rel_doc_bien">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_doc_bien_bien" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_doc_bien" target="ent_bien">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R22: DOCUMENTO — vinculado a — POLIZA -->
+        <mxCell id="edge_doc_doc_pol" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_doc" target="rel_doc_pol">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_doc_pol_pol" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_doc_pol" target="ent_pol">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R23: DOCUMENTO — vinculado a — CUOTA -->
+        <mxCell id="edge_doc_doc_cuo" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_doc" target="rel_doc_cuo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_doc_cuo_cuo" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_doc_cuo" target="ent_cuo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R24: DOCUMENTO — vinculado a — SINIESTRO -->
+        <mxCell id="edge_doc_doc_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_doc" target="rel_doc_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_doc_sin_sin" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_doc_sin" target="ent_sin">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- R25: DOCUMENTO — vinculado a — RECLAMO -->
+        <mxCell id="edge_doc_doc_rec" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="ent_doc" target="rel_doc_rec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge_doc_rec_rec" value="" style="endArrow=none;html=1;fontSize=10;strokeColor=#000000;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="rel_doc_rec" target="ent_rec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

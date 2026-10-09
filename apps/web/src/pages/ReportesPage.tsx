@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend,
+  BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Legend,
 } from 'recharts';
 import api from '@/lib/api';
 import { formatDate, formatMoney } from '@/lib/format';
@@ -18,19 +18,19 @@ interface PolizasResp    { total: number; porEstado: Record<string, number>; pol
 interface ComisionesResp { total: number; productores: { id: string; nombre: string; estado: string; polizasActivas: number; totalImporteCuotasMes: number }[] }
 interface IncompletosResp{ total: number; bienes: { id: string; tipo: string; asegurado: { nombre: string } | null; camposFaltantes: string[] }[] }
 
-/* ── Paleta semántica — cada estado tiene su color propio */
+/* ── Paleta semántica neutralizada — mismos roles, menos saturación */
 const ESTADO_COLORS: Record<string, string> = {
   // siniestros / reclamos
-  abierto:    '#3d6bda',   // azul — reportado
-  en_gestion: '#b8820a',   // ámbar — en proceso
-  resuelto:   '#0e9e6a',   // verde — aprobado
-  rechazado:  '#c03030',   // rojo — rechazado
+  abierto:    '#5b7fbd',   // azul apagado
+  en_gestion: '#a07830',   // ámbar oscuro
+  resuelto:   '#3a8a62',   // verde bosque
+  rechazado:  '#8f4040',   // rojo oscuro
   // pólizas
-  activa:     '#0e9e6a',   // verde
-  suspendida: '#b8820a',   // ámbar
-  anulada:    '#c03030',   // rojo
+  activa:     '#3a8a62',   // verde bosque
+  suspendida: '#a07830',   // ámbar oscuro
+  anulada:    '#8f4040',   // rojo oscuro
 };
-const FALLBACK_COLORS = ['#3d6bda', '#b8820a', '#0e9e6a', '#8050c8', '#c03030'];
+const FALLBACK_COLORS = ['#5b7fbd', '#a07830', '#3a8a62', '#7060a8', '#8f4040'];
 
 /* Estado etiquetas legibles */
 const ESTADO_LABEL: Record<string, string> = {
@@ -200,35 +200,98 @@ function EstadosPieChart({ data, dark }: { data: Record<string, number>; dark: b
 }
 
 /* ── Bar chart vertical (comisiones) ────────────────────── */
-function ComisionesBarChart({ data, dark }: {
+function ComisionesChart({ data, dark }: {
   data: ComisionesResp['productores']; dark: boolean;
 }) {
-  const chartData  = data.map((p) => ({ nombre: p.nombre.split(' ')[0], total: p.totalImporteCuotasMes }));
   const axisColor  = dark ? '#475569' : '#94a3b8';
   const cursorFill = dark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.04)';
 
+  const totalPolizas = data.reduce((s, p) => s + p.polizasActivas, 0);
+  const totalImporte = data.reduce((s, p) => s + p.totalImporteCuotasMes, 0);
+  const hayImporte   = totalImporte > 0;
+
+  // Ordenar de mayor a menor pólizas activas
+  const sorted = [...data].sort((a, b) => b.polizasActivas - a.polizasActivas);
+
+  const chartData = sorted.map((p) => ({
+    nombre: p.nombre.split(' ')[0],
+    polizas: p.polizasActivas,
+    importe: p.totalImporteCuotasMes,
+    pct: totalPolizas > 0 ? Math.round((p.polizasActivas / totalPolizas) * 100) : 0,
+  }));
+
+  const BAR_COLORS = ['#5b8fb0', '#7080a8', '#4a8a70', '#806898', '#9a7840'];
+
   return (
-    <ResponsiveContainer width="100%" height={200}>
-      <BarChart data={chartData} margin={{ left: 0, right: 8, top: 4, bottom: 4 }}>
-        <XAxis dataKey="nombre" tick={{ fontSize: 11, fill: axisColor }} axisLine={false} tickLine={false} />
-        <YAxis
-          tick={{ fontSize: 10, fill: axisColor }} axisLine={false} tickLine={false} width={52}
-          tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
-        />
-        <Tooltip
-          content={(props) => (
-            <ChartTooltip
-              active={props.active}
-              payload={props.payload as unknown as { name: string; value: number; color: string }[]}
-              label={typeof props.label === 'string' ? props.label : undefined}
-              formatter={(v) => formatMoney(v)}
-            />
-          )}
-          cursor={{ fill: cursorFill }}
-        />
-        <Bar dataKey="total" fill="var(--accent-primary)" fillOpacity={0.9} radius={[3, 3, 0, 0]} maxBarSize={44} />
-      </BarChart>
-    </ResponsiveContainer>
+    <div>
+      {/* Gráfico de barras — pólizas activas */}
+      <ResponsiveContainer width="100%" height={180}>
+        <BarChart data={chartData} margin={{ left: 0, right: 8, top: 4, bottom: 4 }}>
+          <XAxis dataKey="nombre" tick={{ fontSize: 11, fill: axisColor }} axisLine={false} tickLine={false} />
+          <YAxis
+            tick={{ fontSize: 10, fill: axisColor }} axisLine={false} tickLine={false} width={36}
+            tickFormatter={(v: number) => String(v)}
+            allowDecimals={false}
+          />
+          <Tooltip
+            content={(props) => (
+              <ChartTooltip
+                active={props.active}
+                payload={props.payload as unknown as { name: string; value: number; color: string }[]}
+                label={typeof props.label === 'string' ? props.label : undefined}
+                formatter={(v) => `${v} póliza${v !== 1 ? 's' : ''}`}
+              />
+            )}
+            cursor={{ fill: cursorFill }}
+          />
+          <Bar dataKey="polizas" radius={[4, 4, 0, 0]} maxBarSize={48}>
+            {chartData.map((_, i) => (
+              <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} fillOpacity={0.85} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+
+      {/* Ranking tabla — participación % + importe si hay */}
+      <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {sorted.map((p, i) => {
+          const pct = totalPolizas > 0 ? Math.round((p.polizasActivas / totalPolizas) * 100) : 0;
+          const color = BAR_COLORS[i % BAR_COLORS.length];
+          return (
+            <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {/* Nombre + barra */}
+              <span style={{ fontSize: 11, color: 'var(--text-faint)', width: 72, flexShrink: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {p.nombre.split(' ')[0]}
+              </span>
+              <div style={{ flex: 1, height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.06)' }}>
+                <div style={{ width: `${pct}%`, height: '100%', borderRadius: 3, background: color, transition: 'width 0.4s ease' }} />
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, color, minWidth: 32, textAlign: 'right' }}>{pct}%</span>
+              <span style={{ fontSize: 11, color: 'var(--text-faint)', minWidth: 24, textAlign: 'right' }}>
+                {p.polizasActivas} pol.
+              </span>
+              {hayImporte && (
+                <span style={{ fontSize: 11, color: 'var(--text-muted)', minWidth: 64, textAlign: 'right' }}>
+                  {formatMoney(p.totalImporteCuotasMes)}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Total footer */}
+      <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 11, color: 'var(--text-faint)' }}>
+          Total: <strong style={{ color: 'var(--text-secondary)' }}>{totalPolizas} pólizas activas</strong>
+        </span>
+        {hayImporte && (
+          <span style={{ fontSize: 11, color: 'var(--text-faint)' }}>
+            {formatMoney(totalImporte)} / mes
+          </span>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -468,7 +531,7 @@ export default function ReportesPage() {
           </p>
           {comisiones.isLoading ? <Loading /> :
            comisiones.data?.productores.length
-             ? <ComisionesBarChart data={comisiones.data.productores} dark={dark} />
+             ? <ComisionesChart data={comisiones.data.productores} dark={dark} />
              : <EmptyChart msg="Sin datos de comisiones" />}
         </div>
       </div>

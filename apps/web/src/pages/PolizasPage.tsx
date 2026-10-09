@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import api from '@/lib/api';
 import { formatDate, formatMoney } from '@/lib/format';
-import { EstadoPoliza } from '@gestion-pas/types';
+import { EstadoCuota, EstadoPoliza } from '@gestion-pas/types';
 import { cn, cls, estadoPolicaBadge, estadoCuotaBadge } from '@/lib/cn';
 import { motion } from 'framer-motion';
 
@@ -74,6 +74,11 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
   const qc = useQueryClient();
   const [serverError, setServerError] = useState<string | null>(null);
 
+  const { register, handleSubmit, control, formState: { errors, isSubmitting } } =
+    useForm<FormValues>({ resolver: zodResolver(schema) });
+
+  const aseguradoSeleccionado = useWatch({ control, name: 'aseguradoId' });
+
   const { data: asegurados = [] } = useQuery<Ref[]>({
     queryKey: ['asegurados'], queryFn: () => api.get('/asegurados').then((r) => r.data),
   });
@@ -83,12 +88,12 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
   const { data: companias = [] } = useQuery<Ref[]>({
     queryKey: ['companias'], queryFn: () => api.get('/companias').then((r) => r.data),
   });
+  // Solo cargar bienes del asegurado seleccionado para evitar inconsistencias
   const { data: bienes = [] } = useQuery<BienRef[]>({
-    queryKey: ['bienes'], queryFn: () => api.get('/bienes').then((r) => r.data),
+    queryKey: ['bienes-poliza-form', aseguradoSeleccionado],
+    queryFn: () => api.get(`/bienes/asegurado/${aseguradoSeleccionado}`).then((r) => r.data),
+    enabled: !!aseguradoSeleccionado,
   });
-
-  const { register, handleSubmit, formState: { errors, isSubmitting } } =
-    useForm<FormValues>({ resolver: zodResolver(schema) });
 
   const mutation = useMutation({
     mutationFn: (data: FormValues) => api.post('/polizas', data),
@@ -146,8 +151,12 @@ function PolizaForm({ onClose }: { onClose: () => void }) {
               </Field>
 
               <Field label="Bien asegurado *" error={errors.bienId?.message}>
-                <select className={cn(cls.select, '!rounded-sm', errors.bienId ? cls.inputError : '')} {...register('bienId')}>
-                  <option value="">Seleccionar…</option>
+                <select
+                  className={cn(cls.select, '!rounded-sm', errors.bienId ? cls.inputError : '')}
+                  {...register('bienId')}
+                  disabled={!aseguradoSeleccionado}
+                >
+                  <option value="">{aseguradoSeleccionado ? 'Seleccionar…' : 'Seleccioná un asegurado primero'}</option>
                   {bienes.map((b) => (
                     <option key={b.id} value={b.id}>
                       {b.tipo} {b.marca ? `- ${b.marca} ${b.modelo ?? ''}` : ''} {b.patente ? `(${b.patente})` : ''}
@@ -370,7 +379,11 @@ function PolizaDetalle({ id }: { id: string }) {
       <div className={cn('surface rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos de la poliza</h2>
         <div>
-          <DR label="Asegurado" value={poliza.asegurado.nombre} />
+          <DR label="Asegurado" value={
+            <Link to={`/asegurados/${poliza.asegurado.id}`} className="text-accent-400 hover:underline">
+              {poliza.asegurado.nombre}
+            </Link>
+          } />
           <DR label="Bien asegurado" value={
             <>
               {poliza.bien.tipo}
@@ -455,10 +468,10 @@ function PolizaDetalle({ id }: { id: string }) {
                       </span>
                     </td>
                     <td className={cls.td}>
-                      {c.estado === 'pendiente' && (
+                      {c.estado === EstadoCuota.PENDIENTE && (
                         <button
                           className={cn(cls.btn, cls.btnSm, cls.btnSecond)}
-                          onClick={() => patchCuota.mutate({ cuotaId: c.id, estado: 'pagada' })}
+                          onClick={() => patchCuota.mutate({ cuotaId: c.id, estado: EstadoCuota.PAGADA })}
                         >
                           Marcar pagada
                         </button>
@@ -484,16 +497,42 @@ function PolizaDetalle({ id }: { id: string }) {
 function PolizasListado() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const filtroAseguradoId = searchParams.get('asegurado');
 
   const { data: polizas = [], isLoading } = useQuery<Poliza[]>({
     queryKey: ['polizas'],
     queryFn: () => api.get('/polizas').then((r) => r.data),
   });
 
+  // Filtro local por asegurado cuando se navega desde su panel
+  const rows = filtroAseguradoId
+    ? polizas.filter((p) => p.asegurado.id === filtroAseguradoId)
+    : polizas;
+
+  const nombreAsegurado = filtroAseguradoId
+    ? (polizas.find((p) => p.asegurado.id === filtroAseguradoId)?.asegurado.nombre ?? '')
+    : null;
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className={cls.pageTitle}>Polizas</h1>
+        <div>
+          <h1 className={cls.pageTitle}>Polizas</h1>
+          {nombreAsegurado && (
+            <p className="text-sm txt-faint mt-0.5">
+              Filtrando por:{' '}
+              <span className="text-accent-400 font-medium">{nombreAsegurado}</span>
+              {' · '}
+              <button
+                onClick={() => navigate('/polizas')}
+                className="text-xs txt-faint hover:txt-primary underline underline-offset-2"
+              >
+                Ver todas
+              </button>
+            </p>
+          )}
+        </div>
         <button className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} onClick={() => setShowForm(true)}>
           + Nueva poliza
         </button>
@@ -520,10 +559,12 @@ function PolizasListado() {
             {isLoading && (
               <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">Cargando...</td></tr>
             )}
-            {!isLoading && polizas.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">Sin polizas registradas.</td></tr>
+            {!isLoading && rows.length === 0 && (
+              <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">
+                {filtroAseguradoId ? 'Este asegurado no tiene pólizas registradas.' : 'Sin polizas registradas.'}
+              </td></tr>
             )}
-            {polizas.map((p) => (
+            {rows.map((p) => (
               <tr key={p.id} className={cls.trHover} onClick={() => navigate(`/polizas/${p.id}`)}>
                 <td className={cn(cls.td, 'font-medium text-accent-400')}>{p.numeroPoliza}</td>
                 <td className={cls.td}>{p.asegurado.nombre}</td>

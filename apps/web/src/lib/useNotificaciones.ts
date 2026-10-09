@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 
 /* ── Tipos ──────────────────────────────────────────────── */
@@ -11,73 +10,76 @@ export interface NotifItem {
   sub:      string;
   href:     string;
   severity: NotifSeverity;
+  leida?:   boolean;
 }
 
 /* ── Respuestas de API ──────────────────────────────────── */
-interface SiniestrosResp { porEstado: Record<string, number> }
-interface ReclamosResp   { porEstado: Record<string, number> }
+interface NotificacionApi {
+  id: string;
+  tipo: string;
+  titulo: string;
+  subtitulo: string | null;
+  href: string;
+  leida: boolean;
+  creadaEn: string;
+}
+
 interface VencResp {
   total: number;
   cuotas: { id: string; importe: number; fechaVencimiento: string; poliza: { asegurado?: string | null } }[];
 }
 interface IncompletosResp { total: number }
 
-const STALE = 2 * 60 * 1000; // 2 min
-const LS_KEY = 'gp-notif-last-seen';
+const STALE = 60 * 1000; // 1 min
+
+/* ── Mapa de severidad por tipo ─────────────────────────── */
+const TIPO_SEV: Record<string, NotifSeverity> = {
+  comentario_reclamo:   'info',
+  estado_reclamo:       'warn',
+  comentario_siniestro: 'info',
+  estado_siniestro:     'alert',
+};
 
 /* ── Hook ───────────────────────────────────────────────── */
 export function useNotificaciones() {
-  const [lastSeen, setLastSeen] = useState<number>(() => {
-    const v = localStorage.getItem(LS_KEY);
-    return v ? parseInt(v, 10) : 0;
+  const qc = useQueryClient();
+
+  /* Notificaciones de tickets (base de datos) */
+  const notifQuery = useQuery<NotificacionApi[]>({
+    queryKey: ['notificaciones', 'no-leidas'],
+    queryFn: () => api.get('/notificaciones/no-leidas').then((r) => r.data),
+    staleTime: STALE,
+    refetchInterval: 30_000, // polling cada 30s
   });
 
-  const siniestros   = useQuery<SiniestrosResp>({
-    queryKey: ['notif', 'siniestros'],
-    queryFn: () => api.get('/reportes/siniestros').then((r) => r.data),
-    staleTime: STALE,
-  });
-  const reclamos     = useQuery<ReclamosResp>({
-    queryKey: ['notif', 'reclamos'],
-    queryFn: () => api.get('/reportes/reclamos').then((r) => r.data),
-    staleTime: STALE,
-  });
+  /* Notificaciones de dashboard (reportes) — seguimos mostrando vencimientos e incompletos */
   const vencimientos = useQuery<VencResp>({
     queryKey: ['notif', 'vencimientos'],
     queryFn: () => api.get('/reportes/vencimientos-proximos?dias=7').then((r) => r.data),
     staleTime: STALE,
   });
-  const incompletos  = useQuery<IncompletosResp>({
+  const incompletos = useQuery<IncompletosResp>({
     queryKey: ['notif', 'incompletos'],
     queryFn: () => api.get('/reportes/datos-incompletos').then((r) => r.data),
     staleTime: STALE,
   });
 
-  /* Construir lista de items ───────────────────────────── */
+  /* Construir lista de items ────────────────────────────── */
   const items: NotifItem[] = [];
 
-  const sinAbiertos = siniestros.data?.porEstado?.['abierto'] ?? 0;
-  if (sinAbiertos > 0) {
+  // 1) Notificaciones de tickets (DB) — solo no leídas
+  for (const n of notifQuery.data ?? []) {
     items.push({
-      id: 'sin-abiertos',
-      title: `${sinAbiertos} siniestro${sinAbiertos > 1 ? 's' : ''} abierto${sinAbiertos > 1 ? 's' : ''}`,
-      sub: 'Requieren atención',
-      href: '/siniestros',
-      severity: 'alert',
+      id:       n.id,
+      title:    n.titulo,
+      sub:      n.subtitulo ?? '',
+      href:     n.href,
+      severity: TIPO_SEV[n.tipo] ?? 'info',
+      leida:    n.leida,
     });
   }
 
-  const recAbiertos = reclamos.data?.porEstado?.['abierto'] ?? 0;
-  if (recAbiertos > 0) {
-    items.push({
-      id: 'rec-abiertos',
-      title: `${recAbiertos} reclamo${recAbiertos > 1 ? 's' : ''} abierto${recAbiertos > 1 ? 's' : ''}`,
-      sub: 'Sin gestionar',
-      href: '/reclamos',
-      severity: 'warn',
-    });
-  }
-
+  // 2) Vencimientos próximos
   if ((vencimientos.data?.total ?? 0) > 0) {
     const n = vencimientos.data!.total;
     items.push({
@@ -89,6 +91,7 @@ export function useNotificaciones() {
     });
   }
 
+  // 3) Bienes con datos incompletos
   if ((incompletos.data?.total ?? 0) > 0) {
     items.push({
       id: 'incompletos',
@@ -99,23 +102,27 @@ export function useNotificaciones() {
     });
   }
 
-  /* Unread — hay items y el usuario no abrió el panel desde que se cargaron */
-  const dataUpdatedAt = Math.max(
-    siniestros.dataUpdatedAt ?? 0,
-    reclamos.dataUpdatedAt ?? 0,
-    vencimientos.dataUpdatedAt ?? 0,
-    incompletos.dataUpdatedAt ?? 0,
-  );
-  const hasUnread = items.length > 0 && dataUpdatedAt > lastSeen;
+  const hasUnread = (notifQuery.data?.length ?? 0) > 0;
+
+  /* Mutación: marcar todas leídas */
+  const marcarTodas = useMutation({
+    mutationFn: () => api.patch('/notificaciones/leer-todas'),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['notificaciones'] }),
+  });
+
+  /* Mutación: marcar una leída */
+  const marcarUna = useMutation({
+    mutationFn: (id: string) => api.patch(`/notificaciones/${id}/leer`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['notificaciones'] }),
+  });
 
   function markAsRead() {
-    const now = Date.now();
-    localStorage.setItem(LS_KEY, String(now));
-    setLastSeen(now);
+    if ((notifQuery.data?.length ?? 0) > 0) {
+      marcarTodas.mutate();
+    }
   }
 
-  const isLoading = siniestros.isLoading || reclamos.isLoading
-    || vencimientos.isLoading || incompletos.isLoading;
+  const isLoading = notifQuery.isLoading || vencimientos.isLoading || incompletos.isLoading;
 
-  return { items, hasUnread, markAsRead, isLoading };
+  return { items, hasUnread, markAsRead, markOneAsRead: marcarUna.mutate, isLoading };
 }

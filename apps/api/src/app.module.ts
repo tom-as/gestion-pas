@@ -18,13 +18,19 @@ import { SiniestrosModule } from './siniestros/siniestros.module';
 import { ReclamosModule } from './reclamos/reclamos.module';
 import { DocumentosModule } from './documentos/documentos.module';
 import { ReportesModule } from './reportes/reportes.module';
+import { ExportModule } from './export/export.module';
+import { ImportModule } from './import/import.module';
+import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import {
   Asegurado,
   BienAsegurado,
+  ComentarioReclamo,
+  ComentarioSiniestro,
   CompaniaAseguradora,
   Cuota,
   Documento,
   Endoso,
+  Notificacion,
   Organizador,
   Poliza,
   Productor,
@@ -46,6 +52,9 @@ const ALL_ENTITIES = [
   Reclamo,
   Documento,
   Usuario,
+  ComentarioReclamo,
+  ComentarioSiniestro,
+  Notificacion,
 ];
 
 @Module({
@@ -70,8 +79,8 @@ const ALL_ENTITIES = [
         password: config.get<string>('DB_PASSWORD', 'gestion_pas_dev'),
         database: config.get<string>('DB_NAME', 'gestion_pas'),
         entities: ALL_ENTITIES,
-        // synchronize NUNCA en producción — se usan migrations explícitas
-        synchronize: false,
+        // synchronize: solo en development para crear schema automáticamente
+        synchronize: config.get<string>('NODE_ENV') !== 'production',
         migrationsRun: false,
         logging: config.get<string>('NODE_ENV') === 'development',
         namingStrategy: new SnakeCaseNamingStrategy(),
@@ -90,6 +99,9 @@ const ALL_ENTITIES = [
     ReclamosModule,
     DocumentosModule,
     ReportesModule,
+    ExportModule,
+    ImportModule,
+    NotificacionesModule,
   ],
   providers: [
     // Guards globales: todo endpoint requiere JWT salvo los marcados @Public()

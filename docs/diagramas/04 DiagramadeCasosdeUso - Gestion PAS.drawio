@@ -1,0 +1,297 @@
+<mxfile host="app.diagrams.net" agent="Claude">
+  <diagram name="Diagrama de Casos de Uso" id="Diagrama_de_Casos_de_Uso">
+    <mxGraphModel dx="4089" dy="1122" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Actors -->
+        <mxCell id="actor_org" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#f5f5f5;strokeColor=#000000;fontSize=11;" value="Organizador" vertex="1">
+          <mxGeometry height="80" width="60" x="20" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_prod" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#f5f5f5;strokeColor=#000000;fontSize=11;" value="Productor" vertex="1">
+          <mxGeometry height="80" width="60" x="20" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="actor_aseg" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#f5f5f5;strokeColor=#000000;fontSize=11;" value="Asegurado" vertex="1">
+          <mxGeometry height="80" width="60" x="1720" y="900" as="geometry" />
+        </mxCell>
+
+        <!-- System Boundary -->
+        <mxCell id="boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=center;fontStyle=1;fontSize=13;spacingTop=10;fillColor=#ffffff;strokeColor=#000000;" value="Sistema de Gestion PAS" vertex="1">
+          <mxGeometry height="1100" width="1560" x="150" y="230" as="geometry" />
+        </mxCell>
+
+        <!-- Use Cases -->
+        <mxCell id="uc_iniciar" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Iniciar Sesion" vertex="1">
+          <mxGeometry height="60" width="200" x="1420" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestprod" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Productores" vertex="1">
+          <mxGeometry height="60" width="230" x="200" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestusr" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Usuarios" vertex="1">
+          <mxGeometry height="60" width="200" x="200" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestcomp" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Companias" vertex="1">
+          <mxGeometry height="60" width="210" x="200" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestaseg" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Asegurados" vertex="1">
+          <mxGeometry height="60" width="220" x="550" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestbien" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Bienes Asegurados" vertex="1">
+          <mxGeometry height="60" width="240" x="550" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestpol" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Polizas" vertex="1">
+          <mxGeometry height="60" width="200" x="900" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestend" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Endosos" vertex="1">
+          <mxGeometry height="60" width="200" x="900" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestcuo" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Cuotas" vertex="1">
+          <mxGeometry height="60" width="200" x="900" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestsin" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Siniestros" vertex="1">
+          <mxGeometry height="60" width="210" x="550" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestrec" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Reclamos" vertex="1">
+          <mxGeometry height="60" width="200" x="550" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gestdoc" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Gestionar Documentos" vertex="1">
+          <mxGeometry height="60" width="220" x="900" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_reportes" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Generar Reportes" vertex="1">
+          <mxGeometry height="60" width="200" x="200" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_consulpol" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Consultar Polizas" vertex="1">
+          <mxGeometry height="60" width="200" x="1270" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_consulcuo" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Consultar Cuotas" vertex="1">
+          <mxGeometry height="60" width="200" x="1270" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_consulsin" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Consultar Siniestros" vertex="1">
+          <mxGeometry height="60" width="210" x="1270" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_consulrec" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;strokeColor=#000000;" value="Consultar Reclamos" vertex="1">
+          <mxGeometry height="60" width="200" x="1270" y="1200" as="geometry" />
+        </mxCell>
+
+        <!-- Organizador associations -->
+        <mxCell id="e_org_iniciar" edge="1" parent="1" source="actor_org" target="uc_iniciar" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="450" />
+              <mxPoint x="1520" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestprod" edge="1" parent="1" source="actor_org" target="uc_gestprod" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="480" />
+              <mxPoint x="50" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestusr" edge="1" parent="1" source="actor_org" target="uc_gestusr" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="490" />
+              <mxPoint x="50" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestcomp" edge="1" parent="1" source="actor_org" target="uc_gestcomp" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_org_gestaseg" edge="1" parent="1" source="actor_org" target="uc_gestaseg" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="510" />
+              <mxPoint x="50" y="560" />
+              <mxPoint x="440" y="560" />
+              <mxPoint x="440" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestbien" edge="1" parent="1" source="actor_org" target="uc_gestbien" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="520" />
+              <mxPoint x="440" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestpol" edge="1" parent="1" source="actor_org" target="uc_gestpol" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="530" />
+              <mxPoint x="820" y="530" />
+              <mxPoint x="820" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestsin" edge="1" parent="1" source="actor_org" target="uc_gestsin" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="540" />
+              <mxPoint x="440" y="540" />
+              <mxPoint x="440" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_gestrec" edge="1" parent="1" source="actor_org" target="uc_gestrec" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="550" />
+              <mxPoint x="430" y="550" />
+              <mxPoint x="430" y="850" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_org_reportes" edge="1" parent="1" source="actor_org" target="uc_reportes" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="560" />
+              <mxPoint x="100" y="560" />
+              <mxPoint x="100" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Productor associations -->
+        <mxCell id="e_prod_iniciar" edge="1" parent="1" source="actor_prod" target="uc_iniciar" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1070" />
+              <mxPoint x="1520" y="1070" />
+              <mxPoint x="1520" y="330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_gestaseg" edge="1" parent="1" source="actor_prod" target="uc_gestaseg" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1080" />
+              <mxPoint x="440" y="1080" />
+              <mxPoint x="440" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_gestbien" edge="1" parent="1" source="actor_prod" target="uc_gestbien" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1090" />
+              <mxPoint x="430" y="1090" />
+              <mxPoint x="430" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_gestpol" edge="1" parent="1" source="actor_prod" target="uc_gestpol" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1100" />
+              <mxPoint x="820" y="1100" />
+              <mxPoint x="820" y="410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_gestcuo" edge="1" parent="1" source="actor_prod" target="uc_gestcuo" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1110" />
+              <mxPoint x="810" y="1110" />
+              <mxPoint x="810" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_gestsin" edge="1" parent="1" source="actor_prod" target="uc_gestsin" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1120" />
+              <mxPoint x="420" y="1120" />
+              <mxPoint x="420" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_gestrec" edge="1" parent="1" source="actor_prod" target="uc_gestrec" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1130" />
+              <mxPoint x="410" y="1130" />
+              <mxPoint x="410" y="850" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_prod_reportes" edge="1" parent="1" source="actor_prod" target="uc_reportes" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="1140" />
+              <mxPoint x="90" y="1140" />
+              <mxPoint x="90" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Asegurado associations -->
+        <mxCell id="e_aseg_iniciar" edge="1" parent="1" source="actor_aseg" target="uc_iniciar" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1750" y="870" />
+              <mxPoint x="1750" y="300" />
+              <mxPoint x="1620" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_aseg_consulpol" edge="1" parent="1" source="actor_aseg" target="uc_consulpol" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1750" y="920" />
+              <mxPoint x="1600" y="920" />
+              <mxPoint x="1600" y="930" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_aseg_consulcuo" edge="1" parent="1" source="actor_aseg" target="uc_consulcuo" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1750" y="960" />
+              <mxPoint x="1600" y="960" />
+              <mxPoint x="1600" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_aseg_consulsin" edge="1" parent="1" source="actor_aseg" target="uc_consulsin" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1750" y="980" />
+              <mxPoint x="1610" y="980" />
+              <mxPoint x="1610" y="1130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_aseg_consulrec" edge="1" parent="1" source="actor_aseg" target="uc_consulrec" style="endArrow=none;html=1;strokeColor=#000000;rounded=0;fillColor=none;edgeStyle=orthogonalEdgeStyle;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1750" y="1000" />
+              <mxPoint x="1620" y="1000" />
+              <mxPoint x="1620" y="1230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Include / Extend relations -->
+        <mxCell id="e_pol_inc_end" edge="1" parent="1" source="uc_gestpol" target="uc_gestend" style="endArrow=open;dashed=1;html=1;fontSize=9;rounded=0;strokeColor=#000000;edgeStyle=orthogonalEdgeStyle;" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_pol_inc_cuo" edge="1" parent="1" source="uc_gestpol" target="uc_gestcuo" style="endArrow=open;dashed=1;html=1;fontSize=9;rounded=0;strokeColor=#000000;edgeStyle=orthogonalEdgeStyle;" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sin_inc_doc" edge="1" parent="1" source="uc_gestsin" target="uc_gestdoc" style="endArrow=open;dashed=1;html=1;fontSize=9;rounded=0;strokeColor=#000000;edgeStyle=orthogonalEdgeStyle;" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_rec_inc_doc" edge="1" parent="1" source="uc_gestrec" target="uc_gestdoc" style="endArrow=open;dashed=1;html=1;fontSize=9;rounded=0;strokeColor=#000000;edgeStyle=orthogonalEdgeStyle;" value="&lt;&lt;include&gt;&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

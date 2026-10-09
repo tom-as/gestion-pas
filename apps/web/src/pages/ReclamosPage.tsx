@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +10,7 @@ import { EstadoReclamo, TipoReclamo } from '@gestion-pas/types';
 import { useAuth } from '@/context/AuthContext';
 import { cn, cls, estadoReclamoBadge } from '@/lib/cn';
 import { motion } from 'framer-motion';
+import CommentThread from '@/components/CommentThread';
 
 /* ── Tipos ──────────────────────────────────────────────── */
 interface Ref { id: string; nombre: string }
@@ -134,16 +135,23 @@ function ReclamoForm({ onClose }: { onClose: () => void }) {
     queryFn: () => api.get('/companias').then((r) => r.data),
   });
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } =
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } =
     useForm<FormValues>({
       resolver: zodResolver(schema),
       defaultValues: {
         tipo: TipoReclamo.COBERTURA,
         fechaApertura: new Date().toISOString().slice(0, 10),
         aseguradoId: aseguradoId ?? '',
-        productorId: propioAsegurado?.productor?.id ?? '',
+        productorId: '',
       },
     });
+
+  // El productor se carga de forma asíncrona; actualizamos el campo cuando llega
+  useEffect(() => {
+    if (propioAsegurado?.productor?.id) {
+      setValue('productorId', propioAsegurado.productor.id);
+    }
+  }, [propioAsegurado, setValue]);
 
   const mutation = useMutation({
     mutationFn: (data: FormValues) =>
@@ -183,11 +191,11 @@ function ReclamoForm({ onClose }: { onClose: () => void }) {
               </Field>
               {aseguradoId ? (
                 <>
-                  <input type="hidden" {...register('aseguradoId')} value={aseguradoId} />
+                  <input type="hidden" {...register('aseguradoId')} />
                   <Field label="Asegurado">
                     <input className={cn(cls.input, '!rounded-sm')} readOnly value={propioAsegurado?.nombre ?? 'Cargando...'} />
                   </Field>
-                  <input type="hidden" {...register('productorId')} value={propioAsegurado?.productor?.id ?? ''} />
+                  <input type="hidden" {...register('productorId')} />
                   <Field label="Productor">
                     <input className={cn(cls.input, '!rounded-sm')} readOnly value={propioAsegurado?.productor?.nombre ?? 'Cargando...'} />
                   </Field>
@@ -278,7 +286,11 @@ function ReclamoDetalle({ id }: { id: string }) {
       <div className="surface rounded-sm p-6 mb-5">
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos del reclamo</h2>
         <div>
-          <DR label="Asegurado" value={reclamo.asegurado.nombre} />
+          <DR label="Asegurado" value={
+            <Link to={`/asegurados/${reclamo.asegurado.id}`} className="text-accent-400 hover:underline">
+              {reclamo.asegurado.nombre}
+            </Link>
+          } />
           <DR label="Productor" value={reclamo.productor.nombre} />
           <DR label="Compania" value={reclamo.compania?.nombre ?? '—'} />
           <DR label="Tipo" value={TIPO_LABEL[reclamo.tipo]} />
@@ -311,6 +323,14 @@ function ReclamoDetalle({ id }: { id: string }) {
           </div>
         </div>
       )}
+
+      {/* Hilo de comentarios */}
+      <CommentThread
+        entidad="reclamos"
+        entidadId={id}
+        nombreAsegurado={reclamo.asegurado.nombre}
+        nombreProductor={reclamo.productor.nombre}
+      />
     </div>
   );
 }
@@ -321,16 +341,41 @@ function ReclamoDetalle({ id }: { id: string }) {
 function ReclamosListado() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const filtroAseguradoId = searchParams.get('asegurado');
 
   const { data: reclamos = [], isLoading } = useQuery<Reclamo[]>({
     queryKey: ['reclamos'],
     queryFn: () => api.get('/reclamos').then((r) => r.data),
   });
 
+  const rows = filtroAseguradoId
+    ? reclamos.filter((r) => r.asegurado.id === filtroAseguradoId)
+    : reclamos;
+
+  const nombreAsegurado = filtroAseguradoId
+    ? (reclamos.find((r) => r.asegurado.id === filtroAseguradoId)?.asegurado.nombre ?? '')
+    : null;
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className={cls.pageTitle}>Reclamos</h1>
+        <div>
+          <h1 className={cls.pageTitle}>Reclamos</h1>
+          {nombreAsegurado && (
+            <p className="text-sm txt-faint mt-0.5">
+              Filtrando por:{' '}
+              <span className="text-accent-400 font-medium">{nombreAsegurado}</span>
+              {' · '}
+              <button
+                onClick={() => navigate('/reclamos')}
+                className="text-xs txt-faint hover:txt-primary underline underline-offset-2"
+              >
+                Ver todos
+              </button>
+            </p>
+          )}
+        </div>
         <button className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} onClick={() => setShowForm(true)}>
           + Nuevo reclamo
         </button>
@@ -354,10 +399,12 @@ function ReclamosListado() {
           </thead>
           <tbody>
             {isLoading && <tr><td colSpan={5} className="px-4 py-8 text-center txt-tertiary text-sm">Cargando...</td></tr>}
-            {!isLoading && reclamos.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center txt-tertiary text-sm">Sin reclamos registrados.</td></tr>
+            {!isLoading && rows.length === 0 && (
+              <tr><td colSpan={5} className="px-4 py-8 text-center txt-tertiary text-sm">
+                {filtroAseguradoId ? 'Este asegurado no tiene reclamos registrados.' : 'Sin reclamos registrados.'}
+              </td></tr>
             )}
-            {reclamos.map((r) => (
+            {rows.map((r) => (
               <tr key={r.id} className={cls.trHover} onClick={() => navigate(`/reclamos/${r.id}`)}>
                 <td className={cn(cls.td, 'font-medium')}>{TIPO_LABEL[r.tipo]}</td>
                 <td className={cls.td}>{r.asegurado.nombre}</td>

@@ -8,10 +8,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { Asegurado } from '../database/entities/asegurado.entity';
 import { Productor } from '../database/entities/productor.entity';
+import { Cuota } from '../database/entities/cuota.entity';
+import { Poliza } from '../database/entities/poliza.entity';
 import { Usuario } from '../database/entities/usuario.entity';
-import { UserRole } from '@gestion-pas/types';
+import { EstadoCuota, EstadoPoliza, UserRole } from '@gestion-pas/types';
 import { CreateAseguradoDto } from './dto/create-asegurado.dto';
 import { UpdateAseguradoDto } from './dto/update-asegurado.dto';
+
+export interface AseguradoStats {
+  polizasActivas: number;
+  cuotasTotal: number;
+  cuotasPagas: number;
+  pctCuotasPagas: number | null;
+}
 
 @Injectable()
 export class AseguradosService {
@@ -20,6 +29,10 @@ export class AseguradosService {
     private readonly aseguradoRepo: Repository<Asegurado>,
     @InjectRepository(Productor)
     private readonly productorRepo: Repository<Productor>,
+    @InjectRepository(Cuota)
+    private readonly cuotaRepo: Repository<Cuota>,
+    @InjectRepository(Poliza)
+    private readonly polizaRepo: Repository<Poliza>,
   ) {}
 
   async findAll(usuario: Usuario, search?: string): Promise<Asegurado[]> {
@@ -107,6 +120,41 @@ export class AseguradosService {
     });
 
     return this.aseguradoRepo.save(asegurado);
+  }
+
+  async getStats(id: string, usuario: Usuario): Promise<AseguradoStats> {
+    const asegurado = await this.aseguradoRepo.findOne({
+      where: { id },
+      relations: ['productor'],
+    });
+    if (!asegurado) throw new NotFoundException(`Asegurado ${id} no encontrado`);
+    this.checkAccess(asegurado, usuario);
+
+    // Contar pólizas activas
+    const polizasActivas = await this.polizaRepo
+      .createQueryBuilder('p')
+      .where('p.asegurado_id = :id', { id })
+      .andWhere('p.estado = :estado', { estado: EstadoPoliza.ACTIVA })
+      .getCount();
+
+    // Contar cuotas totales y pagas a través de las pólizas del asegurado
+    const cuotasTotal = await this.cuotaRepo
+      .createQueryBuilder('c')
+      .innerJoin('c.poliza', 'p')
+      .where('p.asegurado_id = :id', { id })
+      .getCount();
+
+    const cuotasPagas = await this.cuotaRepo
+      .createQueryBuilder('c')
+      .innerJoin('c.poliza', 'p')
+      .where('p.asegurado_id = :id', { id })
+      .andWhere('c.estado = :estado', { estado: EstadoCuota.PAGADA })
+      .getCount();
+
+    const pctCuotasPagas =
+      cuotasTotal > 0 ? Math.round((cuotasPagas / cuotasTotal) * 100) : null;
+
+    return { polizasActivas, cuotasTotal, cuotasPagas, pctCuotasPagas };
   }
 
   private checkAccess(asegurado: Asegurado, usuario: Usuario): void {

@@ -10,3 +10,6 @@ export { Siniestro } from './siniestro.entity';
 export { Reclamo } from './reclamo.entity';
 export { Documento } from './documento.entity';
 export { Usuario } from './usuario.entity';
+export { ComentarioReclamo } from './comentario-reclamo.entity';
+export { ComentarioSiniestro } from './comentario-siniestro.entity';
+export { Notificacion } from './notificacion.entity';

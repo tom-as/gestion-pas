@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import VehiculoSilueta from '@/components/VehiculoSilueta';
 import { cn, cls, estadoSiniestroBadge } from '@/lib/cn';
 import { motion } from 'framer-motion';
+import CommentThread from '@/components/CommentThread';
 
 /* ── Tipos ──────────────────────────────────────────────── */
 interface Ref { id: string; nombre: string }
@@ -65,193 +66,361 @@ function Field({ label, error, children, full }: { label: string; error?: string
   );
 }
 
+/* ── Iconos de tipo de siniestro ────────────────────────── */
+const TIPO_META: Record<TipoSiniestro, { label: string; icon: React.ReactNode; color: string }> = {
+  [TipoSiniestro.COLISION]:        { label: 'Colisión',           color: '#4a8cff', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 17h2l1-4h12l1 4h2"/><path d="M5 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0M15 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0"/><path d="M5 13V9a1 1 0 0 1 1-1h4l3 5"/><path d="M13 8h4l2 5"/></svg> },
+  [TipoSiniestro.ROBO_TOTAL]:      { label: 'Robo total',         color: '#e05050', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> },
+  [TipoSiniestro.ROBO_AUTOPARTES]: { label: 'Robo autopartes',    color: '#f0a020', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg> },
+  [TipoSiniestro.HOGAR]:           { label: 'Hogar',              color: '#10c97a', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg> },
+  [TipoSiniestro.VIDA]:            { label: 'Vida',               color: '#c084fc', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg> },
+  [TipoSiniestro.OTRO]:            { label: 'Otro',               color: '#7090c8', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg> },
+};
+
+/* ── Sección visual del formulario ──────────────────────── */
+function FormSection({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 24 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+        <span style={{ color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>{icon}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--text-faint)' }}>{title}</span>
+        <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)', marginLeft: 4 }} />
+      </div>
+      {children}
+    </div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════
    FORMULARIO ALTA SINIESTRO
 ══════════════════════════════════════════════════════════ */
 function SiniestroForm({ onClose }: { onClose: () => void }) {
   const qc = useQueryClient();
   const { user } = useAuth();
-  const aseguradoId = user?.aseguradoId ?? null;
+  const fixedAseguradoId = user?.aseguradoId ?? null;
+  const fixedProductorId = user?.productorId ?? null;
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [zonasAfectadas, setZonasAfectadas] = useState<string[]>([]);
 
-  const { data: propioAsegurado } = useQuery<Ref & { productor?: Ref }>({
-    queryKey: ['asegurado-propio', aseguradoId],
-    queryFn: () => api.get(`/asegurados/${aseguradoId}`).then((r) => r.data),
-    enabled: !!aseguradoId,
-  });
-
-  const { data: asegurados = [] } = useQuery<Ref[]>({
-    queryKey: ['asegurados'],
-    queryFn: () => api.get('/asegurados').then((r) => r.data),
-    enabled: !aseguradoId,
-  });
-  const { data: productores = [] } = useQuery<Ref[]>({
-    queryKey: ['productores'],
-    queryFn: () => api.get('/productores').then((r) => r.data),
-    enabled: !aseguradoId,
-  });
-  const { data: companias = [] } = useQuery<Ref[]>({
-    queryKey: ['companias'],
-    queryFn: () => api.get('/companias').then((r) => r.data),
-  });
-  const { data: bienes = [] } = useQuery<BienRef[]>({
-    queryKey: ['bienes', aseguradoId],
-    queryFn: () => api.get(aseguradoId ? `/bienes/asegurado/${aseguradoId}` : '/bienes').then((r) => r.data),
-  });
-
-  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } =
+  const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } =
     useForm<FormValues>({
       resolver: zodResolver(schema),
       defaultValues: {
         tipo: TipoSiniestro.COLISION,
-        aseguradoId: aseguradoId ?? '',
-        productorId: propioAsegurado?.productor?.id ?? '',
+        aseguradoId: fixedAseguradoId ?? '',
+        productorId: fixedProductorId ?? '',
       },
     });
 
+  const { data: propioAsegurado } = useQuery<Ref & { productor?: Ref }>({
+    queryKey: ['asegurado-propio', fixedAseguradoId],
+    queryFn: () => api.get(`/asegurados/${fixedAseguradoId}`).then((r) => r.data),
+    enabled: !!fixedAseguradoId,
+  });
+
+  useEffect(() => {
+    if (propioAsegurado?.productor?.id) {
+      setValue('productorId', propioAsegurado.productor.id);
+    }
+  }, [propioAsegurado, setValue]);
+
+  const { data: asegurados = [] } = useQuery<(Ref & { productor?: Ref })[]>({
+    queryKey: ['asegurados'],
+    queryFn: () => api.get('/asegurados').then((r) => r.data),
+    enabled: !fixedAseguradoId,
+  });
+
+  const { data: productores = [] } = useQuery<Ref[]>({
+    queryKey: ['productores'],
+    queryFn: () => api.get('/productores').then((r) => r.data),
+    enabled: !fixedAseguradoId && !fixedProductorId,
+  });
+
+  const { data: companias = [] } = useQuery<Ref[]>({
+    queryKey: ['companias'],
+    queryFn: () => api.get('/companias').then((r) => r.data),
+  });
+
+  const aseguradoSeleccionado = watch('aseguradoId');
   const tipoActual = watch('tipo');
+  const tipoMeta = TIPO_META[tipoActual];
+
+  useEffect(() => {
+    if (!fixedAseguradoId && !fixedProductorId && aseguradoSeleccionado) {
+      const found = asegurados.find((a) => a.id === aseguradoSeleccionado);
+      if (found?.productor?.id) setValue('productorId', found.productor.id);
+    }
+  }, [aseguradoSeleccionado, asegurados, fixedAseguradoId, fixedProductorId, setValue]);
+
+  useEffect(() => {
+    if (!fixedAseguradoId && fixedProductorId && aseguradoSeleccionado) {
+      setValue('productorId', fixedProductorId);
+    }
+  }, [aseguradoSeleccionado, fixedAseguradoId, fixedProductorId, setValue]);
+
+  const efectivoAseguradoId = fixedAseguradoId ?? aseguradoSeleccionado;
+  const { data: bienes = [] } = useQuery<BienRef[]>({
+    queryKey: ['bienes-form', efectivoAseguradoId],
+    queryFn: () => api.get(`/bienes/asegurado/${efectivoAseguradoId}`).then((r) => r.data),
+    enabled: !!efectivoAseguradoId,
+  });
+
+  useEffect(() => { setValue('bienId', ''); }, [efectivoAseguradoId, setValue]);
+
   const esAutoSiniestro = tipoActual === TipoSiniestro.COLISION ||
     tipoActual === TipoSiniestro.ROBO_TOTAL ||
     tipoActual === TipoSiniestro.ROBO_AUTOPARTES;
 
   const mutation = useMutation({
-    mutationFn: (data: FormValues) =>
-      api.post('/siniestros', { ...data, zonasAfectadas }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['siniestros'] });
-      onClose();
-    },
+    mutationFn: (data: FormValues) => api.post('/siniestros', { ...data, zonasAfectadas }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['siniestros'] }); onClose(); },
     onError: (err: unknown) => {
-      const msg = (err as { response?: { data?: { message?: string } } })
-        ?.response?.data?.message;
-      setServerError(msg ?? 'Ocurrio un error. Intenta de nuevo.');
+      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      setServerError(msg ?? 'Ocurrió un error. Intentá de nuevo.');
     },
   });
 
   return (
     <div className={cls.overlay}>
-      <div className={cn(cls.modal, cls.modalLg, '!rounded-md')}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/6">
-          <span className="text-base font-semibold txt-primary">Registrar siniestro</span>
-          <button onClick={onClose} className="txt-faint hover:txt-primary transition-colors"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-        </div>
-        <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
-          <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
-            <div className="grid grid-cols-2 gap-4">
-              <Field label="Tipo de siniestro *">
-                <select className={cn(cls.select, '!rounded-sm')} {...register('tipo')}>
-                  <option value={TipoSiniestro.COLISION}>Colision</option>
-                  <option value={TipoSiniestro.ROBO_TOTAL}>Robo total</option>
-                  <option value={TipoSiniestro.ROBO_AUTOPARTES}>Robo de autopartes</option>
-                  <option value={TipoSiniestro.HOGAR}>Hogar</option>
-                  <option value={TipoSiniestro.VIDA}>Vida</option>
-                  <option value={TipoSiniestro.OTRO}>Otro</option>
-                </select>
-              </Field>
-
-              <Field label="Fecha de ocurrencia *" error={errors.fechaOcurrencia?.message}>
-                <input type="date" className={cn(cls.input, '!rounded-sm', errors.fechaOcurrencia ? cls.inputError : '')} {...register('fechaOcurrencia')} />
-              </Field>
-
-              <Field label="Hora (HH:MM)" error={errors.horaOcurrencia?.message}>
-                <input className={cn(cls.input, '!rounded-sm')} placeholder="14:30" {...register('horaOcurrencia')} />
-              </Field>
-
-              <Field label="Lugar de ocurrencia" full>
-                <input className={cn(cls.input, '!rounded-sm')} placeholder="Av. General Paz y Acceso Oeste" {...register('lugarOcurrencia')} />
-              </Field>
-
-              <Field label="Relato del hecho" full>
-                <textarea className={cn(cls.textarea, '!rounded-sm')} rows={3} {...register('relato')} />
-              </Field>
-
-              <Field label="Datos de terceros involucrados" full>
-                <textarea className={cn(cls.textarea, '!rounded-sm')} rows={2}
-                  placeholder="Nombre, patente, seguro..."
-                  {...register('datosTerceros')} />
-              </Field>
-
-              <Field label="N° denuncia compania">
-                <input className={cn(cls.input, '!rounded-sm')} {...register('numeroDenunciaCompania')} />
-              </Field>
-              <div />
-
-              {/* Asegurado / productor */}
-              {aseguradoId ? (
-                <>
-                  <input type="hidden" {...register('aseguradoId')} value={aseguradoId} />
-                  <Field label="Asegurado">
-                    <input className={cn(cls.input, '!rounded-sm')} readOnly value={propioAsegurado?.nombre ?? 'Cargando...'} />
-                  </Field>
-                  <input type="hidden" {...register('productorId')} value={propioAsegurado?.productor?.id ?? ''} />
-                  <Field label="Productor">
-                    <input className={cn(cls.input, '!rounded-sm')} readOnly value={propioAsegurado?.productor?.nombre ?? 'Cargando...'} />
-                  </Field>
-                </>
-              ) : (
-                <>
-                  <Field label="Asegurado *" error={errors.aseguradoId?.message}>
-                    <select className={cn(cls.select, '!rounded-sm', errors.aseguradoId ? cls.inputError : '')} {...register('aseguradoId')}>
-                      <option value="">Seleccionar...</option>
-                      {asegurados.map((a) => <option key={a.id} value={a.id}>{a.nombre}</option>)}
-                    </select>
-                  </Field>
-                  <Field label="Productor *" error={errors.productorId?.message}>
-                    <select className={cn(cls.select, '!rounded-sm', errors.productorId ? cls.inputError : '')} {...register('productorId')}>
-                      <option value="">Seleccionar...</option>
-                      {productores.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
-                    </select>
-                  </Field>
-                </>
-              )}
-
-              <Field label="Bien afectado *" error={errors.bienId?.message} full>
-                <select className={cn(cls.select, '!rounded-sm', errors.bienId ? cls.inputError : '')} {...register('bienId')}>
-                  <option value="">Seleccionar...</option>
-                  {bienes.map((b) => (
-                    <option key={b.id} value={b.id}>
-                      {b.tipo}{b.marca ? ` - ${b.marca} ${b.modelo ?? ''}` : ''}{b.patente ? ` (${b.patente})` : ''}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label="Compania *" error={errors.companiaId?.message}>
-                <select className={cn(cls.select, '!rounded-sm', errors.companiaId ? cls.inputError : '')} {...register('companiaId')}>
-                  <option value="">Seleccionar...</option>
-                  {companias.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
-                </select>
-              </Field>
+      <motion.div
+        className={cn(cls.modal, cls.modalLg)}
+        initial={{ opacity: 0, scale: 0.97, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        style={{ maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}
+      >
+        {/* ── Header con acento de color por tipo ── */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '16px 24px',
+          borderBottom: '1px solid var(--border-subtle)',
+          background: `linear-gradient(135deg, color-mix(in srgb, ${tipoMeta.color} 8%, transparent), transparent)`,
+          flexShrink: 0,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+              background: `color-mix(in srgb, ${tipoMeta.color} 14%, transparent)`,
+              border: `1px solid color-mix(in srgb, ${tipoMeta.color} 30%, transparent)`,
+              color: tipoMeta.color,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'all 0.2s ease',
+            }}>
+              {tipoMeta.icon}
             </div>
+            <div>
+              <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2 }}>Registrar siniestro</p>
+              <p style={{ fontSize: 12, color: 'var(--text-faint)', marginTop: 1 }}>{tipoMeta.label}</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            style={{ color: 'var(--text-faint)', background: 'none', border: 'none', cursor: 'pointer', padding: 6, borderRadius: 6, lineHeight: 0, transition: 'color 0.15s' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-faint)')}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
 
-            {/* Silueta — solo para siniestros de automotor */}
+        {/* ── Selector de tipo — pills ── */}
+        <div style={{ padding: '14px 24px 0', borderBottom: '1px solid var(--border-subtle)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', paddingBottom: 14 }}>
+            {(Object.entries(TIPO_META) as [TipoSiniestro, typeof TIPO_META[TipoSiniestro]][]).map(([val, meta]) => {
+              const active = tipoActual === val;
+              return (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setValue('tipo', val as TipoSiniestro)}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    padding: '5px 11px', borderRadius: 20,
+                    fontSize: 12, fontWeight: 600,
+                    cursor: 'pointer', transition: 'all 0.15s ease',
+                    background: active ? `color-mix(in srgb, ${meta.color} 16%, transparent)` : 'var(--surface-panel)',
+                    border: `1px solid ${active ? `color-mix(in srgb, ${meta.color} 40%, transparent)` : 'var(--border-subtle)'}`,
+                    color: active ? meta.color : 'var(--text-faint)',
+                  }}
+                >
+                  <span style={{ lineHeight: 0, opacity: active ? 1 : 0.6 }}>
+                    {React.cloneElement(meta.icon as React.ReactElement<React.SVGProps<SVGSVGElement>>, { width: 13, height: 13 })}
+                  </span>
+                  {meta.label}
+                </button>
+              );
+            })}
+          </div>
+          <input type="hidden" {...register('tipo')} />
+        </div>
+
+        {/* ── Body scrollable ── */}
+        <div style={{ overflowY: 'auto', flex: 1, padding: '20px 24px' }}>
+          <form onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
+
+            {/* §1 Cuándo y dónde */}
+            <FormSection
+              title="Cuándo y dónde"
+              icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}
+            >
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                <Field label="Fecha de ocurrencia *" error={errors.fechaOcurrencia?.message}>
+                  <input type="date" className={cn(cls.input, errors.fechaOcurrencia ? cls.inputError : '')} {...register('fechaOcurrencia')} />
+                </Field>
+                <Field label="Hora (HH:MM)" error={errors.horaOcurrencia?.message}>
+                  <input className={cls.input} placeholder="14:30" {...register('horaOcurrencia')} />
+                </Field>
+                <Field label="Lugar de ocurrencia" full>
+                  <input className={cls.input} placeholder="Av. General Paz y Acceso Oeste" {...register('lugarOcurrencia')} />
+                </Field>
+              </div>
+            </FormSection>
+
+            {/* §2 Relato */}
+            <FormSection
+              title="Relato del hecho"
+              icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>}
+            >
+              <div className="grid grid-cols-1 gap-3">
+                <Field label="Descripción del siniestro">
+                  <textarea
+                    className={cls.textarea}
+                    rows={3}
+                    placeholder="Describí brevemente cómo ocurrió el hecho..."
+                    {...register('relato')}
+                  />
+                </Field>
+                <Field label="Datos de terceros involucrados">
+                  <textarea
+                    className={cls.textarea}
+                    rows={2}
+                    placeholder="Nombre, patente, compañía de seguro..."
+                    {...register('datosTerceros')}
+                  />
+                </Field>
+                <Field label="N° denuncia en compañía">
+                  <input className={cls.input} placeholder="Ej: 2024-00123" {...register('numeroDenunciaCompania')} />
+                </Field>
+              </div>
+            </FormSection>
+
+            {/* §3 Partes */}
+            <FormSection
+              title="Partes involucradas"
+              icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+            >
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                {fixedAseguradoId ? (
+                  <>
+                    <input type="hidden" {...register('aseguradoId')} />
+                    <Field label="Asegurado">
+                      <input className={cn(cls.input, 'opacity-70 cursor-not-allowed')} readOnly value={propioAsegurado?.nombre ?? 'Cargando...'} />
+                    </Field>
+                    <input type="hidden" {...register('productorId')} />
+                    <Field label="Productor">
+                      <input className={cn(cls.input, 'opacity-70 cursor-not-allowed')} readOnly value={propioAsegurado?.productor?.nombre ?? 'Cargando...'} />
+                    </Field>
+                  </>
+                ) : fixedProductorId ? (
+                  <>
+                    <Field label="Asegurado *" error={errors.aseguradoId?.message}>
+                      <select className={cn(cls.select, errors.aseguradoId ? cls.inputError : '')} {...register('aseguradoId')}>
+                        <option value="">Seleccionar...</option>
+                        {asegurados.map((a) => <option key={a.id} value={a.id}>{a.nombre}</option>)}
+                      </select>
+                    </Field>
+                    <input type="hidden" {...register('productorId')} />
+                    <Field label="Productor">
+                      <input className={cn(cls.input, 'opacity-70 cursor-not-allowed')} readOnly
+                        value={asegurados.find((a) => a.id === aseguradoSeleccionado)?.productor?.nombre ?? '—'} />
+                    </Field>
+                  </>
+                ) : (
+                  <>
+                    <Field label="Asegurado *" error={errors.aseguradoId?.message}>
+                      <select className={cn(cls.select, errors.aseguradoId ? cls.inputError : '')} {...register('aseguradoId')}>
+                        <option value="">Seleccionar...</option>
+                        {asegurados.map((a) => <option key={a.id} value={a.id}>{a.nombre}</option>)}
+                      </select>
+                    </Field>
+                    <Field label="Productor *" error={errors.productorId?.message}>
+                      <select className={cn(cls.select, errors.productorId ? cls.inputError : '')} {...register('productorId')}>
+                        <option value="">Seleccionar...</option>
+                        {productores.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
+                      </select>
+                    </Field>
+                  </>
+                )}
+
+                <Field label="Bien afectado *" error={errors.bienId?.message} full>
+                  <select className={cn(cls.select, errors.bienId ? cls.inputError : '')} {...register('bienId')}
+                    disabled={!efectivoAseguradoId}>
+                    <option value="">{efectivoAseguradoId ? 'Seleccionar...' : 'Seleccioná un asegurado primero'}</option>
+                    {bienes.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.tipo}{b.marca ? ` · ${b.marca} ${b.modelo ?? ''}` : ''}{b.patente ? ` (${b.patente})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+
+                <Field label="Compañía aseguradora *" error={errors.companiaId?.message}>
+                  <select className={cn(cls.select, errors.companiaId ? cls.inputError : '')} {...register('companiaId')}>
+                    <option value="">Seleccionar...</option>
+                    {companias.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
+                  </select>
+                </Field>
+              </div>
+            </FormSection>
+
+            {/* §4 Silueta — solo automotor */}
             {esAutoSiniestro && (
-              <div className="mt-5">
-                <p className={cn(cls.label, 'mb-2')}>
-                  Zonas de dano del vehiculo (click para marcar)
+              <FormSection
+                title="Zonas de daño del vehículo"
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>}
+              >
+                <p style={{ fontSize: 12, color: 'var(--text-faint)', marginBottom: 10 }}>
+                  Hacé clic sobre las zonas afectadas para marcarlas.
                 </p>
-                <VehiculoSilueta
-                  zonasSeleccionadas={zonasAfectadas}
-                  onChange={setZonasAfectadas}
-                />
+                <VehiculoSilueta zonasSeleccionadas={zonasAfectadas} onChange={setZonasAfectadas} />
+              </FormSection>
+            )}
+
+            {/* Error del servidor */}
+            {serverError && (
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '10px 14px', borderRadius: 6, marginBottom: 16,
+                background: 'rgba(224,80,80,0.08)', border: '1px solid rgba(224,80,80,0.22)',
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e05050" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span style={{ fontSize: 13, color: '#e05050' }}>{serverError}</span>
               </div>
             )}
 
-            {serverError && <p className="mt-3 text-sm text-red-400 bg-red-500/8 border border-red-500/20 rounded px-3 py-2">{serverError}</p>}
-
-            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-white/6">
+            {/* Footer */}
+            <div style={{
+              display: 'flex', justifyContent: 'flex-end', gap: 10,
+              paddingTop: 16, borderTop: '1px solid var(--border-subtle)',
+            }}>
               <button type="button" className={cn(cls.btn, cls.btnMd, cls.btnSecond)} onClick={onClose}>
                 Cancelar
               </button>
               <button type="submit" className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} disabled={isSubmitting}>
-                {isSubmitting ? 'Guardando...' : 'Guardar'}
+                {isSubmitting
+                  ? <><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ animation: 'spin 0.8s linear infinite' }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Guardando...</>
+                  : <>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      Registrar siniestro
+                    </>
+                }
               </button>
             </div>
           </form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -372,7 +541,11 @@ function SiniestroDetalle({ id }: { id: string }) {
       <div className={cn('surface rounded-sm p-6', 'mb-5')}>
         <h2 className={cn(cls.sectionTitle, 'mb-4')}>Datos del siniestro</h2>
         <div>
-          <DR label="Asegurado" value={siniestro.asegurado.nombre} />
+          <DR label="Asegurado" value={
+            <Link to={`/asegurados/${siniestro.asegurado.id}`} className="text-accent-400 hover:underline">
+              {siniestro.asegurado.nombre}
+            </Link>
+          } />
           <DR label="Bien afectado" value={
             <>
               {siniestro.bien.tipo}
@@ -466,6 +639,14 @@ function SiniestroDetalle({ id }: { id: string }) {
           </div>
         </div>
       )}
+
+      {/* Hilo de comentarios */}
+      <CommentThread
+        entidad="siniestros"
+        entidadId={id}
+        nombreAsegurado={siniestro.asegurado.nombre}
+        nombreProductor={siniestro.productor.nombre}
+      />
     </div>
   );
 }
@@ -476,16 +657,41 @@ function SiniestroDetalle({ id }: { id: string }) {
 function SiniestrosListado() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const filtroAseguradoId = searchParams.get('asegurado');
 
   const { data: siniestros = [], isLoading } = useQuery<Siniestro[]>({
     queryKey: ['siniestros'],
     queryFn: () => api.get('/siniestros').then((r) => r.data),
   });
 
+  const rows = filtroAseguradoId
+    ? siniestros.filter((s) => s.asegurado.id === filtroAseguradoId)
+    : siniestros;
+
+  const nombreAsegurado = filtroAseguradoId
+    ? (siniestros.find((s) => s.asegurado.id === filtroAseguradoId)?.asegurado.nombre ?? '')
+    : null;
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className={cls.pageTitle}>Siniestros</h1>
+        <div>
+          <h1 className={cls.pageTitle}>Siniestros</h1>
+          {nombreAsegurado && (
+            <p className="text-sm txt-faint mt-0.5">
+              Filtrando por:{' '}
+              <span className="text-accent-400 font-medium">{nombreAsegurado}</span>
+              {' · '}
+              <button
+                onClick={() => navigate('/siniestros')}
+                className="text-xs txt-faint hover:txt-primary underline underline-offset-2"
+              >
+                Ver todos
+              </button>
+            </p>
+          )}
+        </div>
         <button className={cn(cls.btn, cls.btnMd, cls.btnPrimary)} onClick={() => setShowForm(true)}>
           + Registrar siniestro
         </button>
@@ -512,10 +718,12 @@ function SiniestrosListado() {
             {isLoading && (
               <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">Cargando...</td></tr>
             )}
-            {!isLoading && siniestros.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">Sin siniestros registrados.</td></tr>
+            {!isLoading && rows.length === 0 && (
+              <tr><td colSpan={6} className="px-4 py-8 text-center txt-tertiary text-sm">
+                {filtroAseguradoId ? 'Este asegurado no tiene siniestros registrados.' : 'Sin siniestros registrados.'}
+              </td></tr>
             )}
-            {siniestros.map((s) => (
+            {rows.map((s) => (
               <tr key={s.id} className={cls.trHover}
                 onClick={() => navigate(`/siniestros/${s.id}`)}>
                 <td className={cn(cls.td, 'font-medium')}>

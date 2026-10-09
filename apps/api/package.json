@@ -15,7 +15,9 @@
     "migration:run": "ts-node -r tsconfig-paths/register src/database/scripts/migration-run.ts",
     "migration:revert": "ts-node -r tsconfig-paths/register src/database/scripts/migration-revert.ts",
     "seed": "ts-node -r tsconfig-paths/register src/database/seeds/seed.ts",
-    "seed:admin": "ts-node -r tsconfig-paths/register src/database/seeds/seed-admin.ts"
+    "seed:admin": "ts-node -r tsconfig-paths/register src/database/seeds/seed-admin.ts",
+    "seed:asegurado": "ts-node -r tsconfig-paths/register src/database/seeds/seed-asegurado.ts",
+    "seed:productores": "ts-node -r tsconfig-paths/register src/database/seeds/seed-productores.ts"
   },
   "dependencies": {
     "@gestion-pas/types": "workspace:*",
@@ -47,6 +49,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
+    "@types/multer": "^2.2.0",
     "@types/node": "^20.12.7",
     "@types/passport-jwt": "^4.0.1",
     "@types/supertest": "^7.2.1",

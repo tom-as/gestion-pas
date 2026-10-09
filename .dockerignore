@@ -1,0 +1,31 @@
+# Control de versiones
+.git
+.gitignore
+
+# Dependencias (se instalan dentro del builder)
+node_modules
+apps/*/node_modules
+packages/*/node_modules
+
+# Builds locales
+apps/*/dist
+packages/*/dist
+
+# Archivos de entorno locales
+.env
+.env.*
+!.env.example
+
+# Logs y caches
+*.log
+.pnpm-store
+.cache
+
+# Herramientas de desarrollo
+.vscode
+.bob
+docs
+archivos
+mobile-plan.md
+csv-*.md
+*.html

@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AseguradosService } from './asegurados.service';
+import { AseguradosService, AseguradoStats } from './asegurados.service';
 import { CreateAseguradoDto } from './dto/create-asegurado.dto';
 import { UpdateAseguradoDto } from './dto/update-asegurado.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -40,6 +40,19 @@ export class AseguradosController {
   @ApiResponse({ status: 404, description: 'Asegurado no encontrado' })
   findOne(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() usuario: Usuario) {
     return this.service.findOne(id, usuario);
+  }
+
+  @Get(':id/stats')
+  @ApiOperation({ summary: 'Estadísticas de pólizas y cuotas de un asegurado' })
+  @ApiResponse({ status: 200, description: 'Stats del asegurado' })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado' })
+  @ApiResponse({ status: 404, description: 'Asegurado no encontrado' })
+  getStats(
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() usuario: Usuario,
+  ): Promise<AseguradoStats> {
+    return this.service.getStats(id, usuario);
   }
 
   @Post()
